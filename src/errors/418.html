@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>418 I'm a teapot</title>
+<style>
+:root{--blue:#0078d7;--ink:#fff;--soft:rgba(255,255,255,.82)}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--blue);color:var(--ink)}
+body{font:300 1.1rem/1.5 "Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;padding:clamp(1.5rem,8vw,6rem)}
+main{max-width:46rem}
+.face{font-size:clamp(4.5rem,18vw,9rem);line-height:1;margin:0 0 1.5rem;letter-spacing:.02em}
+h1{font-weight:300;font-size:clamp(1.3rem,3.2vw,1.9rem);line-height:1.35;margin:0 0 1.25rem}
+p{margin:0 0 1.25rem;max-width:38rem}
+.info{display:grid;gap:.15rem;margin-top:2rem;font-size:.9rem;color:var(--soft)}
+.info b{font-weight:600;color:var(--ink)}
+.path{overflow-wrap:anywhere;font-family:ui-monospace,Menlo,Consolas,monospace}
+.actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.75rem}
+.btn{font:inherit;font-size:.95rem;color:var(--ink);background:none;border:1px solid var(--ink);padding:.55rem 1.1rem;text-decoration:none;cursor:pointer}
+.btn:hover,.btn:focus-visible{background:var(--ink);color:var(--blue)}
+.btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+</style>
+</head>
+<body>
+<main>
+<div class="face" aria-hidden="true">X_X</div>
+<h1>This server is a teapot and politely refuses to brew coffee.</h1>
+<p>This is a real, if mischievous, part of the HTTP specification (RFC 2324). No further action is required, except perhaps tea.</p>
+<p>We're just collecting some error info, and then you can try again.</p>
+<p><span id="pct">100</span>% complete</p>
+<div class="info">
+<div>If you contact the site owner, please give them this info:</div>
+<div><b>Stop code:</b> TEAPOT_CANNOT_BREW_COFFEE</div>
+<div><b>HTTP status:</b> 418 I'm a teapot</div>
+<div><b>What failed:</b> <span class="path" id="path">this request</span></div>
+</div>
+<div class="actions">
+<a class="btn" href="/">Back to the homepage</a>
+<button class="btn" type="button" onclick="history.back()">Go back</button>
+</div>
+</main>
+<script>
+document.getElementById("path").textContent = location.pathname + location.search;
+if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  var n = 0, el = document.getElementById("pct");
+  el.textContent = n;
+  var t = setInterval(function () {
+    n = Math.min(100, n + 1 + Math.floor(Math.random() * 9));
+    el.textContent = n;
+    if (n === 100) clearInterval(t);
+  }, 110);
+}
+</script>
+</body>
+</html>

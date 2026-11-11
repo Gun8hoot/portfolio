@@ -1,0 +1,871 @@
+/*
+=====================
+====== GENERAL ======
+=====================
+*/
+:root
+{
+	/*
+	COLOR SCHEME = Kanagawa
+	*/
+	--terminal-black-bold: #1F1F28;
+	--terminal-red-bold: #C34043;
+	--terminal-green-bold: #76946A;
+	--terminal-yellow-bold: #C0A36E;
+	--terminal-blue-bold: #7E9CD8;
+	--terminal-purple-bold: #957FB8;
+	--terminal-Xxx-bold: #6A9589;
+	--terminal-white-bold: #DCD7BA;
+
+	--terminal-black-light: #54546D;
+	--terminal-red-light: #C34043;
+	--terminal-green-light: #76946A;
+	--terminal-yellow-light: #C0A36E;
+	--terminal-blue-light: #7E9CD8;
+	--terminal-purple-light: #957FB8;
+	--terminal-Xxx-light: #6A9589;
+	--terminal-white-light: #717C7C;
+
+	--terminal-text-normal: green;
+
+	--accent: var(--terminal-blue-bold); /* change this one line to recolor the page */
+	--muted: #8a9494;
+}
+
+@font-face {
+	font-family: monaspaceArgon-Light;
+	src: url(./assets/fonts/Monaspace\ Argon/MonaspaceArgon-Light.woff);
+}
+
+@font-face {
+	font-family: monaspaceArgon-Medium;
+	src: url(./assets/fonts/Monaspace\ Argon/MonaspaceArgon-Medium.woff);
+}
+
+@font-face {
+	font-family: monaspaceArgon-SemiBold;
+	src: url(./assets/fonts/Monaspace\ Argon/MonaspaceArgon-SemiBold.woff);
+}
+
+@font-face {
+	font-family: monaspaceArgon-SemiWideBold;
+	src: url(./assets/fonts/Monaspace\ Argon/MonaspaceArgon-SemiWideBold.woff);
+}
+
+@font-face {
+	font-family: monaspaceArgon-Bold;
+	src: url(./assets/fonts/Monaspace\ Argon/MonaspaceArgon-Bold.woff);
+}
+
+html
+{
+	/* scales from about 13px on small phones up to 16px; everything else is in rem/em/ch */
+	font-size: clamp(0.8125rem, 0.625rem + 1vw, 1rem);
+	-webkit-text-size-adjust: 100%;
+	text-size-adjust: 100%;
+}
+
+body
+{
+	color: var(--terminal-white-bold);
+	background-color: #1C1C1C;
+	font-family: monaspaceArgon-Light;
+}
+
+a
+{
+	font-style: normal;
+	color: inherit;
+	text-decoration: none;
+}
+/*
+================================
+====== PRE-BOOT COMPONENT ======
+================================
+*/
+.preboot {
+	position: fixed; /* out of the page flow: nothing left to scroll */
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.power_button {
+	font-family: monaspaceArgon-Bold;
+	font-size: 1rem;
+	color: var(--terminal-green-bold);
+	background: none;
+	border: 1px solid var(--terminal-green-bold);
+	padding: 0.6em 1.4em;
+	cursor: pointer;
+}
+
+.power_button:hover,
+.power_button:focus-visible {
+	background: var(--terminal-green-bold);
+	color: var(--terminal-black-bold);
+}
+
+/*
+============================
+====== BOOT COMPONENT ======
+============================
+*/
+@media (prefers-reduced-motion: reduce) {
+	.boot { transition: none; }
+}
+
+.boot {
+	opacity: 1;
+	transform: translateY(0);
+	transition: opacity 600ms ease-in, transform 600ms ease-in;
+}
+
+.boot--leaving {
+	opacity: 0;
+	transform: translateX(-12px); /* drifts up slightly as it fades */
+}
+
+.boot_messages
+{
+
+	font-size: max(0.5vw, 9px); /* readable floor on phones */
+	font-family: monaspaceArgon-SemiWideBold;
+	color: var(--terminal-green-bold);
+	margin-left: 10px;
+}
+
+/*
+=================================
+====== PORTFOLIO COMPONENT ======
+=================================
+*/
+.portfolio
+{
+	max-width: 70ch;
+	margin: 0 auto;
+	padding: 6vh 1.25rem 4rem;
+	line-height: 1.7;
+
+	/* slide-in when the page appears: negative = from the left, positive = from the right */
+	--slide-from: -2.5rem;
+	animation: portfolio-in 600ms ease-out backwards;
+}
+
+/* ---------- language toggle (top right) ---------- */
+.lang_toggle
+{
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+	display: flex;
+	gap: 0.4em;
+	padding: 0.2rem 0.5rem;
+	font-family: monaspaceArgon-Medium;
+	font-size: 0.9rem;
+	line-height: 1.5;
+	color: var(--muted);
+	background: none;
+	border: 0;
+	cursor: pointer;
+	animation: fade-in 600ms ease-out backwards;
+}
+
+.lang_toggle .lang_on
+{
+	color: var(--accent);
+}
+
+.lang_toggle:focus-visible
+{
+	background: var(--accent);
+	outline: none;
+}
+
+.lang_toggle:focus-visible span
+{
+	color: var(--terminal-black-bold);
+}
+
+/* hover only on devices that really hover, so it doesn't stay stuck after a tap */
+@media (hover: hover)
+{
+	.lang_toggle:hover
+	{
+		background: var(--accent);
+	}
+
+	.lang_toggle:hover span
+	{
+		color: var(--terminal-black-bold);
+	}
+}
+
+/* ---------- name ---------- */
+.portfolio .name
+{
+	margin: 0 0 1.25rem;
+	font-family: monaspaceArgon-Bold;
+	font-size: clamp(1.25rem, 5vw, 2.25rem);
+	line-height: 1.2;
+	color: var(--accent);
+}
+
+.portfolio .cursor
+{
+	margin-left: 0.25em;
+	color: var(--terminal-blue-bold);
+	animation: blink 1s steps(1) infinite;
+}
+
+/* ---------- section titles ---------- */
+.section_title
+{
+	margin: 0 0 0.75rem;
+	font-family: monaspaceArgon-Medium;
+	font-size: 1rem;
+	font-weight: normal;
+	color: var(--terminal-green-bold);
+}
+
+.section_title::before
+{
+	content: "## ";
+	content: "## " / ""; /* hidden from screen readers where supported */
+	font-size: 1.4em;
+	color: var(--muted);
+}
+
+/* ---------- description ---------- */
+.portfolio .description
+{
+	margin: 0 0 3rem;
+	font-family: monaspaceArgon-Light;
+	color: var(--terminal-white-bold);
+}
+
+.portfolio .description p
+{
+	margin: 0 0 0.75rem;
+}
+
+.portfolio .description ul
+{
+	margin: 0 0 0.75rem;
+	padding: 0;
+	list-style: none;
+}
+
+.portfolio .description li::before
+{
+	content: "- ";
+	content: "- " / "";
+	color: var(--muted);
+}
+
+/* ---------- skills (same column grid as the links below) ---------- */
+.portfolio .skills
+{
+	margin: 0 0 3rem;
+	padding: 0;
+	list-style: none;
+	font-family: monaspaceArgon-Light;
+}
+
+.skill_row
+{
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0 2rem;
+	padding: 0.2rem 0;
+}
+
+.skill_group
+{
+	min-width: 12ch;
+	font-family: monaspaceArgon-Medium;
+	color: var(--muted);
+}
+
+.skill_items
+{
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0 1.25rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	color: var(--terminal-white-bold);
+}
+
+/* ---------- projects ---------- */
+.portfolio .project
+{
+	margin: 0 0 3rem;
+	padding: 0;
+	list-style: none;
+}
+
+.portfolio .project li
+{
+	margin-bottom: 1.1rem;
+}
+
+.portfolio .project .link_name
+{
+	min-width: 18ch;
+}
+
+.project_state
+{
+	min-width: 12ch;
+}
+
+.project_state--done { color: var(--terminal-green-bold); }
+.project_state--wip  { color: var(--terminal-yellow-bold); }
+
+.project_desc
+{
+	margin: 0.1rem 0 0;
+	max-width: 62ch;
+	font-family: monaspaceArgon-Light;
+	color: var(--terminal-white-bold);
+}
+
+/* ---------- links ---------- */
+.portfolio .social
+{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.link
+{
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0 2rem;
+	margin: 0 -0.5rem;
+	padding: 0.2rem 0.5rem;
+}
+
+/* the project row is a <button>, not an <a>: strip the default button chrome */
+button.link
+{
+	width: 100%;
+	font: inherit;
+	color: inherit;
+	background: none;
+	border: 0;
+	text-align: left;
+	cursor: pointer;
+}
+
+.link_name
+{
+	min-width: 12ch;
+	font-family: monaspaceArgon-Medium;
+	color: var(--accent);
+}
+
+.link_url
+{
+	color: var(--muted);
+	overflow-wrap: anywhere;
+}
+
+/* hovered or focused row looks like a selected line in a terminal */
+.link:hover,
+.link:focus-visible
+{
+	background: var(--accent);
+	outline: none;
+}
+
+.link:hover .link_name,
+.link:hover .link_url,
+.link:hover .project_state,
+.link:focus-visible .link_name,
+.link:focus-visible .link_url,
+.link:focus-visible .project_state
+{
+	color: var(--terminal-black-bold);
+}
+
+/* ---------- term cards (explanations on hover, tap or focus) ---------- */
+.term
+{
+	cursor: help;
+	text-decoration: underline dotted;
+	text-decoration-color: var(--muted);
+	text-underline-offset: 0.25em;
+}
+
+.term:focus-visible
+{
+	outline: 2px solid var(--accent);
+	outline-offset: 2px;
+}
+
+.term_card
+{
+	--half: min(11rem, 45vw); /* half of the card width */
+
+	position: fixed;
+	z-index: 30; /* above .project_overlay (20), so it still shows when opened from inside the window */
+	box-sizing: border-box;
+	width: calc(var(--half) * 2);
+	padding: 0.6rem 0.8rem;
+	font-size: 0.875rem;
+	line-height: 1.5;
+	color: var(--terminal-white-bold);
+	background: var(--terminal-black-bold);
+	border: 1px solid var(--terminal-black-light);
+	transform: translate(-50%, calc(-100% - 14px)); /* above the pointer */
+	cursor: pointer;
+	animation: fade-in 120ms ease-out;
+}
+
+.term_card--below
+{
+	transform: translate(-50%, 18px); /* not enough room above: below it */
+}
+
+.term_card_name
+{
+	margin-bottom: 0.2rem;
+	font-family: monaspaceArgon-Medium;
+	color: var(--accent);
+}
+
+.term_card:hover
+{
+	border-color: var(--accent);
+}
+
+.term_card_link
+{
+	margin-top: 0.35rem;
+	color: var(--accent);
+	overflow-wrap: anywhere;
+}
+
+.term_card:hover .term_card_link
+{
+	text-decoration: underline;
+}
+
+/* ---------- animation ---------- */
+@keyframes portfolio-in
+{
+	from { opacity: 0; transform: translateX(var(--slide-from)); }
+	to   { opacity: 1; transform: none; }
+}
+
+@keyframes fade-in
+{
+	from { opacity: 0; }
+	to   { opacity: 1; }
+}
+
+@keyframes blink
+{
+	0%   { opacity: 100%; }
+	50%  { opacity: 0%; }
+	100% { opacity: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce)
+{
+	.portfolio,
+	.lang_toggle,
+	.term_card,
+	.portfolio .cursor { animation: none; }
+}
+
+/* ---------- small screens ---------- */
+@media (max-width: 600px)
+{
+	.portfolio
+	{
+		padding: max(4vh, 3.5rem) 1rem 3rem;
+	}
+
+	.link,
+	.skill_row
+	{
+		gap: 0 1rem;
+	}
+
+	/* skill label on its own line, skills below it */
+	.skill_group
+	{
+		flex-basis: 100%;
+	}
+
+	/* name, state and status flow inline instead of sitting in padded columns */
+	.portfolio .project .link_name,
+	.project_state
+	{
+		min-width: 0;
+	}
+}
+
+
+/* ---------- hackathons: paste into the portfolio part of index.css ---------- */
+.portfolio .hackathons
+{
+	margin: 0 0 3rem;
+	padding: 0;
+	list-style: none;
+}
+
+.portfolio .hackathons li
+{
+	margin-bottom: 1.1rem;
+}
+
+.portfolio .hackathons .link_name
+{
+	min-width: 18ch;
+}
+
+.hack_position
+{
+	min-width: 12ch;
+	font-family: monaspaceArgon-Medium;
+	color: var(--terminal-white-bold);
+}
+
+/* organized by / date / duration / location, on one wrapping line */
+.hack_meta
+{
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.25rem 3rem; /* row gap, space between the groups */
+	margin: 0.3rem 0 0;
+}
+
+.hack_meta div
+{
+	display: flex;
+	gap: 1.25ch; /* space between a label and its value */
+}
+
+.hack_meta dt
+{
+	color: var(--muted);
+}
+
+.hack_meta dd
+{
+	margin: 0;
+}
+
+/* the hovered row turns into a dark-on-accent block, so the position must follow */
+.link:hover .hack_position,
+.link:focus-visible .hack_position
+{
+	color: var(--terminal-black-bold);
+}
+
+@media (max-width: 600px)
+{
+	.portfolio .hackathons .link_name,
+	.hack_position
+	{
+		min-width: 0;
+	}
+}
+
+/*
+=======================================
+====== PROJECT WINDOW (modal) ========
+=======================================
+*/
+.project_overlay
+{
+	position: fixed;
+	inset: 0;
+	z-index: 20;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 1rem;
+	background: rgba(28, 28, 28, 0.75);
+	animation: fade-in 150ms ease-out;
+}
+
+.project_window
+{
+	width: min(78rem, 96vw);
+	height: min(36rem, 92vh);
+	display: flex;
+	flex-direction: column;
+	background: var(--terminal-black-bold);
+	border: 1px solid var(--terminal-black-light);
+	overflow: hidden; /* the window never scrolls */
+}
+
+.project_window_bar
+{
+	flex: 0 0 auto;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0.5rem 0.9rem;
+	font-family: monaspaceArgon-Medium;
+	color: var(--accent);
+	border-bottom: 1px solid var(--terminal-black-light);
+}
+
+.project_window_close
+{
+	font-family: monaspaceArgon-Bold;
+	font-size: 1.1rem;
+	line-height: 1;
+	color: var(--muted);
+	background: none;
+	border: 0;
+	padding: 0.1rem 0.4rem;
+	cursor: pointer;
+}
+
+.project_window_close:hover,
+.project_window_close:focus-visible
+{
+	color: var(--terminal-red-bold);
+	outline: none;
+}
+
+.project_window_body
+{
+	flex: 1 1 auto;
+	min-height: 0;
+	display: flex;
+	overflow: hidden;
+}
+
+.project_window_logo
+{
+	flex: 0 0 38%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 1.5rem;
+	border-right: 1px solid var(--terminal-black-light);
+}
+
+.project_window_logo img
+{
+	max-width: 100%;
+	max-height: 100%;
+	object-fit: contain;
+}
+
+.project_window_info
+{
+	flex: 1 1 auto;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	padding: 1.25rem 1.5rem;
+	overflow: hidden;
+}
+
+/* no logo was found: this column fills the whole window instead of sharing it */
+.project_window_info--full
+{
+	flex: 1 1 100%;
+	padding: 1.75rem 2rem;
+}
+
+.project_window_meta
+{
+	flex: 0 0 auto;
+	display: flex;
+	gap: 1.25rem;
+	margin: 0 0 0.75rem;
+}
+
+.project_window_subtitle
+{
+	flex: 0 0 auto;
+	margin: 0.75rem 0 0.35rem;
+	font-family: monaspaceArgon-Medium;
+	font-size: 0.9rem;
+	font-weight: normal;
+	color: var(--terminal-green-bold);
+}
+
+.project_window_subtitle::before
+{
+	content: "## ";
+	font-size: 1.4em;
+	color: var(--muted);
+}
+
+.project_window_desc
+{
+	margin: 0;
+	font-family: monaspaceArgon-Light;
+	color: var(--terminal-white-bold);
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-line-clamp: 6; /* clamp instead of scrolling if the text runs long */
+	-webkit-box-orient: vertical;
+}
+
+/* full-width layout (no logo): the column is wider, so each line holds more text */
+.project_window_info--full .project_window_desc
+{
+	-webkit-line-clamp: 4;
+}
+
+.project_window_repo
+{
+	align-self: flex-start;
+	margin-top: auto;
+	padding: 0.5em 1.2em;
+	font-family: monaspaceArgon-Medium;
+	color: var(--accent);
+	border: 1px solid var(--accent);
+}
+
+.project_window_repo:hover,
+.project_window_repo:focus-visible
+{
+	background: var(--accent);
+	color: var(--terminal-black-bold);
+	outline: none;
+}
+
+@media (prefers-reduced-motion: reduce)
+{
+	.project_overlay { animation: none; }
+}
+
+@media (max-width: 600px)
+{
+	.project_window
+	{
+		height: min(40rem, 94vh);
+	}
+
+	.project_window_body
+	{
+		flex-direction: column;
+	}
+
+	.project_window_logo
+	{
+		flex: 0 0 auto;
+		max-height: 30%;
+		padding: 0.75rem;
+		border-right: 0;
+		border-bottom: 1px solid var(--terminal-black-light);
+	}
+
+	.project_window_desc
+	{
+		-webkit-line-clamp: 5;
+	}
+}
+
+/*
+=================================
+====== CONTACT COMPONENT =======
+=================================
+*/
+.contact_form
+{
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	max-width: 46rem;
+	margin: 0 0 3rem;
+}
+
+/* visually hidden, but still a real field a careless bot will fill in */
+.contact_honeypot
+{
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	white-space: nowrap;
+}
+
+.contact_field
+{
+	display: flex;
+	flex-direction: column;
+	gap: 0.3rem;
+	font-family: monaspaceArgon-Light;
+}
+
+.contact_field span
+{
+	font-family: monaspaceArgon-Medium;
+	color: var(--muted);
+}
+
+.contact_field input,
+.contact_field textarea
+{
+	font: inherit;
+	color: var(--terminal-white-bold);
+	background: none;
+	border: 0;
+	border-bottom: 1px solid var(--terminal-black-light);
+	padding: 0.4em 0.2em;
+	resize: vertical;
+}
+
+.contact_field input:focus,
+.contact_field textarea:focus
+{
+	outline: none;
+	border-bottom-color: var(--accent);
+}
+
+.contact_field--captcha input
+{
+	max-width: 6rem;
+}
+
+.contact_submit
+{
+	align-self: flex-start;
+	font-family: monaspaceArgon-Bold;
+	color: var(--accent);
+	background: none;
+	border: 1px solid var(--accent);
+	padding: 0.5em 1.4em;
+	cursor: pointer;
+}
+
+.contact_submit:hover,
+.contact_submit:focus-visible
+{
+	background: var(--accent);
+	color: var(--terminal-black-bold);
+	outline: none;
+}
+
+.contact_submit:disabled
+{
+	opacity: 0.6;
+	cursor: default;
+}
+
+.contact_status
+{
+	margin: 0;
+	font-family: monaspaceArgon-Medium;
+}
+
+.contact_status--ok { color: var(--terminal-green-bold); }
+.contact_status--err { color: var(--terminal-red-bold); }

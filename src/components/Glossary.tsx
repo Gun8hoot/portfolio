@@ -18,11 +18,13 @@ export const GLOSSARY: Record<string, Entry> = {
 		fr: "Extension du C avec classes, templates et une grande bibliothèque standard, utilisée là où la performance compte, comme les jeux et les navigateurs.",
 	},
 	"JS": {
+		aliases: ["JavaScript"],
 		url: "https://developer.mozilla.org/docs/Web/JavaScript",
 		en: "The scripting language of the web, running in browsers and on servers through Node.js.",
 		fr: "Le langage de script du web, qui s'exécute dans les navigateurs et sur les serveurs via Node.js.",
 	},
 	"TS": {
+		aliases: ["TypeScript"],
 		url: "https://www.typescriptlang.org",
 		en: "JavaScript with static types, compiled down to plain JavaScript.",
 		fr: "JavaScript avec des types statiques, compilé en JavaScript classique.",
@@ -158,6 +160,7 @@ export const GLOSSARY: Record<string, Entry> = {
 		fr: "Système qui traduit les noms de domaine en adresses IP.",
 	},
 	"ASM x86-x64": {
+		aliases: ["ASM"],
 		url: "https://en.wikipedia.org/wiki/X86_assembly_language",
 		en: "Assembly language of x86 processors, the human-readable form of machine code.",
 		fr: "Langage d'assemblage des processeurs x86, la forme lisible du code machine.",
@@ -277,7 +280,7 @@ export const GLOSSARY: Record<string, Entry> = {
 		fr: "Partie invisible d’un site ou d’une application qui travaille en coulisses. Elle s'occupe de traiter les demandes, applique les règles et échange avec la base de données.",
 	},
 	"base de données": {
-		aliases: ["databases"],
+		aliases: ["databases", "database"],
 		url: "https://www.geeksforgeeks.org/blogs/backend-development/",
 		en: "A place where software stores information in an organized way, so that data can be added, removed, modified or viewed simply and from a central location.",
 		fr: "C'est un endroit où un logiciel stocke des informations de façon organisée pour pouvoir ajouter, supprimer, modifier ou voir ces données simplement et de façon centralisée.",
@@ -289,6 +292,7 @@ export const GLOSSARY: Record<string, Entry> = {
 		fr: "Est un fichier qui contient un ensemble de fonctions permettant de les réutiliser dans d'autres projets.",
 	},
 	"accès anonyme": {
+		aliases: ["anonymous access"],
 		url: "https://www.geeksforgeeks.org/blogs/backend-development/",
 		en: "On many FTP servers, an option can be enabled to allow or disallow logging in to the \"anonymous\" account, giving access to the files present on the server without needing to create a guest account yourself.",
 		fr: "Dans de nombreux serveurs FTP, il est possible d'activer une option autorisant ou non la connexion au compte \"anonymous\", afin de donner accès aux fichiers présents sur le serveur sans qu'il soit nécessaire de créer soi-même un compte invité.",
@@ -312,5 +316,140 @@ export const GLOSSARY: Record<string, Entry> = {
 		url: "https://www.gnu.org/software/libc/",
 		en: "The C standard library: basic functions like printf, malloc and string handling.",
 		fr: "La bibliothèque standard du C : fonctions de base comme printf, malloc et la gestion des chaînes.",
+	},
+
+	// web
+	"HTML": {
+		url: "https://developer.mozilla.org/docs/Web/HTML",
+		en: "The markup language that structures the content of every web page.",
+		fr: "Le langage de balisage qui structure le contenu de chaque page web.",
+	},
+	"CSS": {
+		url: "https://developer.mozilla.org/docs/Web/CSS",
+		en: "The styling language that controls how HTML content looks: layout, colors, fonts and more.",
+		fr: "Le langage de style qui contrôle l'apparence du contenu HTML : mise en page, couleurs, polices et plus encore.",
+	},
+	"TailwindCSS": {
+		url: "https://tailwindcss.com",
+		en: "Utility-first CSS framework: styles elements by combining small, single-purpose classes directly in the markup.",
+		fr: "Framework CSS « utility-first » : il permet de styliser les éléments en combinant de petites classes à usage unique directement dans le balisage.",
+	},
+	"React": {
+		url: "https://react.dev",
+		en: "JavaScript library for building user interfaces out of reusable components.",
+		fr: "Bibliothèque JavaScript pour construire des interfaces utilisateur à partir de composants réutilisables.",
+	},
+	"Bun": {
+		url: "https://bun.sh",
+		en: "Fast all-in-one JavaScript runtime, bundler and package manager, used here as this site's server.",
+		fr: "Runtime, bundler et gestionnaire de paquets JavaScript rapide et tout-en-un, utilisé ici comme serveur de ce site.",
+	},
+	"ExpressJS": {
+		url: "https://expressjs.com",
+		en: "Minimal web framework for Node.js, used to build APIs and backend servers in JavaScript/TypeScript.",
+		fr: "Framework web minimaliste pour Node.js, utilisé pour construire des API et des serveurs backend en JavaScript/TypeScript.",
+	},
+	"JWT": {
+		url: "https://jwt.io",
+		en: "JSON Web Token: a compact, signed token format used to carry authentication and session data between a client and a server.",
+		fr: "JSON Web Token : un format de jeton compact et signé, utilisé pour transporter des données d'authentification et de session entre un client et un serveur.",
+	},
+	"WebSockets": {
+		url: "https://developer.mozilla.org/docs/Web/API/WebSockets_API",
+		en: "Protocol that keeps a persistent, two-way connection open between a client and a server, used for real-time updates like chat or live games.",
+		fr: "Protocole qui maintient une connexion persistante et bidirectionnelle entre un client et un serveur, utilisé pour le temps réel comme le chat ou les jeux en direct.",
+	},
+	"Docker Compose": {
+		url: "https://docs.docker.com/compose/",
+		en: "Tool that defines and runs multi-container Docker applications from a single YAML file.",
+		fr: "Outil qui définit et démarre des applications Docker multi-conteneurs à partir d'un seul fichier YAML.",
+	},
+	"PHP-FPM": {
+		url: "https://www.php.net/manual/en/install.fpm.php",
+		en: "FastCGI Process Manager for PHP: runs and manages PHP processes efficiently behind a web server like NGINX.",
+		fr: "FastCGI Process Manager pour PHP : exécute et gère efficacement les processus PHP derrière un serveur web comme NGINX.",
+	},
+	"TLS": {
+		url: "https://www.cloudflare.com/learning/ssl/transport-layer-security-tls/",
+		en: "Transport Layer Security: the cryptographic protocol that encrypts and authenticates connections, for example HTTPS.",
+		fr: "Transport Layer Security : le protocole cryptographique qui chiffre et authentifie les connexions, par exemple HTTPS.",
+	},
+	"Cloudflare": {
+		url: "https://www.cloudflare.com",
+		en: "CDN and security service that sits in front of a website, caching content, filtering malicious traffic and hiding the origin server.",
+		fr: "Service de CDN et de sécurité placé devant un site web, qui met en cache le contenu, filtre le trafic malveillant et masque le serveur d'origine.",
+	},
+
+	// ops
+	"DevOps": {
+		url: "https://www.redhat.com/en/topics/devops/what-is-devops",
+		en: "Set of practices that merges development and operations to ship and run software faster and more reliably.",
+		fr: "Ensemble de pratiques qui rapproche développement et exploitation pour livrer et faire tourner des logiciels plus vite et plus fiablement.",
+	},
+	"DevSecOps": {
+		url: "https://www.redhat.com/en/topics/devops/what-is-devsecops",
+		en: "DevOps with security built into every stage of the pipeline, instead of being checked only at the end.",
+		fr: "Le DevOps avec la sécurité intégrée à chaque étape du pipeline, plutôt que vérifiée seulement à la fin.",
+	},
+	"Proxmox": {
+		url: "https://www.proxmox.com",
+		en: "Open-source virtualization platform for running and managing virtual machines and containers on a server.",
+		fr: "Plateforme de virtualisation open source pour exécuter et gérer des machines virtuelles et des conteneurs sur un serveur.",
+	},
+
+	// homelab
+	"Raspberry Pi": {
+		url: "https://www.raspberrypi.com",
+		en: "Low-cost, credit-card-sized single-board computer, often used for home servers, IoT and learning projects.",
+		fr: "Ordinateur monocarte peu coûteux, de la taille d'une carte de crédit, souvent utilisé pour des serveurs personnels, l'IoT et l'apprentissage.",
+	},
+	"Alpine Linux": {
+		url: "https://alpinelinux.org",
+		en: "Minimal Linux distribution built around musl libc and BusyBox, popular as a small, security-focused base for containers.",
+		fr: "Distribution Linux minimaliste basée sur musl libc et BusyBox, appréciée comme base légère et axée sur la sécurité pour les conteneurs.",
+	},
+	"Debian": {
+		url: "https://www.debian.org",
+		en: "Long-standing community-driven Linux distribution known for stability, and the base of many others like Ubuntu.",
+		fr: "Distribution Linux communautaire de longue date, réputée pour sa stabilité, et à la base de nombreuses autres comme Ubuntu.",
+	},
+	"Pi-hole": {
+		url: "https://pi-hole.net",
+		en: "Network-wide ad and tracker blocker that works as a DNS sinkhole, usually self-hosted on a small device like a Raspberry Pi.",
+		fr: "Bloqueur de publicités et de traqueurs à l'échelle du réseau, qui agit comme un DNS sinkhole, souvent auto-hébergé sur un petit appareil comme un Raspberry Pi.",
+	},
+	"Jellyfin": {
+		url: "https://jellyfin.org",
+		en: "Open-source, self-hosted media server for streaming your own movies, shows and music.",
+		fr: "Serveur multimédia open source et auto-hébergé pour streamer ses propres films, séries et musiques.",
+	},
+	"Uptime Kuma": {
+		url: "https://github.com/louislam/uptime-kuma",
+		en: "Self-hosted monitoring tool that checks whether services and websites are up, with alerts and status pages.",
+		fr: "Outil de monitoring auto-hébergé qui vérifie la disponibilité de services et de sites web, avec alertes et pages de statut.",
+	},
+	"Forgejo": {
+		url: "https://forgejo.org",
+		en: "Self-hosted, open-source Git server forked from Gitea, used to host repositories and code review outside GitHub.",
+		fr: "Serveur Git open source et auto-hébergé, forké de Gitea, utilisé pour héberger des dépôts et faire de la revue de code en dehors de GitHub.",
+	},
+	"REMnux": {
+		url: "https://remnux.org",
+		en: "Linux distribution preloaded with tools for reverse-engineering and analyzing malware.",
+		fr: "Distribution Linux préinstallée avec des outils pour la rétro-ingénierie et l'analyse de malwares.",
+	},
+
+	// networking
+	"Unix socket": {
+		aliases: ["Unix sockets"],
+		url: "https://man7.org/linux/man-pages/man7/unix.7.html",
+		en: "Inter-process communication endpoint used to exchange data between processes, either on the same machine or over a network.",
+		fr: "Point de communication inter-processus utilisé pour échanger des données entre processus, sur une même machine ou via le réseau.",
+	},
+	"escape sequence": {
+		aliases: ["escape sequences"],
+		url: "https://en.wikipedia.org/wiki/ANSI_escape_code",
+		en: "A special sequence of characters sent to a terminal to control it, like moving the cursor or changing text color, instead of printing visible text.",
+		fr: "Une suite spéciale de caractères envoyée à un terminal pour le piloter, comme déplacer le curseur ou changer la couleur du texte, plutôt que d'afficher du texte visible.",
 	},
 };

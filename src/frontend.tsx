@@ -23,7 +23,7 @@ function App() {
 	return (
 		<>
 			{stage === "off" && <PreBoot lang={lang} onPowerOn={() => setStage("booting")} />}
-			{stage === "booting" && <Boot onDone={() => setStage("on")} />}
+			{stage === "booting" && <Boot lang={lang} onDone={() => setStage("on")} />}
 			{stage === "on" && <Portfolio lang={lang} />}
 
 			{/* shown everywhere except on the kernel log screen */}

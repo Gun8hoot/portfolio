@@ -1,6 +1,11 @@
-
 import { useEffect, useRef, useState } from "react";
 import '../index.css'
+import type { Lang } from "./Glossary";
+
+const SKIP_TEXT: Record<Lang, string> = {
+	en: "Skip",
+	fr: "Passer",
+};
 
 const LINES = [
     // ---------- GRUB ----------
@@ -27,6 +32,10 @@ const LINES = [
     '[    0.000000] NX (Execute Disable) protection: active',
     '[    0.000000] APIC: Static calls initialized',
     '[    0.000000] SMBIOS 3.3.0 present.',
+    '[    0.000000] DMI: LENOVO 20XW00ABUS/20XW00ABUS, BIOS N32ET82W (1.58 ) 03/14/2024',
+    '[    0.000000] tsc: Detected 2995.200 MHz processor',
+    '[    0.000000] x86/PAT: Configuration [0-7]: WB  WC  UC- UC  WB  WP  UC- WT',
+    '[    0.000000] Using GB pages for direct mapping',
     '[    0.000000] ACPI: Early table checksum verification disabled',
     '[    0.000000] ACPI: RSDP 0x00000000BFFE0014 000024 (v02 LENOVO)',
     '[    0.000000] ACPI: XSDT 0x00000000BFFE00E8 0000F4 (v01 LENOVO TP-N32   00001580 PTEC 00000002)',
@@ -44,7 +53,7 @@ const LINES = [
     '[    0.000000] Memory: 16106340K/16787144K available (22528K kernel code, 4423K rwdata, 14424K rodata, 4536K init, 17720K bss, 680544K reserved, 0K cma-reserved)',
     '[    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=8, Nodes=1',
     '[    0.000000] rcu: Preemptible hierarchical RCU implementation.',
-    '[    0.000000] rcu: RCU restricting CPUs from NR_CPUS=8192 to nr_cpu_ids=8.',
+    '[    0.000000] rcu: \tRCU restricting CPUs from NR_CPUS=8192 to nr_cpu_ids=8.',
     '[    0.000000] NR_IRQS: 524544, nr_irqs: 1096, preallocated irqs: 16',
     '[    0.000000] Console: colour dummy device 80x25',
     '[    0.000000] printk: legacy console [tty0] enabled',
@@ -53,6 +62,8 @@ const LINES = [
     '[    0.000000] APIC: Switch to symmetric I/O mode setup',
     '[    0.004000] tsc: Marking TSC unstable due to TSC halts in idle',
     '[    0.040000] Calibrating delay loop (skipped), value calculated using timer frequency.. 5990.40 BogoMIPS (lpj=11980800)',
+    '[    0.040000] CPU0: Thermal monitoring enabled (TM1)',
+    '[    0.040000] process: using mwait in idle threads',
     '[    0.040000] Spectre V1 : Mitigation: usercopy/swapgs barriers and __user pointer sanitization',
     '[    0.040000] Spectre V2 : Mitigation: Enhanced / Automatic IBRS; IBPB: conditional; RSB filling; PBRSB-eIBRS: SW sequence',
     '[    0.040000] Speculative Store Bypass: Mitigation: Speculative Store Bypass disabled via prctl',
@@ -62,6 +73,7 @@ const LINES = [
     '[    0.070000] smpboot: x86: Booting SMP configuration:',
     '[    0.070000] .... node  #0, CPUs:      #1 #2 #3 #4 #5 #6 #7',
     '[    0.090000] smp: Brought up 1 node, 8 CPUs',
+    '[    0.090000] smpboot: Max logical packages: 1',
     '[    0.090000] smpboot: Total of 8 processors activated (47923.20 BogoMIPS)',
     '[    0.100000] devtmpfs: initialized',
     '[    0.100000] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 1911260446275000 ns',
@@ -156,6 +168,7 @@ const LINES = [
     '[    1.080000] iwlwifi 0000:00:14.3: Detected Intel(R) Wi-Fi 6 AX201 160MHz, REV=0x351',
     '[    1.140000] usb 1-3: new high-speed USB device number 2 using xhci_hcd',
     '[    1.290000] usb 1-3: New USB device found, idVendor=04f2, idProduct=b6d0, bcdDevice=11.10',
+    '[    1.290000] usb 1-3: Product: Integrated Camera',
     '[    1.480000] input: AT Translated Set 2 keyboard as /devices/platform/i8042/serio0/input/input3',
     '[    1.620000] EXT4-fs (nvme0n1p2): mounted filesystem 6f1c2b7e-9a3d-4e55-8b21-0c7d5e9a41aa ro with ordered data mode. Quota mode: none.',
     '[    1.750000] Not activating Mandatory Access Control as /sbin/tomoyo-init does not exist.',
@@ -265,16 +278,19 @@ const LINES = [
     '[  OK  ] Reached target graphical.target - Graphical Interface.',
 ];
 
-const LINE_DELAY = 1.25;   // ms between lines
-const CLEAR_DELAY = 125; // ms to keep the full log visible
+const LINE_DELAY = 10;   // ms between lines
+const CLEAR_DELAY = 300; // ms to keep the full log visible
 const FADE_MS = 400;     // must match the CSS transition duration
 
 type Phase = "typing" | "leaving" | "done";
 
-export function Boot({ onDone }: { onDone?: () => void }) {
+export function Boot({ onDone, lang }: { onDone?: () => void; lang: Lang }) {
   const [count, setCount] = useState(0);
   const [phase, setPhase] = useState<Phase>("typing");
   const endRef = useRef<HTMLDivElement>(null);
+
+  // Jumps straight to the fade-out, same as reaching the end of the log naturally.
+  const skip = () => setPhase("leaving");
 
   // typing phase: reveal lines, then start leaving
   useEffect(() => {
@@ -313,6 +329,11 @@ export function Boot({ onDone }: { onDone?: () => void }) {
         ))}
         <div ref={endRef} />
       </div>
+      {phase === "typing" && (
+        <button type="button" className="boot_skip" onClick={skip}>
+          {SKIP_TEXT[lang]}
+        </button>
+      )}
     </div>
   );
 }

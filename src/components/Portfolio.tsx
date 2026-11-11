@@ -41,7 +41,7 @@ type Hackathon = {
 // Every text that is not project or skill data.
 const UI = {
 	en: {
-		titles: { description: "description", skills: "skills", projects: "projects", hackathons: "hackathons", links: "links", contact: "contact" },
+		titles: { description: "whoami", skills: "skills", projects: "projects", hackathons: "hackathons", links: "links", contact: "contact" },
 		intro: `Hi, I'm Nathan "Gun8hoot" Clavel, a student at 42 Le Havre (France), aspiring to build a career in cybersecurity.`,
 		description: "I enjoy coding, reverse engineering and penetration testing, and I'm just as drawn to closely related fields like cryptography, system administration and networking.",
 		like2work: "I like working on:",
@@ -56,7 +56,7 @@ const UI = {
 		states: { finished: "Finished", wip: "In progress" },
 		statuses: { open: "Open source", closed: "Closed source" },
 		hackathon: { organizer: "organized by", date: "date", duration: "duration", location: "location" },
-		project: { learned: "what I learned", viewRepo: "Go to repository", close: "Close" },
+		project: { description: "description", learned: "what I learned", viewRepo: "Go to repository", close: "Close" },
 		contact: {
 			emailLabel: "Email",
 			subjectLabel: "Subject",
@@ -70,7 +70,7 @@ const UI = {
 		},
 	},
 	fr: {
-		titles: { description: "description", skills: "compétences", projects: "projets", hackathons: "hackathons", links: "liens", contact: "contact" },
+		titles: { description: "whoami", skills: "compétences", projects: "projets", hackathons: "hackathons", links: "liens", contact: "contact" },
 		intro: `Bonjour, je suis Nathan « Gun8hoot » Clavel, étudiant à 42 Le Havre (France), avec pour ambition de faire carrière dans la cybersécurité.`,
 		description: "J'aime coder, faire de la rétro-ingénierie et du pentest, et je m'intéresse tout autant à des domaines proches comme la cryptographie, l'administration système et les réseaux.",
 		like2work: "J'aime travailler sur :",
@@ -85,7 +85,7 @@ const UI = {
 		states: { finished: "Terminé", wip: "En cours" },
 		statuses: { open: "Open source", closed: "Code fermé" },
 		hackathon: { organizer: "organisé par", date: "date", duration: "durée", location: "lieu" },
-		project: { learned: "ce que j'ai appris", viewRepo: "Voir le dépôt", close: "Fermer" },
+		project: { description: "description", learned: "ce que j'ai appris", viewRepo: "Voir le dépôt", close: "Fermer" },
 		contact: {
 			emailLabel: "Email",
 			subjectLabel: "Sujet",
@@ -145,7 +145,10 @@ const PROJECTS: Project[] = [
 			en: "My homelab runs on two nodes with very different jobs. A Raspberry Pi running Alpine Linux hosts a set of self-hosted services in Docker: NGINX, Pi-hole for network-wide ad blocking, Jellyfin for media, Uptime Kuma for monitoring, and Forgejo as a self-hosted Git server. Alongside it, a Proxmox server is dedicated to safely analyzing malware samples inside isolated REMnux and Debian virtual machines, kept fully separated from the rest of the network.",
 			fr: "Mon homelab tourne sur deux nœuds aux rôles bien distincts. Un Raspberry Pi sous Alpine Linux héberge un ensemble de services auto-hébergés via Docker : NGINX, Pi-hole pour le blocage de publicités à l'échelle du réseau, Jellyfin pour les médias, Uptime Kuma pour le monitoring, et Forgejo comme serveur Git auto-hébergé. À côté, un serveur Proxmox est dédié à l'analyse sécurisée d'échantillons de malwares, dans des machines virtuelles REMnux et Debian isolées, complètement séparées du reste du réseau.",
 		},
-		learned: { en: "TODO: what you learned building the homelab.", fr: "TODO : ce que tu as appris en construisant le homelab." },
+		learned: {
+			en: "I learned how to actually self-host and maintain a handful of real services with Docker on a small machine like a Raspberry Pi, and, more importantly, how to properly isolate a dedicated malware-analysis environment with Proxmox so it can't touch the rest of the network.",
+			fr: "J'ai appris à auto-héberger et maintenir pour de vrai plusieurs services avec Docker sur une petite machine comme un Raspberry Pi, et surtout à isoler correctement un environnement dédié à l'analyse de malwares avec Proxmox, pour qu'il ne puisse pas toucher au reste du réseau.",
+		},
 		logo: "./assets/logos/homelab.svg",
 		href: "https://github.com/gun8hoot/homelab",
 	},
@@ -179,8 +182,8 @@ const PROJECTS: Project[] = [
 			fr: "ft_transcendence est le projet de groupe final du tronc commun de 42 : une application web avec un frontend, un backend et une base de données, chacun conteneurisé séparément derrière un reverse proxy NGINX. Notre équipe a réalisé une version multijoueur de slither.io à l'esthétique MS-DOS/Windows 98 : les joueurs dirigent un serpent qui grandit en mangeant et meurt en touchant le bord de la carte ou un autre serpent, sans fin fixe, on joue jusqu'à la mort ou la fermeture de la fenêtre. Le tout tourne sur un frontend TailwindCSS, un backend ExpressJS découpé en microservices (authentification, API, validation JWT interne), MongoDB pour le stockage, et des WebSockets pour le jeu et le chat en temps réel, avec un mode spectateur, des skins sélectionnables et un historique de match par joueur.",
 		},
 		learned: {
-			en: "I learned how to design and secure an API for real. It's also the project that felt closest to an actual production app, out of everything I've built so far.",
-			fr: "J'ai appris à concevoir et sécuriser une API pour de vrai. C'est aussi le projet qui s'est le plus rapproché d'une véritable application en production, parmi tout ce que j'ai fait.",
+			en: "I learned how to design and secure an API for real, and how to build a secure infrastructure around it, splitting the frontend, backend and database into separate containers behind a reverse proxy. It's also the project that felt closest to an actual production app, out of everything I've built so far.",
+			fr: "J'ai appris à concevoir et sécuriser une API pour de vrai, ainsi qu'à construire une infrastructure sécurisée autour, en séparant le frontend, le backend et la base de données dans des conteneurs distincts derrière un reverse proxy. C'est aussi le projet qui s'est le plus rapproché d'une véritable application en production, parmi tout ce que j'ai fait.",
 		},
 		logo: "./assets/logos/ft_transcendence.svg",
 		href: "https://github.com/banne227/ft_transcendence/",
@@ -434,6 +437,7 @@ export function Portfolio({ lang }: { lang: Lang })
 						lang={lang}
 						logoBroken={brokenLogos.has(openProject.logo)}
 						ui={{
+							description: t.project.description,
 							learned: t.project.learned,
 							viewRepo: t.project.viewRepo,
 							close: t.project.close,

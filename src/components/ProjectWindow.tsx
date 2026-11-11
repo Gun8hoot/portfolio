@@ -14,6 +14,7 @@ export type ProjectWindowData = {
 };
 
 type UIText = {
+	description: string;
 	learned: string;
 	viewRepo: string;
 	close: string;
@@ -115,6 +116,7 @@ export function ProjectWindow({
 							<span className="link_url project_window_status">{ui.statuses[project.status]}</span>
 						</div>
 
+						<h3 className="project_window_subtitle">{ui.description}</h3>
 						<p className="project_window_desc">{renderTerms(project.description[lang])}</p>
 
 						<h3 className="project_window_subtitle">{ui.learned}</h3>

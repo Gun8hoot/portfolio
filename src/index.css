@@ -224,7 +224,7 @@ a
 {
 	margin: 0 0 0.75rem;
 	font-family: monaspaceArgon-Medium;
-	font-size: 1rem;
+	font-size: 1.4rem;
 	font-weight: normal;
 	color: var(--terminal-green-bold);
 }
@@ -233,7 +233,6 @@ a
 {
 	content: "## ";
 	content: "## " / ""; /* hidden from screen readers where supported */
-	font-size: 1.4em;
 	color: var(--muted);
 }
 
@@ -325,6 +324,14 @@ a
 .project_state--done { color: var(--terminal-green-bold); }
 .project_state--wip  { color: var(--terminal-yellow-bold); }
 
+/* stack/tech list on the frontpage, shown on its own line below the project row */
+.project .project_stack
+{
+	margin: 0.3rem 0 0;
+	font-family: monaspaceArgon-Light;
+	color: var(--muted);
+}
+
 .project_desc
 {
 	margin: 0.1rem 0 0;
@@ -336,7 +343,7 @@ a
 /* ---------- links ---------- */
 .portfolio .social
 {
-	margin: 0;
+	margin: 0 0 3rem;
 	padding: 0;
 	list-style: none;
 }
@@ -392,6 +399,7 @@ button.link
 {
 	color: var(--terminal-black-bold);
 }
+
 
 /* ---------- term cards (explanations on hover, tap or focus) ---------- */
 .term
@@ -600,12 +608,12 @@ button.link
 .project_window
 {
 	width: min(78rem, 96vw);
-	height: min(36rem, 92vh);
+	max-height: 92vh; /* grows to fit content, capped so it never exceeds the viewport */
 	display: flex;
 	flex-direction: column;
 	background: var(--terminal-black-bold);
 	border: 1px solid var(--terminal-black-light);
-	overflow: hidden; /* the window never scrolls */
+	overflow: hidden;
 }
 
 .project_window_bar
@@ -644,7 +652,7 @@ button.link
 	flex: 1 1 auto;
 	min-height: 0;
 	display: flex;
-	overflow: hidden;
+	overflow-y: auto; /* only engages if content still can't fit under max-height */
 }
 
 .project_window_logo
@@ -671,7 +679,6 @@ button.link
 	display: flex;
 	flex-direction: column;
 	padding: 1.25rem 1.5rem;
-	overflow: hidden;
 }
 
 /* no logo was found: this column fills the whole window instead of sharing it */
@@ -684,9 +691,21 @@ button.link
 .project_window_meta
 {
 	flex: 0 0 auto;
-	display: flex;
-	gap: 1.25rem;
+	display: grid;
+	grid-template-columns: auto 1fr auto;
+	align-items: center;
+	gap: 0.4rem 1.25rem;
 	margin: 0 0 0.75rem;
+}
+
+.project_window_meta .project_stack
+{
+	text-align: center;
+}
+
+.project_window_status
+{
+	text-align: right;
 }
 
 .project_window_subtitle
@@ -711,16 +730,6 @@ button.link
 	margin: 0;
 	font-family: monaspaceArgon-Light;
 	color: var(--terminal-white-bold);
-	overflow: hidden;
-	display: -webkit-box;
-	-webkit-line-clamp: 6; /* clamp instead of scrolling if the text runs long */
-	-webkit-box-orient: vertical;
-}
-
-/* full-width layout (no logo): the column is wider, so each line holds more text */
-.project_window_info--full .project_window_desc
-{
-	-webkit-line-clamp: 4;
 }
 
 .project_window_repo
@@ -750,7 +759,7 @@ button.link
 {
 	.project_window
 	{
-		height: min(40rem, 94vh);
+		max-height: 94vh;
 	}
 
 	.project_window_body
@@ -767,9 +776,16 @@ button.link
 		border-bottom: 1px solid var(--terminal-black-light);
 	}
 
-	.project_window_desc
+	.project_window_meta
 	{
-		-webkit-line-clamp: 5;
+		grid-template-columns: 1fr;
+		justify-items: start;
+	}
+
+	.project_window_meta .project_stack,
+	.project_window_status
+	{
+		text-align: left;
 	}
 }
 
@@ -834,6 +850,19 @@ button.link
 .contact_field--captcha input
 {
 	max-width: 6rem;
+}
+
+/* hide the native up/down spinner on the captcha's number input */
+.contact_field--captcha input[type="number"]
+{
+	-moz-appearance: textfield; /* Firefox */
+}
+
+.contact_field--captcha input[type="number"]::-webkit-inner-spin-button,
+.contact_field--captcha input[type="number"]::-webkit-outer-spin-button
+{
+	-webkit-appearance: none; /* Chrome, Safari, Edge */
+	margin: 0;
 }
 
 .contact_submit

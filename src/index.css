@@ -429,7 +429,8 @@ button.link
 
 
 /* ---------- term cards (explanations on hover, tap or focus) ---------- */
-.term
+.term,
+.place
 {
 	cursor: help;
 	text-decoration: underline dotted;
@@ -437,7 +438,8 @@ button.link
 	text-underline-offset: 0.25em;
 }
 
-.term:focus-visible
+.term:focus-visible,
+.place:focus-visible
 {
 	outline: 2px solid var(--accent);
 	outline-offset: 2px;
@@ -489,6 +491,137 @@ button.link
 .term_card:hover .term_card_link
 {
 	text-decoration: underline;
+}
+
+/* ---------- place map windows (a location hovered in the text) ---------- */
+.place_card
+{
+	--half: min(14rem, 46vw); /* half of the window width */
+
+	position: fixed;
+	z-index: 30; /* above .project_overlay (20) and .picture_overlay (25) */
+	box-sizing: border-box;
+	width: calc(var(--half) * 2);
+	display: flex;
+	flex-direction: column;
+	font-size: 0.875rem;
+	color: var(--terminal-white-bold);
+	background: var(--terminal-black-bold);
+	border: 1px solid var(--terminal-black-light);
+	transform: translate(-50%, calc(-100% - 14px)); /* above the pointer */
+	animation: fade-in 120ms ease-out;
+}
+
+.place_card--below
+{
+	transform: translate(-50%, 18px); /* not enough room above: below it */
+}
+
+.place_card_bar
+{
+	flex: 0 0 auto;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	padding: 0.3rem 0.7rem;
+	font-family: monaspaceArgon-Medium;
+	color: var(--accent);
+	border-bottom: 1px solid var(--terminal-black-light);
+}
+
+.place_card_close
+{
+	font-family: monaspaceArgon-Bold;
+	font-size: 1.1rem;
+	line-height: 1;
+	color: var(--muted);
+	background: none;
+	border: 0;
+	padding: 0.1rem 0.4rem;
+	cursor: pointer;
+}
+
+.place_card_close:hover,
+.place_card_close:focus-visible
+{
+	color: var(--terminal-red-bold);
+	outline: none;
+}
+
+.place_map
+{
+	height: min(17rem, 45vh); /* fixed height: the window must not change size when the map loads */
+	background: #2a2a37;
+}
+
+/* the red dot and its ping */
+.place_marker
+{
+	background: none;
+	border: 0;
+}
+
+.place_dot,
+.place_ping
+{
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 12px;
+	height: 12px;
+	margin: -6px 0 0 -6px;
+	border-radius: 50%;
+	box-sizing: border-box;
+}
+
+.place_dot
+{
+	background: var(--terminal-red-bold);
+	border: 2px solid var(--terminal-white-bold);
+}
+
+.place_ping
+{
+	background: var(--terminal-red-bold);
+	animation: place-ping 1.6s ease-out infinite;
+}
+
+@keyframes place-ping
+{
+	from { transform: scale(1); opacity: 0.7; }
+	to   { transform: scale(3.5); opacity: 0; }
+}
+
+/* Leaflet's controls, in the page's colors */
+.place_card .leaflet-bar a,
+.place_card .leaflet-bar a:hover
+{
+	color: var(--terminal-white-bold);
+	background: var(--terminal-black-bold);
+	border-bottom-color: var(--terminal-black-light);
+}
+
+.place_card .leaflet-bar a:hover
+{
+	color: var(--accent);
+}
+
+.place_card .leaflet-bar
+{
+	border: 1px solid var(--terminal-black-light);
+}
+
+.place_card .leaflet-container .leaflet-control-attribution
+{
+	font-size: 0.7rem;
+	color: var(--muted);
+	background: rgba(31, 31, 40, 0.85);
+}
+
+.place_card .leaflet-control-attribution a
+{
+	color: var(--accent);
 }
 
 /* ---------- animation ---------- */
@@ -658,7 +791,8 @@ button.link
 	border-bottom: 1px solid var(--terminal-black-light);
 }
 
-.project_window_close
+.project_window_close,
+.picture_window_close
 {
 	font-family: monaspaceArgon-Bold;
 	font-size: 1.1rem;
@@ -671,7 +805,9 @@ button.link
 }
 
 .project_window_close:hover,
-.project_window_close:focus-visible
+.project_window_close:focus-visible,
+.picture_window_close:hover,
+.picture_window_close:focus-visible
 {
 	color: var(--terminal-red-bold);
 	outline: none;
@@ -779,9 +915,96 @@ button.link
 	outline: none;
 }
 
+.project_window_picture_btn
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 100%;
+	max-height: 100%;
+	padding: 0;
+	background: none;
+	border: 1px solid transparent;
+	cursor: zoom-in;
+}
+
+.project_window_picture_btn:hover,
+.project_window_picture_btn:focus-visible
+{
+	border-color: var(--accent);
+	outline: none;
+}
+
+/*
+=======================================
+====== PICTURE WINDOW (zoom) =========
+=======================================
+*/
+/* above .project_overlay (20), below .term_card (30) */
+.picture_overlay
+{
+	position: fixed;
+	inset: 0;
+	z-index: 25;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 1rem;
+	background: rgba(28, 28, 28, 0.85);
+	animation: fade-in 150ms ease-out;
+}
+
+.picture_window
+{
+	max-width: 96vw;
+	max-height: 92vh;
+	max-height: 92svh;
+	display: flex;
+	flex-direction: column;
+	background: var(--terminal-black-bold);
+	border: 1px solid var(--terminal-black-light);
+	overflow: hidden;
+}
+
+.picture_window_bar
+{
+	flex: 0 0 auto;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	padding: 0.5rem 0.9rem;
+	font-family: monaspaceArgon-Medium;
+	color: var(--accent);
+	border-bottom: 1px solid var(--terminal-black-light);
+}
+
+.picture_window_body
+{
+	flex: 1 1 auto;
+	min-height: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 1rem;
+}
+
+.picture_window_body img
+{
+	display: block;
+	max-width: 100%;
+	max-height: calc(92vh - 5rem);
+	max-height: calc(92svh - 5rem);
+	object-fit: contain;
+}
+
 @media (prefers-reduced-motion: reduce)
 {
-	.project_overlay { animation: none; }
+	.project_overlay,
+	.picture_overlay,
+	.place_card { animation: none; }
+
+	.place_ping { animation: none; opacity: 0.35; }
 }
 
 @media (max-width: 600px)

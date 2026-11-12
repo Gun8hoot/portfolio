@@ -2,6 +2,8 @@ import { createContext, useContext, useEffect, useLayoutEffect, useMemo, useRef,
 import type { ReactNode } from "react";
 import { GLOSSARY } from "./Glossary";
 import type { Lang } from "./Glossary";
+import { Place, PlaceProvider } from "./Place";
+import { PLACES } from "./Places";
 
 // How long the pointer must rest on a word before its card appears (ms).
 export const HOVER_DELAY = 300;
@@ -122,7 +124,8 @@ export function TermProvider({ lang, children }: { lang: Lang; children: ReactNo
 
 	return (
 		<TipContext.Provider value={api}>
-			{children}
+			{/* locations (Le Havre, Paris...) open a map window; they live inside the same provider tree */}
+			<PlaceProvider lang={lang}>{children}</PlaceProvider>
 			{tip && <TermCard tip={tip} lang={lang} />}
 		</TipContext.Provider>
 	);
@@ -195,8 +198,15 @@ for (const [key, entry] of Object.entries(GLOSSARY)) {
 	for (const alias of entry.aliases ?? []) LOOKUP.set(alias, key);
 }
 
+// Same for the locations that open a map (entry key or alias -> entry).
+const PLACE_LOOKUP = new Map<string, string>();
+for (const [key, entry] of Object.entries(PLACES)) {
+	PLACE_LOOKUP.set(key, key);
+	for (const alias of entry.aliases ?? []) PLACE_LOOKUP.set(alias, key);
+}
+
 // Longest first, so that "C++" wins over "C".
-const NAMES = [...LOOKUP.keys()].sort((a, b) => b.length - a.length);
+const NAMES = [...LOOKUP.keys(), ...PLACE_LOOKUP.keys()].sort((a, b) => b.length - a.length);
 const escapeRegExp = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 // A word counts when it is not glued to other letters, digits, "_", "+" or "-"
@@ -211,7 +221,12 @@ export function renderTerms(text: string): ReactNode[] {
 	for (const m of text.matchAll(FINDER)) {
 		const start = m.index! + m[1].length;
 		nodes.push(text.slice(last, start));
-		nodes.push(<Term key={start} name={LOOKUP.get(m[2])!} label={m[2]}>{m[2]}</Term>);
+		const place = PLACE_LOOKUP.get(m[2]);
+		nodes.push(
+			place
+				? <Place key={start} name={place}>{m[2]}</Place>
+				: <Term key={start} name={LOOKUP.get(m[2])!} label={m[2]}>{m[2]}</Term>,
+		);
 		last = start + m[2].length;
 	}
 	nodes.push(text.slice(last));

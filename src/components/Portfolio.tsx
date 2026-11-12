@@ -57,7 +57,7 @@ const UI = {
 		states: { finished: "Finished", wip: "In progress" },
 		statuses: { open: "Open source", closed: "Closed source" },
 		hackathon: { organizer: "organized by", date: "date", duration: "duration", location: "location" },
-		project: { description: "description", learned: "what I learned", viewRepo: "Go to repository", close: "Close" },
+		project: { description: "description", learned: "what I learned", viewRepo: "Go to repository", close: "Close", enlarge: "Enlarge the picture" },
 		contact: {
 			emailLabel: "Email",
 			subjectLabel: "Subject",
@@ -90,7 +90,7 @@ const UI = {
 		states: { finished: "Terminé", wip: "En cours" },
 		statuses: { open: "Open source", closed: "Code fermé" },
 		hackathon: { organizer: "organisé par", date: "date", duration: "durée", location: "lieu" },
-		project: { description: "description", learned: "ce que j'ai appris", viewRepo: "Voir le dépôt", close: "Fermer" },
+		project: { description: "description", learned: "ce que j'ai appris", viewRepo: "Voir le dépôt", close: "Fermer", enlarge: "Agrandir l'image" },
 		contact: {
 			emailLabel: "Email",
 			subjectLabel: "Sujet",
@@ -148,11 +148,11 @@ const PROJECTS: Project[] = [
 		stack: ["Docker", "Linux", "Proxmox"],
 		shortDescription: {
 			en: "A two-node homelab for self-hosting and malware analysis: a Raspberry Pi running Docker services, and a Proxmox server for isolated analysis.",
-			fr: "Un homelab à deux nœuds pour l'auto-hébergement et l'analyse de malwares : un Raspberry Pi avec des services Docker, et un serveur Proxmox pour l'analyse isolée.",
+			fr: "Un homelab à deux noeuds pour l'auto-hébergement et l'analyse de malwares : un Raspberry Pi avec des services Docker, et un serveur Proxmox pour l'analyse isolée.",
 		},
 		description: {
 			en: "My homelab runs on two nodes with very different jobs. A Raspberry Pi running Alpine Linux hosts a set of self-hosted services in Docker: NGINX, Pi-hole for network-wide ad blocking, Jellyfin for media, Uptime Kuma for monitoring, and Forgejo as a self-hosted Git server. Alongside it, a Proxmox server is dedicated to safely analyzing malware samples inside isolated REMnux and Debian virtual machines, kept fully separated from the rest of the network.",
-			fr: "Mon homelab tourne sur deux nœuds aux rôles bien distincts. Un Raspberry Pi sous Alpine Linux héberge un ensemble de services auto-hébergés via Docker : NGINX, Pi-hole pour le blocage de publicités à l'échelle du réseau, Jellyfin pour les médias, Uptime Kuma pour le monitoring, et Forgejo comme serveur Git auto-hébergé. À côté, un serveur Proxmox est dédié à l'analyse sécurisée d'échantillons de malwares, dans des machines virtuelles REMnux et Debian isolées, complètement séparées du reste du réseau.",
+			fr: "Mon homelab tourne sur deux noeuds aux rôles bien distincts. Un Raspberry Pi sous Alpine Linux héberge un ensemble de services auto-hébergés via Docker : NGINX, Pi-hole pour le blocage de publicités à l'échelle du réseau, Jellyfin pour les médias, Uptime Kuma pour le monitoring, et Forgejo comme serveur Git auto-hébergé. À côté, un serveur Proxmox est dédié à l'analyse sécurisée d'échantillons de malwares, dans des machines virtuelles REMnux et Debian isolées, complètement séparées du reste du réseau.",
 		},
 		learned: {
 			en: "I learned how to actually self-host and maintain a handful of real services with Docker on a small machine like a Raspberry Pi, and, more importantly, how to properly isolate a dedicated malware-analysis environment with Proxmox so it can't touch the rest of the network.",
@@ -201,12 +201,12 @@ const PROJECTS: Project[] = [
 		label: "CTRL-TUI", state: "wip", status: "open",
 		stack: ["C++", "GNU Make"],
 		shortDescription: {
-			en: "A text user interface library built from scratch in C++, with no external dependency like ncurses.",
-			fr: "Une bibliothèque d'interface texte construite de zéro en C++, sans dépendance externe comme ncurses.",
+			en: "A C++ program that creates a text user interface (TUI) window from scratch, with no dependency like ncurses.",
+			fr: "Un programme C++ qui crée une fenêtre d'interface texte (TUI) de zéro, sans dépendance comme ncurses.",
 		},
 		description: {
-			en: "CTRL-TUI is a text user interface (TUI) toolkit written entirely in C++ without relying on an existing library such as ncurses. It handles raw terminal input, screen buffering and redraw, and widget layout itself, giving full control over how the interface renders and reacts to input.",
-			fr: "CTRL-TUI est une bibliothèque d'interface utilisateur en mode texte (TUI) écrite entièrement en C++, sans s'appuyer sur une bibliothèque existante comme ncurses. Elle gère elle-même la lecture brute des entrées du terminal, la mise en mémoire tampon et le réaffichage de l'écran, ainsi que la disposition des widgets, offrant un contrôle total sur le rendu de l'interface et sa réaction aux entrées.",
+			en: "CTRL-TUI is a program written entirely in C++ that creates a text user interface (TUI) window without any dependency, not even a library such as ncurses. It handles raw terminal input, screen buffering and redraw, and layout itself, giving full control over how the window renders and reacts to input.",
+			fr: "CTRL-TUI est un programme écrit entièrement en C++ qui crée une fenêtre d'interface utilisateur en mode texte (TUI) sans aucune dépendance, pas même une bibliothèque comme ncurses. Il gère lui-même la lecture brute des entrées du terminal, la mise en mémoire tampon et le réaffichage de l'écran, ainsi que la disposition, offrant un contrôle total sur le rendu de la fenêtre et sa réaction aux entrées.",
 		},
 		learned: {
 			en: "My first real project in C++, and a good excuse to dig into how a terminal actually works under the hood — input handling, rendering, escape sequences, that sort of thing.",
@@ -296,7 +296,7 @@ const PROJECTS: Project[] = [
 		},
 		description: {
 			en: "ft_irc is a group project from the 42 core curriculum where we implemented an IRC server in C++ following the core of the IRC protocol: client authentication, nicknames, joining and managing channels, private and channel messaging, and operator commands such as kicking, inviting or setting topics and modes, all handled over non-blocking sockets for multiple simultaneous clients.",
-			fr: "ft_irc est un projet de groupe du tronc commun de 42 où nous avons implémenté un serveur IRC en C++ suivant le cœur du protocole IRC : authentification des clients, pseudonymes, création et gestion de salons, messages privés et de salon, ainsi que des commandes d'opérateur comme l'exclusion, l'invitation ou la gestion des topics et modes, le tout géré via des sockets non bloquantes pour plusieurs clients simultanés.",
+			fr: "ft_irc est un projet de groupe du tronc commun de 42 où nous avons implémenté un serveur IRC en C++ suivant le coeur du protocole IRC : authentification des clients, pseudonymes, création et gestion de salons, messages privés et de salon, ainsi que des commandes d'opérateur comme l'exclusion, l'invitation ou la gestion des topics et modes, le tout géré via des sockets non bloquantes pour plusieurs clients simultanés.",
 		},
 		learned: {
 			en: "I learned the IRC protocol inside out, and got a much better grasp of Unix sockets along the way.",
@@ -352,7 +352,7 @@ const SKILLS: SkillGroup[] = [
 	{ label: { en: "languages", fr: "langages" }, items: ["C", "C++", "JS", "TS", "Shell", "Python", "GNU Make", "ASM x86-x64"] },
 	{ label: { en: "reversing", fr: "reverse" }, items: ["Ghidra", "Radare2", "JADX"] },
 	{ label: { en: "systems", fr: "systèmes" }, items: ["Linux", "Docker", "Git", "AppArmor"] },
-	{ label: { en: "services", fr: "services" }, items: ["NGINX"] },
+	{ label: { en: "services", fr: "services" }, items: ["NGINX", "Jenkins"] },
 	{ label: { en: "security", fr: "sécurité" }, items: ["Hashcat", "Burp Suite"] },
 	{ label: { en: "network", fr: "réseaux"}, items: ["Wireshark", "nmap"]},
 ];
@@ -451,6 +451,7 @@ export function Portfolio({ lang }: { lang: Lang })
 							learned: t.project.learned,
 							viewRepo: t.project.viewRepo,
 							close: t.project.close,
+							enlarge: t.project.enlarge,
 							states: t.states,
 							statuses: t.statuses,
 						}}
@@ -473,7 +474,7 @@ export function Portfolio({ lang }: { lang: Lang })
 										<div><dt>{t.hackathon.organizer}</dt><dd>{organizer[lang]}</dd></div>
 										<div><dt>{t.hackathon.date}</dt><dd>{formatDate(date, lang)}</dd></div>
 										<div><dt>{t.hackathon.duration}</dt><dd>{duration[lang]}</dd></div>
-										<div><dt>{t.hackathon.location}</dt><dd>{location[lang]}</dd></div>
+										<div><dt>{t.hackathon.location}</dt><dd>{renderTerms(location[lang])}</dd></div>
 									</dl>
 								</li>
 							))}

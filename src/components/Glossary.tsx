@@ -66,7 +66,7 @@ export const GLOSSARY: Record<string, Entry> = {
 	"Linux": {
 		url: "https://www.kernel.org",
 		en: "Open-source operating system kernel at the core of most servers, Android and countless distributions.",
-		fr: "Noyau de système d'exploitation open source au cœur de la plupart des serveurs, d'Android et de nombreuses distributions.",
+		fr: "Noyau de système d'exploitation open source au coeur de la plupart des serveurs, d'Android et de nombreuses distributions.",
 	},
 	"NGINX": {
 		url: "https://nginx.org",
@@ -192,6 +192,12 @@ export const GLOSSARY: Record<string, Entry> = {
 		aliases: ["tronc commun de 42", "42 core curriculum", "42 Common Core"],
 		en: "The mandatory first part of the 42 curriculum: a series of projects done through peer learning.",
 		fr: "La première partie obligatoire du cursus de 42 : une série de projets réalisés en apprentissage entre pairs.",
+	},
+	"cryptography": {
+		aliases: ["cryptographie"],
+		url: "https://en.wikipedia.org/wiki/Cryptography",
+		en: "The science of securing information with mathematics: encryption, hashing and signatures keep data confidential, intact and authentic.",
+		fr: "La science qui protège l'information grâce aux mathématiques : chiffrement, hachage et signatures garantissent la confidentialité, l'intégrité et l'authenticité des données.",
 	},
 	"LZ4": {
 		url: "https://lz4.org",
@@ -395,6 +401,11 @@ export const GLOSSARY: Record<string, Entry> = {
 		url: "https://www.proxmox.com",
 		en: "Open-source virtualization platform for running and managing virtual machines and containers on a server.",
 		fr: "Plateforme de virtualisation open source pour exécuter et gérer des machines virtuelles et des conteneurs sur un serveur.",
+	},
+	"Jenkins": {
+		url: "https://www.jenkins.io",
+		en: "Open-source automation server that builds, tests and deploys software through CI/CD pipelines.",
+		fr: "Serveur d'automatisation open source qui compile, teste et déploie des logiciels via des pipelines CI/CD.",
 	},
 
 	// homelab

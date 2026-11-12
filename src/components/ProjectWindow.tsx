@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { Lang, Localized } from "./Glossary";
 import { renderTerms } from "./Term";
+import { PictureWindow } from "./PictureWindow";
 
 export type ProjectWindowData = {
 	label: string;
@@ -18,6 +19,7 @@ type UIText = {
 	learned: string;
 	viewRepo: string;
 	close: string;
+	enlarge: string;
 	states: Record<"finished" | "wip", string>;
 	statuses: Record<"open" | "closed", string>;
 };
@@ -41,6 +43,8 @@ export function ProjectWindow({
 }) {
 	const closeRef = useRef<HTMLButtonElement>(null);
 	const [pictureFailed, setPictureFailed] = useState(() => pictureBroken ?? false);
+	const [pictureOpen, setPictureOpen] = useState(false);
+	const pictureBtnRef = useRef<HTMLButtonElement>(null);
 
 	// Keyboard: focus the close button on open, Escape closes it.
 	useEffect(() => {
@@ -75,6 +79,7 @@ export function ProjectWindow({
 	}, []);
 
 	return (
+		<>
 		<div
 			className="project_overlay"
 			// clicking the backdrop (not the window itself) closes it
@@ -99,7 +104,17 @@ export function ProjectWindow({
 				<div className="project_window_body">
 					{!pictureFailed && (
 						<div className="project_window_picture">
-							<img src={project.picture} alt="" onError={() => setPictureFailed(true)} />
+							{/* clicking the picture opens it bigger in a PictureWindow */}
+							<button
+								ref={pictureBtnRef}
+								type="button"
+								className="project_window_picture_btn"
+								onClick={() => setPictureOpen(true)}
+								aria-label={ui.enlarge}
+								title={ui.enlarge}
+							>
+								<img src={project.picture} alt="" onError={() => setPictureFailed(true)} />
+							</button>
 						</div>
 					)}
 
@@ -134,5 +149,18 @@ export function ProjectWindow({
 				</div>
 			</div>
 		</div>
+
+		{pictureOpen && !pictureFailed && (
+			<PictureWindow
+				src={project.picture}
+				title={project.label}
+				closeLabel={ui.close}
+				onClose={() => {
+					setPictureOpen(false);
+					pictureBtnRef.current?.focus(); // give the focus back to the picture that opened it
+				}}
+			/>
+		)}
+		</>
 	);
 }

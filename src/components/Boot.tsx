@@ -292,6 +292,14 @@ export function Boot({ onDone, lang }: { onDone?: () => void; lang: Lang }) {
   // Jumps straight to the fade-out, same as reaching the end of the log naturally.
   const skip = () => setPhase("leaving");
 
+  // Hide the scrollbar's visual track while booting — the page still needs to
+  // actually scroll (that's how the auto-scroll below keeps the latest line
+  // visible), this only hides the bar itself; see .boot-hide-scrollbar in index.css.
+  useEffect(() => {
+    document.documentElement.classList.add("boot-hide-scrollbar");
+    return () => document.documentElement.classList.remove("boot-hide-scrollbar");
+  }, []);
+
   // typing phase: reveal lines, then start leaving
   useEffect(() => {
     if (phase !== "typing") return;

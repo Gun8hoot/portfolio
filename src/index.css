@@ -158,6 +158,21 @@ a
 	outline: none;
 }
 
+/* The page still scrolls during boot (that's how the log keeps the latest line
+   in view) — this only hides the scrollbar's visual track, not the scrolling. */
+html.boot-hide-scrollbar,
+html.boot-hide-scrollbar body
+{
+	scrollbar-width: none; /* Firefox */
+	-ms-overflow-style: none; /* old Edge */
+}
+
+html.boot-hide-scrollbar::-webkit-scrollbar,
+html.boot-hide-scrollbar body::-webkit-scrollbar
+{
+	display: none; /* Chrome, Safari */
+}
+
 /*
 =================================
 ====== PORTFOLIO COMPONENT ======
@@ -631,6 +646,9 @@ button.link
 {
 	width: min(78rem, 96vw);
 	max-height: 92vh; /* grows to fit content, capped so it never exceeds the viewport */
+	max-height: 92svh; /* on mobile, vh can be the *largest* possible viewport (UI bar hidden) —
+	                       svh is the guaranteed-visible one, so this is what actually prevents
+	                       the window from running under the browser's address bar */
 	display: flex;
 	flex-direction: column;
 	background: var(--terminal-black-bold);
@@ -677,7 +695,7 @@ button.link
 	overflow-y: auto; /* only engages if content still can't fit under max-height */
 }
 
-.project_window_logo
+.project_window_picture
 {
 	flex: 0 0 38%;
 	display: flex;
@@ -687,7 +705,7 @@ button.link
 	border-right: 1px solid var(--terminal-black-light);
 }
 
-.project_window_logo img
+.project_window_picture img
 {
 	max-width: 100%;
 	max-height: 100%;
@@ -703,7 +721,7 @@ button.link
 	padding: 1.25rem 1.5rem;
 }
 
-/* no logo was found: this column fills the whole window instead of sharing it */
+/* no picture was found: this column fills the whole window instead of sharing it */
 .project_window_info--full
 {
 	flex: 1 1 100%;
@@ -743,7 +761,6 @@ button.link
 .project_window_subtitle::before
 {
 	content: "## ";
-	font-size: 1.4em;
 	color: var(--muted);
 }
 
@@ -782,6 +799,7 @@ button.link
 	.project_window
 	{
 		max-height: 94vh;
+		max-height: 94svh;
 	}
 
 	.project_window_body
@@ -789,7 +807,7 @@ button.link
 		flex-direction: column;
 	}
 
-	.project_window_logo
+	.project_window_picture
 	{
 		flex: 0 0 auto;
 		max-height: 30%;

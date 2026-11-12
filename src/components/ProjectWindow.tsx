@@ -9,7 +9,7 @@ export type ProjectWindowData = {
 	stack: string[]; // languages/tools used, shown as a grey field next to state/status
 	description: Localized;
 	learned: Localized;
-	logo: string; // path to the project's logo/image
+	picture: string; // path to the project's picture/image
 	href: string; // repository link
 };
 
@@ -26,7 +26,7 @@ export function ProjectWindow({
 	project,
 	lang,
 	ui,
-	logoBroken,
+	pictureBroken,
 	onClose,
 }: {
 	project: ProjectWindowData;
@@ -36,11 +36,11 @@ export function ProjectWindow({
 	// layout can render on the very first paint instead of being discovered
 	// after the fact by the <img>'s onError below — which would mean an
 	// already-painted window visibly re-laying itself out a frame later.
-	logoBroken?: boolean;
+	pictureBroken?: boolean;
 	onClose: () => void;
 }) {
 	const closeRef = useRef<HTMLButtonElement>(null);
-	const [logoFailed, setLogoFailed] = useState(() => logoBroken ?? false);
+	const [pictureFailed, setPictureFailed] = useState(() => pictureBroken ?? false);
 
 	// Keyboard: focus the close button on open, Escape closes it.
 	useEffect(() => {
@@ -97,13 +97,13 @@ export function ProjectWindow({
 				</div>
 
 				<div className="project_window_body">
-					{!logoFailed && (
-						<div className="project_window_logo">
-							<img src={project.logo} alt="" onError={() => setLogoFailed(true)} />
+					{!pictureFailed && (
+						<div className="project_window_picture">
+							<img src={project.picture} alt="" onError={() => setPictureFailed(true)} />
 						</div>
 					)}
 
-					<div className={`project_window_info ${logoFailed ? "project_window_info--full" : ""}`}>
+					<div className={`project_window_info ${pictureFailed ? "project_window_info--full" : ""}`}>
 						<div className="project_window_meta">
 							<span
 								className={`project_state ${

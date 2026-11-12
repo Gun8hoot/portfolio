@@ -1,5 +1,4 @@
-
-// Lets TypeScript understand `import logo from "../assets/logos/midona.svg"`.
+// Lets TypeScript understand `import picture from "../assets/logos/midona.svg"`.
 // If `bun-types` already declares this for you, this file is harmless to keep
 // (TS just ignores the duplicate) — but if you get an error like
 // "Cannot find module '...svg' or its corresponding type declarations",
@@ -11,6 +10,16 @@ declare module "*.svg" {
 }
 
 declare module "*.png" {
+	const src: string;
+	export default src;
+}
+
+declare module "*.jpg" {
+	const src: string;
+	export default src;
+}
+
+declare module "*.jpeg" {
 	const src: string;
 	export default src;
 }

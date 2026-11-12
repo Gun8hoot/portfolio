@@ -10,9 +10,9 @@
 	<h1>Deploy</h1>
 </div>
 
-1. Make sure that bun is installed on your system
+1. Make sure that bun is installed
 ```sh
-if [ "$(which bun)" == "" ]; then echo "bun is not installed, go on https://bun.com/get to install it"; xdg-open "https://bun.com/get"; else echo "bun is installed"; fi;
+/bin/bash -c 'if [ "$(which bun)" == "" ]; then echo -e "\e[31m[-] bun is not installed, go on https://bun.com/get to install it\e[0m"; xdg-open "https://bun.com/get"; else echo -e "\e[32m[+] bun is installed\e[0m"; fi;'
 ```
 2. Clone the repository and go on the project folder
 ```sh

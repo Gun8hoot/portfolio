@@ -5,14 +5,16 @@ import { Term, TermProvider, renderTerms } from "./Term";
 import { ProjectWindow } from "./ProjectWindow";
 import { ContactForm } from "./ContactForm";
 
-// Each logo must be imported, not just referenced by path: Bun's bundler only
+// Each picture must be imported, not just referenced by path: Bun's bundler only
 // discovers and serves an asset when it sees a real `import`, the same way it
 // discovers index.css's fonts through `url(...)`. A plain string path here
-// (e.g. logo: "../assets/logos/midona.svg") will 404, even if the file exists.
-import midonaLogo from "../assets/logos/midona.svg";
-// TODO: as you add the other logo files under src/assets/logos/, import each
+// (e.g. picture: "../assets/logos/midona.svg") will 404, even if the file exists.
+import midonaLogo from "../assets/images/logo/midona.svg";
+import portfolioPreview from "../assets/images/preview/portfolio.png";
+import ctrl_tuiPreview from "../assets/images/preview/ctrl_tui.png";
+// TODO: as you add the other picture files under src/assets/logos/, import each
 // one the same way, e.g.:
-// import inceptionLogo from "../assets/logos/inception.svg";
+// import inceptionPicture from "../assets/logos/inception.svg";
 
 type Profile = { label: string; href: string };
 export type Project = {
@@ -23,7 +25,7 @@ export type Project = {
 	shortDescription: Localized; // ~2 lines, shown under the project on the frontpage
 	description: Localized; // longer and more precise, shown in the project window
 	learned: Localized; // what you learned building it, shown in the project window
-	logo: string; // path to the project's logo/image, shown in the project window
+	picture: string; // path to the project's picture/image, shown in the project window
 	href: string;
 };
 type SkillGroup = { label: Localized; items: string[] };
@@ -110,7 +112,7 @@ const PROFILES: Profile[] = [
 	{ label: "Email", href: "mailto:nclavel@proton.me" },
 ];
 
-// TODO: the remaining `logo` fields below are still plain string placeholders — they will
+// TODO: the remaining `picture` fields below are still plain string placeholders — they will
 // 404 (and fall back to the full-width text layout) until you add the file under
 // src/assets/logos/ AND `import` it at the top of this file like midonaLogo above.
 const PROJECTS: Project[] = [
@@ -129,7 +131,7 @@ const PROJECTS: Project[] = [
 			en: "I got to see up close how an ELF binary is put together. Implementing LZ4 and AES-256 myself also made those algorithms finally click.",
 			fr: "J'ai pu voir de près comment un binaire ELF est construit. Implémenter moi-même LZ4 et AES-256 m'a aussi permis de vraiment comprendre ces algorithmes.",
 		},
-		logo: midonaLogo,
+		picture: midonaLogo,
 		href: "https://github.com/Gun8hoot/Midona",
 	},
 	{
@@ -149,7 +151,7 @@ const PROJECTS: Project[] = [
 			en: "I learned how to actually self-host and maintain a handful of real services with Docker on a small machine like a Raspberry Pi, and, more importantly, how to properly isolate a dedicated malware-analysis environment with Proxmox so it can't touch the rest of the network.",
 			fr: "J'ai appris à auto-héberger et maintenir pour de vrai plusieurs services avec Docker sur une petite machine comme un Raspberry Pi, et surtout à isoler correctement un environnement dédié à l'analyse de malwares avec Proxmox, pour qu'il ne puisse pas toucher au reste du réseau.",
 		},
-		logo: "./assets/logos/homelab.svg",
+		picture: "./assets/logos/homelab.svg",
 		href: "https://github.com/gun8hoot/homelab",
 	},
 	{
@@ -167,7 +169,7 @@ const PROJECTS: Project[] = [
 			en: "My first real hands-on project with Docker, building several containers from scratch. Also my first time really using NGINX, MariaDB and WordPress.",
 			fr: "Mon premier vrai projet pratique avec Docker, à construire plusieurs conteneurs de zéro. Aussi ma première vraie utilisation de NGINX, MariaDB et WordPress.",
 		},
-		logo: "./assets/logos/inception.svg",
+		picture: "./assets/logos/inception.svg",
 		href: "https://github.com/Gun8hoot/42-Common-Core/tree/main/inception",
 	},
 	{
@@ -185,7 +187,7 @@ const PROJECTS: Project[] = [
 			en: "I learned how to design and secure an API for real, and how to build a secure infrastructure around it, splitting the frontend, backend and database into separate containers behind a reverse proxy. It's also the project that felt closest to an actual production app, out of everything I've built so far.",
 			fr: "J'ai appris à concevoir et sécuriser une API pour de vrai, ainsi qu'à construire une infrastructure sécurisée autour, en séparant le frontend, le backend et la base de données dans des conteneurs distincts derrière un reverse proxy. C'est aussi le projet qui s'est le plus rapproché d'une véritable application en production, parmi tout ce que j'ai fait.",
 		},
-		logo: "./assets/logos/ft_transcendence.svg",
+		picture: "./assets/logos/ft_transcendence.svg",
 		href: "https://github.com/banne227/ft_transcendence/",
 	},
 	{
@@ -203,7 +205,7 @@ const PROJECTS: Project[] = [
 			en: "My first real project in C++, and a good excuse to dig into how a terminal actually works under the hood — input handling, rendering, escape sequences, that sort of thing.",
 			fr: "Mon premier vrai projet en C++, et une bonne occasion de creuser le fonctionnement d'un terminal en interne — gestion des entrées, rendu, séquences d'échappement, ce genre de choses.",
 		},
-		logo: "./assets/logos/ctrl-tui.svg",
+		picture: ctrl_tuiPreview,
 		href: "https://github.com/Gun8hoot/CTRL-TUI",
 	},
 	{
@@ -221,7 +223,7 @@ const PROJECTS: Project[] = [
 			en: "I worked on pretty much every part of the engine, from map parsing to performance optimization. It gave me a much broader view of what a small game engine actually needs.",
 			fr: "J'ai touché à presque toutes les parties du moteur, du parsing de carte à l'optimisation des performances. Ça m'a donné une vision bien plus large de ce que demande un petit moteur de jeu.",
 		},
-		logo: "./assets/logos/cube3d.svg",
+		picture: "./assets/logos/cube3d.svg",
 		href: "https://github.com/Gun8hoot/Cube3D",
 	},
 	{
@@ -239,7 +241,7 @@ const PROJECTS: Project[] = [
 			en: "Understanding how a shell like Bash really works internally. It also pushed my C skills quite a bit further.",
 			fr: "Comprendre comment un shell comme Bash fonctionne vraiment en interne. Ça a aussi fait progresser mon niveau en C.",
 		},
-		logo: "./assets/logos/minishell.svg",
+		picture: "./assets/logos/minishell.svg",
 		href: "https://github.com/thlibers/minishell",
 	},
 	{
@@ -257,7 +259,7 @@ const PROJECTS: Project[] = [
 			en: "A simple project, but it taught me how FTP actually works, and it's also where I picked up the basics of Python.",
 			fr: "Un projet simple, mais qui m'a appris le fonctionnement du protocole FTP, et qui m'a aussi servi à apprendre les bases de Python.",
 		},
-		logo: "./assets/logos/pyftpanon.svg",
+		picture: "./assets/logos/pyftpanon.svg",
 		href: "https://github.com/Gun8hoot/PyFTPAnon",
 	},
 	{
@@ -275,7 +277,7 @@ const PROJECTS: Project[] = [
 			en: "I learned how files are really managed on disk, and what it actually takes to erase them securely.",
 			fr: "J'ai appris comment les fichiers sont vraiment gérés sur le disque, et ce qu'implique un effacement réellement sécurisé.",
 		},
-		logo: "./assets/logos/wwipp.svg",
+		picture: "./assets/logos/wwipp.svg",
 		href: "https://github.com/Gun8hoot/WWipp",
 	},
 	{
@@ -293,7 +295,7 @@ const PROJECTS: Project[] = [
 			en: "I learned the IRC protocol inside out, and got a much better grasp of Unix sockets along the way.",
 			fr: "J'ai appris le protocole IRC de fond en comble, et bien mieux compris les sockets Unix au passage.",
 		},
-		logo: "./assets/logos/ft_irc.svg",
+		picture: "./assets/logos/ft_irc.svg",
 		href: "https://github.com/thlibers/irc",
 	},
 	{
@@ -311,7 +313,7 @@ const PROJECTS: Project[] = [
 			en: "I'm not a web developer, so I leaned on AI for a good chunk of the frontend here, things like React, I'll say it plainly to save time. What I did genuinely learn is running a Linux server in real production conditions: this is the first machine I've set up to stay up 24/7, which meant locking it down properly, Cloudflare in front of it and a hardened SSH setup included.",
 			fr: "Je ne suis pas développeur web, donc je me suis appuyé sur l'IA pour une bonne partie du frontend ici, React par exemple, je le dis simplement, pour gagner du temps. Ce que j'ai vraiment appris, en revanche, c'est à faire tourner un serveur Linux en conditions réelles de production : c'est la première machine que je configure pour qu'elle tourne 24h/24, ce qui impliquait de la sécuriser sérieusement, avec Cloudflare devant et une configuration SSH durcie.",
 		},
-		logo: "./assets/logos/portfolio.svg",
+		picture: "",
 		href: "https://github.com/Gun8hoot/portfolio",
 	},
 ];
@@ -356,23 +358,23 @@ export function Portfolio({ lang }: { lang: Lang })
 {
 	const t = UI[lang];
 	const [openProject, setOpenProject] = useState<Project | null>(null);
-	const [brokenLogos, setBrokenLogos] = useState<Set<string>>(new Set());
+	const [brokenPictures, setBrokenPictures] = useState<Set<string>>(new Set());
 
 	// The boothist screen leaves the page scrolled to the bottom: start at the top.
 	useLayoutEffect(() => {
 		window.scrollTo(0, 0);
 	}, []);
 
-	// Preload every project's logo as soon as the page loads, so by the time
-	// someone actually opens a window we already know which logos are broken
+	// Preload every project's picture as soon as the page loads, so by the time
+	// someone actually opens a window we already know which pictures are broken
 	// and ProjectWindow can pick the right layout on its first paint — rather
-	// than starting with the logo column and only discovering it's missing
+	// than starting with the picture column and only discovering it's missing
 	// (via the <img>'s onError) after the window has already been shown.
 	useEffect(() => {
 		for (const project of PROJECTS) {
 			const img = new Image();
-			img.onerror = () => setBrokenLogos((prev) => new Set(prev).add(project.logo));
-			img.src = project.logo;
+			img.onerror = () => setBrokenPictures((prev) => new Set(prev).add(project.picture));
+			img.src = project.picture;
 		}
 	}, []);
 
@@ -435,7 +437,7 @@ export function Portfolio({ lang }: { lang: Lang })
 						key={openProject.label}
 						project={openProject}
 						lang={lang}
-						logoBroken={brokenLogos.has(openProject.logo)}
+						pictureBroken={brokenPictures.has(openProject.picture)}
 						ui={{
 							description: t.project.description,
 							learned: t.project.learned,

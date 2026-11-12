@@ -10,6 +10,7 @@ import { ContactForm } from "./ContactForm";
 // discovers index.css's fonts through `url(...)`. A plain string path here
 // (e.g. picture: "../assets/logos/midona.svg") will 404, even if the file exists.
 import midonaPicture from "../assets/images/logo/midona.svg";
+import ctrl_tuiPreview from "../assets/images/preview/ctrl_tui.png";
 // TODO: as you add the other picture files under src/assets/logos/, import each
 // one the same way, e.g.:
 // import inceptionPicture from "../assets/logos/inception.svg";
@@ -29,7 +30,7 @@ export type Project = {
 type SkillGroup = { label: Localized; items: string[] };
 type Hackathon = {
 	name: string;
-	organizer: string;
+	organizer: Localized;
 	date: string; // start date as YYYY-MM-DD, shown in the visitor's language
 	duration: Localized;
 	location: Localized;
@@ -61,7 +62,10 @@ const UI = {
 			emailLabel: "Email",
 			subjectLabel: "Subject",
 			messageLabel: "Message",
-			captchaLabel: (a: number, b: number) => `Quick check: what is ${a} + ${b}?`,
+			captchaLabel: (a: number, b: number, op: string) => `Quick check: what is ${a} ${op} ${b}?`,
+			captchaLabelTech: (service: string) => `Quick check: what port does ${service} use?`,
+			switchToTechnical: "Prefer a technical question instead?",
+			switchToMath: "Back to a simple calculation",
 			send: "Send",
 			sending: "Sending…",
 			success: "Message sent — thanks, I'll get back to you soon!",
@@ -91,7 +95,10 @@ const UI = {
 			emailLabel: "Email",
 			subjectLabel: "Sujet",
 			messageLabel: "Message",
-			captchaLabel: (a: number, b: number) => `Vérification rapide : combien font ${a} + ${b} ?`,
+			captchaLabel: (a: number, b: number, op: string) => `Vérification rapide : combien font ${a} ${op} ${b} ?`,
+			captchaLabelTech: (service: string) => `Vérification rapide : quel port utilise ${service} ?`,
+			switchToTechnical: "Vous préférez une question technique ?",
+			switchToMath: "Revenir à un calcul simple",
 			send: "Envoyer",
 			sending: "Envoi…",
 			success: "Message envoyé — merci, je reviens vers vous bientôt !",
@@ -109,7 +116,7 @@ const PROFILES: Profile[] = [
 	{ label: "HackTheBox", href: "https://app.hackthebox.com/public/users/1595967" },
 	{ label: "TryHackMe", href: "https://tryhackme.com/p/Gun8hoot" },
 	{ label: "CryptoHack", href: "https://cryptohack.org/user/Gun8hoot/" },
-	{ label: "Email", href: "mailto:nclavel@proton.me" },
+	{ label: "Email", href: "mailto:nathan.clavel@tutamail.com" },
 ];
 
 // TODO: the remaining `picture` fields below are still plain string placeholders — they will
@@ -205,7 +212,7 @@ const PROJECTS: Project[] = [
 			en: "My first real project in C++, and a good excuse to dig into how a terminal actually works under the hood — input handling, rendering, escape sequences, that sort of thing.",
 			fr: "Mon premier vrai projet en C++, et une bonne occasion de creuser le fonctionnement d'un terminal en interne — gestion des entrées, rendu, séquences d'échappement, ce genre de choses.",
 		},
-		picture: "./assets/logos/ctrl-tui.svg",
+		picture: ctrl_tuiPreview,
 		href: "https://github.com/Gun8hoot/CTRL-TUI",
 	},
 	{
@@ -322,7 +329,7 @@ const PROJECTS: Project[] = [
 const HACKATHONS: Hackathon[] = [
 	{
 		name: "42 x DINUM",
-		organizer: "42",
+		organizer: { en: "42, DINUM", fr: "42, DINUM" },
 		date: "2025-09-14",
 		duration: { en: "5 days", fr: "5 jours" },
 		location: { en: "Isle of Oléron, France", fr: "Île d'Oléron, France" },
@@ -463,7 +470,7 @@ export function Portfolio({ lang }: { lang: Lang })
 										<span className="link_url">{shortUrl(link)}</span>
 									</a>
 									<dl className="hack_meta">
-										<div><dt>{t.hackathon.organizer}</dt><dd>{organizer}</dd></div>
+										<div><dt>{t.hackathon.organizer}</dt><dd>{organizer[lang]}</dd></div>
 										<div><dt>{t.hackathon.date}</dt><dd>{formatDate(date, lang)}</dd></div>
 										<div><dt>{t.hackathon.duration}</dt><dd>{duration[lang]}</dd></div>
 										<div><dt>{t.hackathon.location}</dt><dd>{location[lang]}</dd></div>

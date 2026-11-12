@@ -6,14 +6,14 @@ const SWITCH_LABEL: Record<Lang, string> = {
 	fr: "Passer en anglais",
 };
 
-// English by default; the choice is remembered for the next visit.
+// French by default; the choice is remembered for the next visit.
 export function useLang(): [Lang, (lang: Lang) => void] {
 	const [lang, setLang] = useState<Lang>(() => {
 		try {
 			const saved = localStorage.getItem("lang");
 			if (saved === "en" || saved === "fr") return saved;
 		} catch {}
-		return "en";
+		return "fr";
 	});
 
 	// Keep <html lang> in sync and remember the choice.

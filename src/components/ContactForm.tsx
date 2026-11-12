@@ -10,13 +10,34 @@ type UIText = {
 	sending: string;
 	success: string;
 	error: string;
+	invalid: string;
 	captchaWrong: string;
 };
 
-type Status = "idle" | "sending" | "success" | "error" | "captcha";
+type Status = "idle" | "sending" | "success" | "error" | "invalid" | "captcha";
 
 const randomInt = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
 const newChallenge = () => ({ a: randomInt(1, 9), b: randomInt(1, 9) });
+
+// Everything below runs on each field right before it's sent — it never touches
+// what the visitor sees typed in the form, only what goes over the wire.
+// Strips control characters (keeping real newlines in the message), escapes
+// HTML so a message can't inject markup/formatting wherever it ends up
+// rendered downstream, and breaks mass-mention triggers like "@room".
+const stripControlChars = (s: string) => s.replace(/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F]/g, "");
+
+const escapeHtml = (s: string) =>
+	s
+		.replace(/&/g, "&amp;")
+		.replace(/</g, "&lt;")
+		.replace(/>/g, "&gt;")
+		.replace(/"/g, "&quot;")
+		.replace(/'/g, "&#39;");
+
+const neutralizeMentions = (s: string) => s.replace(/@room/gi, "@\u200Broom");
+
+const sanitize = (value: string, maxLength: number) =>
+	escapeHtml(neutralizeMentions(stripControlChars(value.trim()))).slice(0, maxLength);
 
 export function ContactForm({ ui }: { ui: UIText }) {
 	const [email, setEmail] = useState("");
@@ -55,16 +76,34 @@ export function ContactForm({ ui }: { ui: UIText }) {
 
 		setStatus("sending");
 		try {
-			const res = await fetch("/api/message", {
+			const res = await fetch("https://gun8hoot.me/api/sendMessage", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ email, subject, message }),
+				body: JSON.stringify({
+					email: sanitize(email, 254),
+					subject: sanitize(subject, 150),
+					message: sanitize(message, 5000),
+				}),
 			});
-			if (!res.ok) throw new Error(String(res.status));
-			setStatus("success");
-			resetForm();
+
+			if (res.status === 200) {
+				setStatus("success");
+				resetForm();
+			} else if (res.status === 400) {
+				// Invalid body — don't drop the typed message, just the captcha challenge.
+				setStatus("invalid");
+				setCaptchaAnswer("");
+				setChallenge(newChallenge());
+			} else {
+				// 500 or anything else unexpected: a generic failure, no details on why.
+				setStatus("error");
+				setCaptchaAnswer("");
+				setChallenge(newChallenge());
+			}
 		} catch {
+			// Network/CORS failure before even reaching the API.
 			setStatus("error");
+			setCaptchaAnswer("");
 			setChallenge(newChallenge());
 		}
 	};
@@ -96,7 +135,13 @@ export function ContactForm({ ui }: { ui: UIText }) {
 
 			<label className="contact_field">
 				<span>{ui.messageLabel}</span>
-				<textarea required rows={5} value={message} onChange={(e) => setMessage(e.target.value)} />
+				<textarea
+					required
+					rows={5}
+					maxLength={5000}
+					value={message}
+					onChange={(e) => setMessage(e.target.value)}
+				/>
 			</label>
 
 			<label className="contact_field contact_field--captcha">
@@ -115,6 +160,7 @@ export function ContactForm({ ui }: { ui: UIText }) {
 
 			{status === "success" && <p className="contact_status contact_status--ok">{ui.success}</p>}
 			{status === "captcha" && <p className="contact_status contact_status--err">{ui.captchaWrong}</p>}
+			{status === "invalid" && <p className="contact_status contact_status--err">{ui.invalid}</p>}
 			{status === "error" && <p className="contact_status contact_status--err">{ui.error}</p>}
 		</form>
 	);

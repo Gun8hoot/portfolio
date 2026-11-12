@@ -9,9 +9,7 @@ import { ContactForm } from "./ContactForm";
 // discovers and serves an asset when it sees a real `import`, the same way it
 // discovers index.css's fonts through `url(...)`. A plain string path here
 // (e.g. picture: "../assets/logos/midona.svg") will 404, even if the file exists.
-import midonaLogo from "../assets/images/logo/midona.svg";
-import portfolioPreview from "../assets/images/preview/portfolio.png";
-import ctrl_tuiPreview from "../assets/images/preview/ctrl_tui.png";
+import midonaPicture from "../assets/images/logo/midona.svg";
 // TODO: as you add the other picture files under src/assets/logos/, import each
 // one the same way, e.g.:
 // import inceptionPicture from "../assets/logos/inception.svg";
@@ -69,6 +67,7 @@ const UI = {
 			success: "Message sent — thanks, I'll get back to you soon!",
 			error: "Something went wrong, please try again later.",
 			captchaWrong: "That's not quite right — try the new one below.",
+			invalid: "Please check the fields and try again.",
 		},
 	},
 	fr: {
@@ -98,6 +97,7 @@ const UI = {
 			success: "Message envoyé — merci, je reviens vers vous bientôt !",
 			error: "Une erreur est survenue, réessayez plus tard.",
 			captchaWrong: "Ce n'est pas la bonne réponse — réessayez avec celle-ci.",
+			invalid: "Merci de vérifier les champs et de réessayer.",
 		},
 	},
 };
@@ -114,7 +114,7 @@ const PROFILES: Profile[] = [
 
 // TODO: the remaining `picture` fields below are still plain string placeholders — they will
 // 404 (and fall back to the full-width text layout) until you add the file under
-// src/assets/logos/ AND `import` it at the top of this file like midonaLogo above.
+// src/assets/logos/ AND `import` it at the top of this file like midonaPicture above.
 const PROJECTS: Project[] = [
 	{
 		label: "Midona", state: "wip", status: "open",
@@ -131,7 +131,7 @@ const PROJECTS: Project[] = [
 			en: "I got to see up close how an ELF binary is put together. Implementing LZ4 and AES-256 myself also made those algorithms finally click.",
 			fr: "J'ai pu voir de près comment un binaire ELF est construit. Implémenter moi-même LZ4 et AES-256 m'a aussi permis de vraiment comprendre ces algorithmes.",
 		},
-		picture: midonaLogo,
+		picture: midonaPicture,
 		href: "https://github.com/Gun8hoot/Midona",
 	},
 	{
@@ -205,7 +205,7 @@ const PROJECTS: Project[] = [
 			en: "My first real project in C++, and a good excuse to dig into how a terminal actually works under the hood — input handling, rendering, escape sequences, that sort of thing.",
 			fr: "Mon premier vrai projet en C++, et une bonne occasion de creuser le fonctionnement d'un terminal en interne — gestion des entrées, rendu, séquences d'échappement, ce genre de choses.",
 		},
-		picture: ctrl_tuiPreview,
+		picture: "./assets/logos/ctrl-tui.svg",
 		href: "https://github.com/Gun8hoot/CTRL-TUI",
 	},
 	{
@@ -313,7 +313,7 @@ const PROJECTS: Project[] = [
 			en: "I'm not a web developer, so I leaned on AI for a good chunk of the frontend here, things like React, I'll say it plainly to save time. What I did genuinely learn is running a Linux server in real production conditions: this is the first machine I've set up to stay up 24/7, which meant locking it down properly, Cloudflare in front of it and a hardened SSH setup included.",
 			fr: "Je ne suis pas développeur web, donc je me suis appuyé sur l'IA pour une bonne partie du frontend ici, React par exemple, je le dis simplement, pour gagner du temps. Ce que j'ai vraiment appris, en revanche, c'est à faire tourner un serveur Linux en conditions réelles de production : c'est la première machine que je configure pour qu'elle tourne 24h/24, ce qui impliquait de la sécuriser sérieusement, avec Cloudflare devant et une configuration SSH durcie.",
 		},
-		picture: "",
+		picture: "./assets/logos/portfolio.svg",
 		href: "https://github.com/Gun8hoot/portfolio",
 	},
 ];
@@ -344,7 +344,8 @@ const formatDate = (iso: string, lang: Lang) =>
 const SKILLS: SkillGroup[] = [
 	{ label: { en: "languages", fr: "langages" }, items: ["C", "C++", "JS", "TS", "Shell", "Python", "GNU Make", "ASM x86-x64"] },
 	{ label: { en: "reversing", fr: "reverse" }, items: ["Ghidra", "Radare2", "JADX"] },
-	{ label: { en: "systems", fr: "systèmes" }, items: ["Linux", "NGINX", "Docker", "Git", "AppArmor"] },
+	{ label: { en: "systems", fr: "systèmes" }, items: ["Linux", "Docker", "Git", "AppArmor"] },
+	{ label: { en: "services", fr: "services" }, items: ["NGINX"] },
 	{ label: { en: "security", fr: "sécurité" }, items: ["Hashcat", "Burp Suite"] },
 	{ label: { en: "network", fr: "réseaux"}, items: ["Wireshark", "nmap"]},
 ];

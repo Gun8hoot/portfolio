@@ -287,18 +287,15 @@ type Phase = "typing" | "leaving" | "done";
 export function Boot({ onDone, lang }: { onDone?: () => void; lang: Lang }) {
   const [count, setCount] = useState(0);
   const [phase, setPhase] = useState<Phase>("typing");
-  const endRef = useRef<HTMLDivElement>(null);
+  // .boot itself is the clipped viewport (position: fixed, overflow: hidden — see
+  // index.css). There is no document-level scrolling at all during boot, so no
+  // scrollbar can ever appear: we scroll this box's own scrollTop instead of the
+  // page, and anything that scrolls past the top is simply clipped out of view,
+  // the same way a terminal's scrollback works.
+  const viewportRef = useRef<HTMLDivElement>(null);
 
   // Jumps straight to the fade-out, same as reaching the end of the log naturally.
   const skip = () => setPhase("leaving");
-
-  // Hide the scrollbar's visual track while booting — the page still needs to
-  // actually scroll (that's how the auto-scroll below keeps the latest line
-  // visible), this only hides the bar itself; see .boot-hide-scrollbar in index.css.
-  useEffect(() => {
-    document.documentElement.classList.add("boot-hide-scrollbar");
-    return () => document.documentElement.classList.remove("boot-hide-scrollbar");
-  }, []);
 
   // typing phase: reveal lines, then start leaving
   useEffect(() => {
@@ -324,18 +321,18 @@ export function Boot({ onDone, lang }: { onDone?: () => void; lang: Lang }) {
   }, [phase]);
 
   useEffect(() => {
-    endRef.current?.scrollIntoView();
+    const el = viewportRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
   }, [count]);
 
   if (phase === "done") return null;
 
   return (
-    <div className={`boot ${phase === "leaving" ? "boot--leaving" : ""}`}>
+    <div ref={viewportRef} className={`boot ${phase === "leaving" ? "boot--leaving" : ""}`}>
       <div className="boot_messages">
         {LINES.slice(0, count).map((line, i) => (
           <p key={i}>{line}</p>
         ))}
-        <div ref={endRef} />
       </div>
       {phase === "typing" && (
         <button type="button" className="boot_skip" onClick={skip}>

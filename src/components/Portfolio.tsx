@@ -62,15 +62,13 @@ const UI = {
 			emailLabel: "Email",
 			subjectLabel: "Subject",
 			messageLabel: "Message",
-			captchaLabel: (a: number, b: number, op: string) => `Quick check: what is ${a} ${op} ${b}?`,
-			captchaLabelTech: (service: string) => `Quick check: what port does ${service} use?`,
-			switchToTechnical: "Prefer a technical question instead?",
-			switchToMath: "Back to a simple calculation",
 			send: "Send",
 			sending: "Sending…",
 			success: "Message sent — thanks, I'll get back to you soon!",
 			error: "Something went wrong, please try again later.",
-			captchaWrong: "That's not quite right — try the new one below.",
+			captchaMissing: "Please complete the verification first.",
+			captchaFailed: "The verification failed, please try again.",
+			captchaUnavailable: "The verification could not be loaded. Check your connection or disable your content blocker, then reload the page.",
 			invalid: "Please check the fields and try again.",
 		},
 	},
@@ -95,15 +93,13 @@ const UI = {
 			emailLabel: "Email",
 			subjectLabel: "Sujet",
 			messageLabel: "Message",
-			captchaLabel: (a: number, b: number, op: string) => `Vérification rapide : combien font ${a} ${op} ${b} ?`,
-			captchaLabelTech: (service: string) => `Vérification rapide : quel port utilise ${service} ?`,
-			switchToTechnical: "Vous préférez une question technique ?",
-			switchToMath: "Revenir à un calcul simple",
 			send: "Envoyer",
 			sending: "Envoi…",
 			success: "Message envoyé — merci, je reviens vers vous bientôt !",
 			error: "Une erreur est survenue, réessayez plus tard.",
-			captchaWrong: "Ce n'est pas la bonne réponse — réessayez avec celle-ci.",
+			captchaMissing: "Merci de terminer d'abord la vérification.",
+			captchaFailed: "La vérification a échoué, réessayez.",
+			captchaUnavailable: "La vérification n'a pas pu être chargée. Vérifiez votre connexion ou désactivez votre bloqueur de contenu, puis rechargez la page.",
 			invalid: "Merci de vérifier les champs et de réessayer.",
 		},
 	},
@@ -352,7 +348,7 @@ const SKILLS: SkillGroup[] = [
 	{ label: { en: "languages", fr: "langages" }, items: ["C", "C++", "JS", "TS", "Shell", "Python", "GNU Make", "ASM x86-x64"] },
 	{ label: { en: "reversing", fr: "reverse" }, items: ["Ghidra", "Radare2", "JADX"] },
 	{ label: { en: "systems", fr: "systèmes" }, items: ["Linux", "Docker", "Git", "AppArmor"] },
-	{ label: { en: "services", fr: "services" }, items: ["NGINX", "Jenkins"] },
+	{ label: { en: "services", fr: "services" }, items: ["NGINX"] },
 	{ label: { en: "security", fr: "sécurité" }, items: ["Hashcat", "Burp Suite"] },
 	{ label: { en: "network", fr: "réseaux"}, items: ["Wireshark", "nmap"]},
 ];
@@ -495,7 +491,7 @@ export function Portfolio({ lang }: { lang: Lang })
 				</ul>
 
 				<h2 className="section_title">{t.titles.contact}</h2>
-				<ContactForm ui={t.contact} />
+				<ContactForm ui={t.contact} lang={lang} />
 			</main>
 		</TermProvider>
 	);

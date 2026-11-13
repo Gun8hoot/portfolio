@@ -640,6 +640,13 @@ button.link
 	animation: fade-in 250ms ease-out;
 }
 
+/* moved down when the highlighted element would be hidden behind the box at the top */
+.tutorial--bottom
+{
+	top: auto;
+	bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+}
+
 .tutorial_bar
 {
 	display: flex;
@@ -1221,44 +1228,10 @@ button.link
 	border-bottom-color: var(--accent);
 }
 
-.contact_field--captcha input
+/* Cloudflare Turnstile (its widget is 65px tall: reserved so the form doesn't jump when it loads) */
+.contact_turnstile
 {
-	max-width: 6rem;
-}
-
-/* hide the native up/down spinner on the captcha's number input */
-.contact_field--captcha input[type="number"]
-{
-	-moz-appearance: textfield; /* Firefox */
-}
-
-.contact_field--captcha input[type="number"]::-webkit-inner-spin-button,
-.contact_field--captcha input[type="number"]::-webkit-outer-spin-button
-{
-	-webkit-appearance: none; /* Chrome, Safari, Edge */
-	margin: 0;
-}
-
-.contact_captcha_switch
-{
-	align-self: flex-start;
-	margin-top: -0.5rem;
-	font-family: monaspaceArgon-Light;
-	font-size: 0.85rem;
-	color: var(--muted);
-	background: none;
-	border: 0;
-	padding: 0;
-	text-decoration: underline dotted;
-	text-underline-offset: 0.2em;
-	cursor: pointer;
-}
-
-.contact_captcha_switch:hover,
-.contact_captcha_switch:focus-visible
-{
-	color: var(--accent);
-	outline: none;
+	min-height: 65px;
 }
 
 .contact_submit

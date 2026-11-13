@@ -9,6 +9,7 @@
     "start": "NODE_ENV=production bun src/index.ts"
   },
   "dependencies": {
+    "dotenv": "^18.0.10",
     "jsx-runtime": "^1.2.0",
     "leaflet": "^1.9.4",
     "react": "^19",

@@ -5,6 +5,7 @@
     "": {
       "name": "bun-react-template",
       "dependencies": {
+        "dotenv": "^18.0.10",
         "jsx-runtime": "^1.2.0",
         "leaflet": "^1.9.4",
         "react": "^19",
@@ -77,6 +78,8 @@
     "bun-types": ["bun-types@1.4.2", "", { "dependencies": { "@types/node": "*" } }, "sha512-bxV1FgK7yBIzjRe5zBozIM4Bem11ZJcCXSrjWRG3YWLt8yFDePu4cLjpebO8OvPeIE9trbyPF4fuj3Cia4Fj3w=="],
 
     "csstype": ["csstype@3.2.3", "", {}, "sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ=="],
+
+    "dotenv": ["dotenv@18.0.10", "", { "bin": { "dotenv": "dist/cli.cjs" } }, "sha512-89FAA1xchzK2mxVWdr5F/0rldwiueXs6zJM86rO66EzekR1iBdiXRthyG+m5GvkJaFH3C2LESzamTkgndmLT2A=="],
 
     "jsx-runtime": ["jsx-runtime@1.2.0", "", { "dependencies": { "object-assign": "^3.0.0" } }, "sha512-iCxmRTlUAWmXwHZxN0JSx/T7eRi0SkKAskE0lp+j4W1mzdNp49ja/9QI2ZmlggPM95RqnDw5ioYjw0EcvpIClw=="],
 

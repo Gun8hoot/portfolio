@@ -11,6 +11,7 @@ import { Boot } from "./components/Boot";
 import { PreBoot } from "./components/PreBoot";
 import { Portfolio } from "./components/Portfolio";
 import { LangToggle, useLang } from "./components/Lang";
+import { Tutorial } from "./components/Tutorial";
 
 const elem = document.getElementById("root")!;
 
@@ -25,6 +26,8 @@ function App() {
 			{stage === "off" && <PreBoot lang={lang} onPowerOn={() => setStage("booting")} />}
 			{stage === "booting" && <Boot lang={lang} onDone={() => setStage("on")} />}
 			{stage === "on" && <Portfolio lang={lang} />}
+			{/* first visit only: offers a tour once the boot is over */}
+			{stage === "on" && <Tutorial lang={lang} />}
 
 			{/* shown everywhere except on the kernel log screen */}
 			{stage !== "booting" && <LangToggle lang={lang} onChange={setLang} />}

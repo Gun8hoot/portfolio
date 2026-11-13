@@ -624,6 +624,126 @@ button.link
 	color: var(--accent);
 }
 
+/* ---------- first-visit tutorial box (top left) ---------- */
+.tutorial
+{
+	position: fixed;
+	top: 1rem;
+	left: 1rem;
+	z-index: 15; /* below .project_overlay (20): opening a project covers it */
+	box-sizing: border-box;
+	width: min(21rem, calc(100vw - 8rem)); /* never covers the EN/FR button on narrow phones */
+	font-size: 0.875rem;
+	color: var(--terminal-white-bold);
+	background: var(--terminal-black-bold);
+	border: 1px solid var(--terminal-black-light);
+	animation: fade-in 250ms ease-out;
+}
+
+.tutorial_bar
+{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	padding: 0.3rem 0.7rem;
+	font-family: monaspaceArgon-Medium;
+	color: var(--accent);
+	border-bottom: 1px solid var(--terminal-black-light);
+}
+
+.tutorial_close
+{
+	font-family: monaspaceArgon-Bold;
+	font-size: 1.1rem;
+	line-height: 1;
+	color: var(--muted);
+	background: none;
+	border: 0;
+	padding: 0.1rem 0.4rem;
+	cursor: pointer;
+}
+
+.tutorial_close:hover,
+.tutorial_close:focus-visible
+{
+	color: var(--terminal-red-bold);
+	outline: none;
+}
+
+.tutorial_body
+{
+	padding: 0.7rem;
+}
+
+.tutorial_text
+{
+	margin: 0 0 0.8rem;
+	line-height: 1.5;
+}
+
+.tutorial_actions
+{
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}
+
+.tutorial_count
+{
+	margin-right: auto;
+	color: var(--muted);
+}
+
+.tutorial_btn
+{
+	font: inherit;
+	color: var(--muted);
+	background: none;
+	border: 1px solid var(--terminal-black-light);
+	padding: 0.2rem 0.7rem;
+	cursor: pointer;
+}
+
+.tutorial_btn--main
+{
+	color: var(--accent);
+	border-color: var(--accent);
+}
+
+.tutorial_btn:disabled
+{
+	opacity: 0.4;
+	cursor: default;
+}
+
+.tutorial_btn:focus-visible
+{
+	color: var(--terminal-black-bold);
+	background: var(--accent);
+	border-color: var(--accent);
+	outline: none;
+}
+
+/* hover only on devices that really hover, so it doesn't stay stuck after a tap */
+@media (hover: hover)
+{
+	.tutorial_btn:not(:disabled):hover
+	{
+		color: var(--terminal-black-bold);
+		background: var(--accent);
+		border-color: var(--accent);
+	}
+}
+
+/* the element the current step is about */
+.tutorial_target
+{
+	outline: 1px dashed var(--accent);
+	outline-offset: 0.4rem;
+}
+
 /* ---------- animation ---------- */
 @keyframes portfolio-in
 {
@@ -1002,7 +1122,8 @@ button.link
 {
 	.project_overlay,
 	.picture_overlay,
-	.place_card { animation: none; }
+	.place_card,
+	.tutorial { animation: none; }
 
 	.place_ping { animation: none; opacity: 0.35; }
 }

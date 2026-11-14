@@ -1234,6 +1234,20 @@ button.link
 	min-height: 65px;
 }
 
+/* the little star under the message field: how the message travels */
+.contact_note
+{
+	margin: 0;
+	font-size: 0.8rem;
+	line-height: 1.4;
+	color: var(--muted);
+}
+
+.contact_star
+{
+	color: var(--accent);
+}
+
 .contact_submit
 {
 	align-self: flex-start;

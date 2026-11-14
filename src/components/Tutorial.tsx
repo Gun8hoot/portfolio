@@ -32,7 +32,7 @@ const STEPS: Step[] = [
 		title: { en: "Language", fr: "Langue" },
 		text: {
 			en: "Use the EN / FR button at the top right to switch between English and French. Your choice is remembered.",
-			fr: "Le bouton EN / FR en haut à droite permet de passer du français à l'anglais. Votre choix est mémorisé.",
+			fr: "Le bouton EN / FR en haut à droite permet de passer du français à l'anglais, et inversement. Votre choix est mémorisé.",
 		},
 	},
 	{
@@ -41,23 +41,23 @@ const STEPS: Step[] = [
 		title: { en: "Technical words", fr: "Mots techniques" },
 		text: {
 			en: "Hover an underlined word (or tap it on a phone) to get a short definition and a link to learn more. Place names open a map.",
-			fr: "Survolez un mot souligné (ou touchez-le sur téléphone) pour afficher une courte définition et un lien pour en savoir plus. Les noms de lieux ouvrent une carte.",
+			fr: "Survolez un mot souligné (ou touchez-le sur mobile) pour afficher une courte définition et un lien pour en savoir plus. Les noms de lieux ouvrent une carte.",
 		},
 	},
 	{
 		target: "ul.project > li",
 		title: { en: "Projects", fr: "Projets" },
 		text: {
-			en: "Click a project to open a window with its description and what I learned. Click its image to enlarge it.",
-			fr: "Cliquez sur un projet pour ouvrir une fenêtre avec sa description et ce que j'en ai appris. Cliquez sur son image pour l'agrandir.",
+			en: "Click a project to open a window with a more detailed description and what I learned by doing it. Click its image to enlarge it.",
+			fr: "Cliquez sur un projet pour ouvrir une fenêtre avec une description plus détaillée et ce que j'ai appris en le réalisant. Cliquez sur son image pour l'agrandir.",
 		},
 	},
 	{
 		target: ".contact_form",
 		title: { en: "Contact", fr: "Contact" },
 		text: {
-			en: "The contact form is at the bottom of the page: write to me directly from there.",
-			fr: "Le formulaire de contact se trouve en bas de la page : écrivez-moi directement depuis là.",
+			en: "Want to get in touch? Just fill in the contact form at the bottom of the page: it is the easiest way to reach me.",
+			fr: "Envie de me contacter ? Remplissez simplement le formulaire en bas de la page : c'est le moyen le plus simple de me joindre.",
 		},
 	},
 ];
@@ -90,7 +90,7 @@ const UI: Record<
 	fr: {
 		region: "Tutoriel du site",
 		askTitle: "Bienvenue !",
-		askText: "Première visite ? Voulez-vous un petit tour du site ?",
+		askText: "Première visite ? Voulez-vous une petite visite guidée du site ?",
 		start: "Commencer",
 		decline: "Non merci",
 		close: "Fermer le tutoriel",

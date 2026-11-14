@@ -9,7 +9,7 @@ export type ProjectWindowData = {
 	status: "open" | "closed";
 	stack: string[]; // languages/tools used, shown as a grey field next to state/status
 	description: Localized;
-	learned: Localized;
+	learned?: Localized; // optional: without it, the window has no "what I learned" part
 	picture: string; // path to the project's picture/image
 	href: string; // repository link
 };
@@ -134,8 +134,12 @@ export function ProjectWindow({
 						<h3 className="project_window_subtitle">{ui.description}</h3>
 						<p className="project_window_desc">{renderTerms(project.description[lang])}</p>
 
-						<h3 className="project_window_subtitle">{ui.learned}</h3>
-						<p className="project_window_desc">{renderTerms(project.learned[lang])}</p>
+						{project.learned && (
+							<>
+								<h3 className="project_window_subtitle">{ui.learned}</h3>
+								<p className="project_window_desc">{renderTerms(project.learned[lang])}</p>
+							</>
+						)}
 
 						<a
 							className="project_window_repo"

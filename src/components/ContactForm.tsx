@@ -60,6 +60,7 @@ type UIText = {
 	success: string;
 	error: string;
 	invalid: string;
+	e2ee: string; // the note under the message field, introduced by a star
 	captchaMissing: string; // the verification isn't done yet
 	captchaFailed: string; // the API refused the verification
 	captchaUnavailable: string; // the Cloudflare script could not be loaded
@@ -217,7 +218,10 @@ export function ContactForm({ ui, lang }: { ui: UIText; lang: Lang }) {
 			</label>
 
 			<label className="contact_field">
-				<span>{ui.messageLabel}</span>
+				<span>
+					{ui.messageLabel}
+					<span className="contact_star" aria-hidden="true"> *</span>
+				</span>
 				<textarea
 					required
 					rows={5}
@@ -226,6 +230,10 @@ export function ContactForm({ ui, lang }: { ui: UIText; lang: Lang }) {
 					onChange={(e) => setMessage(e.target.value)}
 				/>
 			</label>
+
+			<p className="contact_note">
+				<span className="contact_star" aria-hidden="true">*</span> {ui.e2ee}
+			</p>
 
 			{/* Cloudflare Turnstile draws itself here (fixed height: the form must not jump when it loads) */}
 			<div ref={widgetRef} className="contact_turnstile" />

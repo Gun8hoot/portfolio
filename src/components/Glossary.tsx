@@ -37,7 +37,7 @@ export const GLOSSARY: Record<string, Entry> = {
 	"Python": {
 		url: "https://www.python.org",
 		en: "Readable high-level language, widely used for scripting, automation, data and security tooling.",
-		fr: "Langage de haut niveau lisible, très utilisé pour le script, l'automatisation, la data et les outils de sécurité.",
+		fr: "Langage de haut niveau lisible, très utilisé pour le script, l'automatisation, les données et les outils de sécurité.",
 	},
 	"GNU Make": {
 		url: "https://www.gnu.org/software/make/",
@@ -48,7 +48,7 @@ export const GLOSSARY: Record<string, Entry> = {
 	// reversing
 	"Ghidra": {
 		url: "https://ghidra-sre.org",
-		en: "Open-source reverse engineering suite released by the NSA, with a disassembler and decompiler to analyse compiled programs.",
+		en: "Open-source reverse engineering suite released by the NSA, with a disassembler and decompiler to analyze compiled programs.",
 		fr: "Suite de reverse engineering open source publiée par la NSA, avec désassembleur et décompilateur pour analyser des programmes compilés.",
 	},
 	"Radare2": {
@@ -177,8 +177,8 @@ export const GLOSSARY: Record<string, Entry> = {
 	},
 	"Go": {
 		url: "https://go.dev",
-		en: "Go is a simple, efficient programming language developed by Google, known for its clean syntax, concurrency (goroutines), and static typing, used for building scalable applications.",
-		fr: "Go est un langage simple et efficace développé par Google, connu pour sa syntaxe claire, sa concurrence (goroutines) et son typage statique, utilisé pour construire des applications échelonnables.",
+		en: "Go is a simple, efficient programming language developed by Google, known for its clean syntax, concurrency (goroutines) and static typing, used for building scalable applications.",
+		fr: "Go est un langage simple et efficace développé par Google, connu pour sa syntaxe claire, sa gestion de la concurrence (goroutines) et son typage statique, utilisé pour construire des applications évolutives.",
 	},
 
 	// words used in the text of the page
@@ -194,10 +194,41 @@ export const GLOSSARY: Record<string, Entry> = {
 		fr: "La première partie obligatoire du cursus de 42 : une série de projets réalisés en apprentissage entre pairs.",
 	},
 	"cryptography": {
-		aliases: ["cryptographie"],
+		aliases: ["cryptographie", "Cryptography", "Cryptographie"],
 		url: "https://en.wikipedia.org/wiki/Cryptography",
 		en: "The science of securing information with mathematics: encryption, hashing and signatures keep data confidential, intact and authentic.",
 		fr: "La science qui protège l'information grâce aux mathématiques : chiffrement, hachage et signatures garantissent la confidentialité, l'intégrité et l'authenticité des données.",
+	},
+	"piscine": {
+		aliases: ["Piscine"],
+		url: "https://42.fr",
+		en: "The intensive selection bootcamp of 42, about a month long: candidates learn to code through daily projects and peer evaluation.",
+		fr: "La période de sélection intensive de 42, d'environ un mois : les candidats apprennent à coder par des projets quotidiens et l'évaluation par les pairs.",
+	},
+	"LLM": {
+		url: "https://en.wikipedia.org/wiki/Large_language_model",
+		en: "Large Language Model: an AI model trained on huge amounts of text, able to read, summarize and generate text.",
+		fr: "Large Language Model (grand modèle de langage) : un modèle d'IA entraîné sur d'énormes quantités de texte, capable de lire, résumer et générer du texte.",
+	},
+	"Django": {
+		url: "https://www.djangoproject.com",
+		en: "High-level Python web framework that comes with an ORM, authentication and an admin interface.",
+		fr: "Framework web Python de haut niveau fourni avec un ORM, l'authentification et une interface d'administration.",
+	},
+	"Adminer": {
+		url: "https://www.adminer.org",
+		en: "Lightweight database management tool delivered as a single PHP file and used from a web browser.",
+		fr: "Outil léger de gestion de bases de données, fourni dans un seul fichier PHP et utilisable depuis un navigateur web.",
+	},
+	"La Suite numérique": {
+		url: "https://lasuite.numerique.gouv.fr",
+		en: "Suite of open-source collaborative tools built for the French public administration, including Docs and Drive.",
+		fr: "Suite d'outils collaboratifs open source conçue pour l'administration française, dont Docs et Drive.",
+	},
+	"DINUM": {
+		url: "https://www.numerique.gouv.fr/dinum/",
+		en: "The French interministerial digital directorate, in charge of the State's digital strategy.",
+		fr: "La Direction interministérielle du numérique, chargée de la stratégie numérique de l'État.",
 	},
 	"LZ4": {
 		url: "https://lz4.org",
@@ -263,7 +294,7 @@ export const GLOSSARY: Record<string, Entry> = {
 	"ncurses": {
 		url: "https://en.wikipedia.org/wiki/Ncurses",
 		en: "C library that makes it easy and quick to build text-based user interfaces (TUIs).",
-		fr: "Bibliothèque C permettant d'intégrer facilement et rapidement des interfaces utilisateur en mode texte (TUI).",
+		fr: "Bibliothèque C permettant de créer facilement et rapidement des interfaces utilisateur en mode texte (TUI).",
 	},
 	"WordPress": {
 		url: "https://wordpress.com/website-builder/",
@@ -278,30 +309,30 @@ export const GLOSSARY: Record<string, Entry> = {
 	"frontend": {
 		url: "https://en.wikipedia.org/wiki/Front-end_web_development",
 		en: "The part of a website or application that the user sees and interacts with: the pages, the buttons, the menus and their appearance.",
-		fr: "Partie d’un site ou d’une application que l’utilisateur voit et avec laquelle il interagit : les pages, les boutons, les menus et leur apparence.",
+		fr: "Partie d'un site ou d'une application que l'utilisateur voit et avec laquelle il interagit : les pages, les boutons, les menus et leur apparence.",
 	},
 	"backend": {
 		url: "https://www.geeksforgeeks.org/blogs/backend-development/",
 		en: "The invisible part of a website or application that works behind the scenes. It handles requests, applies business rules and communicates with the database.",
-		fr: "Partie invisible d’un site ou d’une application qui travaille en coulisses. Elle s'occupe de traiter les demandes, applique les règles et échange avec la base de données.",
+		fr: "Partie invisible d'un site ou d'une application qui travaille en coulisses. Elle traite les demandes, applique les règles métier et échange avec la base de données.",
 	},
 	"base de données": {
 		aliases: ["databases", "database"],
 		url: "https://www.geeksforgeeks.org/blogs/backend-development/",
 		en: "A place where software stores information in an organized way, so that data can be added, removed, modified or viewed simply and from a central location.",
-		fr: "C'est un endroit où un logiciel stocke des informations de façon organisée pour pouvoir ajouter, supprimer, modifier ou voir ces données simplement et de façon centralisée.",
+		fr: "Endroit où un logiciel stocke des informations de façon organisée, afin de pouvoir ajouter, supprimer, modifier ou consulter ces données simplement et de façon centralisée.",
 	},
 	"librairie externe": {
-		aliases: ["external library"],
+		aliases: ["external library", "bibliothèque externe"],
 		url: "https://www.geeksforgeeks.org/blogs/backend-development/",
 		en: "A file that contains a set of functions meant to be reused in other projects.",
-		fr: "Est un fichier qui contient un ensemble de fonctions permettant de les réutiliser dans d'autres projets.",
+		fr: "Fichier qui contient un ensemble de fonctions à réutiliser dans d'autres projets.",
 	},
 	"accès anonyme": {
 		aliases: ["anonymous access"],
 		url: "https://www.geeksforgeeks.org/blogs/backend-development/",
 		en: "On many FTP servers, an option can be enabled to allow or disallow logging in to the \"anonymous\" account, giving access to the files present on the server without needing to create a guest account yourself.",
-		fr: "Dans de nombreux serveurs FTP, il est possible d'activer une option autorisant ou non la connexion au compte \"anonymous\", afin de donner accès aux fichiers présents sur le serveur sans qu'il soit nécessaire de créer soi-même un compte invité.",
+		fr: "Sur de nombreux serveurs FTP, il est possible d'activer une option qui autorise ou non la connexion au compte « anonymous », donnant accès aux fichiers présents sur le serveur sans qu'il soit nécessaire de créer soi-même un compte invité.",
 	},
 	"IRC": {
 		url: "https://www.rfc-editor.org/rfc/rfc2812",
@@ -452,7 +483,7 @@ export const GLOSSARY: Record<string, Entry> = {
 
 	// networking
 	"Unix socket": {
-		aliases: ["Unix sockets"],
+		aliases: ["Unix sockets", "sockets Unix", "socket Unix"],
 		url: "https://man7.org/linux/man-pages/man7/unix.7.html",
 		en: "Inter-process communication endpoint used to exchange data between processes, either on the same machine or over a network.",
 		fr: "Point de communication inter-processus utilisé pour échanger des données entre processus, sur une même machine ou via le réseau.",

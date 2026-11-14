@@ -120,47 +120,71 @@ a
 }
 
 /* Leaving: the log flickers, tears (the .boot--tear slices below) and fades out.
-   The 700ms must match LEAVE_MS in Boot.tsx. */
+   The 1200ms must match LEAVE_MS in Boot.tsx. */
 .boot--leaving {
-	animation: boot-out 700ms ease-in forwards;
+	animation: boot-out 1200ms ease-in forwards;
 }
 
 /* One slice of the tear: a full copy of the log, cut to a band of the screen and
    thrown sideways in jumps. It is opaque (same color as the page) so it hides the
    original under it, and its red/blue fringes are the color split of a glitching screen. */
 .boot--tear {
-	--unit: max(2.5vw, 14px); /* how far a jump goes, times the band's own k */
+	--unit: max(3.5vw, 18px); /* how far a jump goes, times the band's own k */
 
 	z-index: 5;
 	pointer-events: none;
 	background: #1C1C1C;
 	clip-path: inset(var(--top) 0 var(--bottom) 0);
-	text-shadow: 2px 0 var(--terminal-red-bold), -2px 0 var(--terminal-blue-bold);
-	animation:
-		boot-tear 700ms steps(1, end) var(--delay) both,
-		boot-out 700ms ease-in forwards;
+	/* Smooth tear: each slice is its own GPU layer, painted once, then only moved (transform).
+	   The fade and flicker are NOT animated per slice: .boot_tear_group does it once for all.
+	   The red/blue text-shadow fringe was removed on purpose: it made every glyph of every slice
+	   expensive to paint. To get it back, add:
+	   text-shadow: 2px 0 var(--terminal-red-bold), -2px 0 var(--terminal-blue-bold); */
+	will-change: transform;
+	contain: strict;
+	animation: boot-tear 1000ms steps(1, end) var(--delay) both;
+}
+
+/* Holds all the slices and fades / flickers them together (a single opacity animation). */
+.boot_tear_group {
+	position: fixed;
+	inset: 0;
+	z-index: 5;
+	pointer-events: none;
+	animation: boot-out 1200ms ease-in forwards;
 }
 
 @keyframes boot-tear {
 	0%   { transform: translateX(0); }
-	10%  { transform: translateX(calc(var(--unit) * var(--k))); }
-	22%  { transform: translateX(calc(var(--unit) * var(--k) * -0.6)); }
-	34%  { transform: translateX(calc(var(--unit) * var(--k) * 1.5)); }
-	46%  { transform: translateX(0); }
-	58%  { transform: translateX(calc(var(--unit) * var(--k) * -1.2)); }
-	72%  { transform: translateX(calc(var(--unit) * var(--k) * 0.8)); }
-	86%  { transform: translateX(calc(var(--unit) * var(--k) * -0.4)); }
-	100% { transform: translateX(calc(var(--unit) * var(--k) * 0.2)); }
+	5%   { transform: translateX(calc(var(--unit) * var(--k))); }
+	11%  { transform: translateX(calc(var(--unit) * var(--k) * -0.6)); }
+	17%  { transform: translateX(calc(var(--unit) * var(--k) * 1.5)); }
+	23%  { transform: translateX(0); }
+	29%  { transform: translateX(calc(var(--unit) * var(--k) * -1.2)); }
+	35%  { transform: translateX(calc(var(--unit) * var(--k) * 0.8)); }
+	41%  { transform: translateX(calc(var(--unit) * var(--k) * -1.6)); }
+	47%  { transform: translateX(calc(var(--unit) * var(--k) * 0.3)); }
+	53%  { transform: translateX(calc(var(--unit) * var(--k) * 1.3)); }
+	60%  { transform: translateX(calc(var(--unit) * var(--k) * -0.9)); }
+	67%  { transform: translateX(0); }
+	74%  { transform: translateX(calc(var(--unit) * var(--k) * 0.9)); }
+	81%  { transform: translateX(calc(var(--unit) * var(--k) * -0.5)); }
+	90%  { transform: translateX(calc(var(--unit) * var(--k) * 0.4)); }
+	100% { transform: translateX(calc(var(--unit) * var(--k) * -0.2)); }
 }
 
 /* a few brightness flickers, then the fade-out */
 @keyframes boot-out {
 	0%   { opacity: 1; }
-	14%  { opacity: 0.8; }
-	20%  { opacity: 1; }
-	44%  { opacity: 0.88; }
+	8%   { opacity: 0.8; }
+	12%  { opacity: 1; }
+	26%  { opacity: 0.85; }
+	30%  { opacity: 1; }
+	46%  { opacity: 0.88; }
 	50%  { opacity: 1; }
-	70%  { opacity: 1; }
+	62%  { opacity: 0.9; }
+	66%  { opacity: 1; }
+	80%  { opacity: 1; }
 	100% { opacity: 0; }
 }
 
@@ -171,8 +195,8 @@ a
 
 /* reduced motion: no tear, no flicker, just the fade */
 @media (prefers-reduced-motion: reduce) {
-	.boot--tear { display: none; }
-	.boot--leaving { animation: boot-fade 700ms ease-in forwards; }
+	.boot--tear, .boot_tear_group { display: none; }
+	.boot--leaving { animation: boot-fade 1200ms ease-in forwards; }
 }
 
 .boot_messages
@@ -228,9 +252,10 @@ a
 /* ---------- language toggle (top right) ---------- */
 .lang_toggle
 {
-	position: absolute;
+	position: fixed; /* stays on screen while the page scrolls */
 	top: 1rem;
-	right: 1rem;
+	right: calc(1rem + var(--lock-pad, 0px)); /* --lock-pad: width of the scrollbar hidden by an open project window (see ProjectWindow.tsx), so the button doesn't jump */
+	z-index: 12; /* above the page, below the tutorial (15) and the windows (20+) */
 	display: flex;
 	gap: 0.4em;
 	padding: 0.2rem 0.5rem;
@@ -238,7 +263,7 @@ a
 	font-size: 0.9rem;
 	line-height: 1.5;
 	color: var(--muted);
-	background: none;
+	background: rgba(28, 28, 28, 0.85); /* readable over the lines that scroll under it */
 	border: 0;
 	cursor: pointer;
 	animation: fade-in 600ms ease-out backwards;

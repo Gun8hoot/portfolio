@@ -46,15 +46,23 @@ export function ProjectWindow({
 	const [pictureOpen, setPictureOpen] = useState(false);
 	const pictureBtnRef = useRef<HTMLButtonElement>(null);
 
+	// onClose is a new function on every render of the parent: keep the latest one in a ref, so the
+	// effect below runs only once (otherwise the focus would be pulled back to the close button
+	// each time the page re-renders, for example when the language changes).
+	const onCloseRef = useRef(onClose);
+	useEffect(() => {
+		onCloseRef.current = onClose;
+	});
+
 	// Keyboard: focus the close button on open, Escape closes it.
 	useEffect(() => {
 		closeRef.current?.focus();
 		const onKey = (e: KeyboardEvent) => {
-			if (e.key === "Escape") onClose();
+			if (e.key === "Escape") onCloseRef.current();
 		};
 		document.addEventListener("keydown", onKey);
 		return () => document.removeEventListener("keydown", onKey);
-	}, [onClose]);
+	}, []);
 
 	// Lock the page behind the window: nothing scrolls while it's open.
 	// Hiding the scrollbar changes the viewport's width, and the window is
@@ -71,10 +79,13 @@ export function ProjectWindow({
 		document.body.style.overflow = "hidden";
 		if (scrollbarWidth > 0) {
 			document.body.style.paddingRight = `${scrollbarWidth}px`;
+			// fixed elements (the EN / FR button) ignore the body's padding: they read this instead
+			document.documentElement.style.setProperty("--lock-pad", `${scrollbarWidth}px`);
 		}
 		return () => {
 			document.body.style.overflow = prevOverflow;
 			document.body.style.paddingRight = prevPaddingRight;
+			document.documentElement.style.removeProperty("--lock-pad");
 		};
 	}, []);
 

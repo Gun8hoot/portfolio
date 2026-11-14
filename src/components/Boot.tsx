@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties } from "react";
-import '../index.css'
 import type { Lang } from "./Glossary";
 
 const SKIP_TEXT: Record<Lang, string> = {
@@ -281,20 +280,39 @@ const LINES = [
 
 const LINE_DELAY = 10;   // ms between lines
 const CLEAR_DELAY = 300; // ms to keep the full log visible
-const LEAVE_MS = 700;    // screen tear + fade-out; must match the animations of .boot--leaving / .boot--tear in index.css
-const TEAR_KEEP = 200;   // the tear slices only redraw the last lines: all the rest is out of sight anyway
+const LEAVE_MS = 1200;   // screen tear + fade-out; must match the animations of .boot--leaving / .boot--tear in index.css
+// The tear slices only redraw the last lines that fit on the screen (measured when the tear starts):
+// every slice is a full copy of them, so fewer lines means a much cheaper tear.
+const measureTail = (viewport: HTMLElement | null, count: number) => {
+  if (!viewport) return count;
+  const lines = viewport.querySelectorAll<HTMLElement>(".boot_messages p");
+  let height = 0;
+  let n = 0;
+  for (let i = lines.length - 1; i >= 0 && height < viewport.clientHeight; i--) {
+    height += lines[i].offsetHeight;
+    n++;
+  }
+  return Math.min(count, n + 2); // a little margin
+};
 
 // The slices of the screen tear: [from %, to %, k, delay ms].
-// from/to: the band of the screen it covers. k: how far it jumps sideways (signed: left or right).
-// The bands are uneven on purpose, with gaps of untouched screen between them.
+// The bands touch each other and cover the whole screen from 0 to 100 %, so no line is left out;
+// every k is at least 1.2 in either direction, so every band really jumps.
 const TEAR_BANDS: [number, number, number, number][] = [
-  [3, 12, 1.2, 0],
-  [15, 22, -2, 40],
-  [28, 33, 3, 20],
-  [41, 55, -1, 70],
-  [60, 64, 2.4, 0],
-  [70, 82, -1.6, 50],
-  [88, 94, 1.4, 30],
+  [0, 6, 2.2, 0],
+  [6, 11, -1.4, 80],
+  [11, 19, 3, 30],
+  [19, 24, -2.6, 150],
+  [24, 33, 1.6, 60],
+  [33, 38, -3.4, 190],
+  [38, 47, 2.4, 20],
+  [47, 52, -1.2, 120],
+  [52, 61, 3.8, 90],
+  [61, 67, -2, 170],
+  [67, 76, 1.8, 40],
+  [76, 82, -3, 140],
+  [82, 91, 2.6, 10],
+  [91, 100, -1.6, 100],
 ];
 
 // A tear slice is scrolled to the end like the real log, so it lines up with it exactly.
@@ -345,9 +363,15 @@ export function Boot({ onDone, lang }: { onDone?: () => void; lang: Lang }) {
     if (el) el.scrollTop = el.scrollHeight;
   }, [count]);
 
+  const tailLength = useMemo(
+    () => (phase === "leaving" ? measureTail(viewportRef.current, count) : 0),
+    [phase], // eslint-disable-line react-hooks/exhaustive-deps
+  );
+
   if (phase === "done") return null;
 
-  const firstTail = Math.max(0, count - TEAR_KEEP);
+  // Measured once, when the tear starts (the log is not growing any more by then).
+  const firstTail = Math.max(0, count - tailLength);
 
   return (
     <>
@@ -366,22 +390,24 @@ export function Boot({ onDone, lang }: { onDone?: () => void; lang: Lang }) {
 
       {/* Leaving: the same log is drawn again as horizontal slices that jump sideways,
           each one covering its band of the real log: a screen tear. */}
-      {phase === "leaving" &&
-        TEAR_BANDS.map(([from, to, k, delay]) => (
-          <div
-            key={from}
-            ref={scrollToEnd}
-            className="boot boot--tear"
-            aria-hidden="true"
-            style={{ "--top": `${from}%`, "--bottom": `${100 - to}%`, "--k": k, "--delay": `${delay}ms` } as CSSProperties}
-          >
-            <div className="boot_messages">
-              {LINES.slice(firstTail, count).map((line, i) => (
-                <p key={firstTail + i}>{line}</p>
-              ))}
+      {phase === "leaving" && (
+        <div className="boot_tear_group" aria-hidden="true">
+          {TEAR_BANDS.map(([from, to, k, delay]) => (
+            <div
+              key={from}
+              ref={scrollToEnd}
+              className="boot boot--tear"
+              style={{ "--top": `${from}%`, "--bottom": `${100 - to}%`, "--k": k, "--delay": `${delay}ms` } as CSSProperties}
+            >
+              <div className="boot_messages">
+                {LINES.slice(firstTail, count).map((line, i) => (
+                  <p key={firstTail + i}>{line}</p>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+      )}
     </>
   );
 }

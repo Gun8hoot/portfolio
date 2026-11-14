@@ -14,6 +14,11 @@ export function PictureWindow({
 	onClose: () => void;
 }) {
 	const closeRef = useRef<HTMLButtonElement>(null);
+	// Latest onClose, so the effect below runs only once (see ProjectWindow.tsx).
+	const onCloseRef = useRef(onClose);
+	useEffect(() => {
+		onCloseRef.current = onClose;
+	});
 
 	useEffect(() => {
 		closeRef.current?.focus();
@@ -22,12 +27,12 @@ export function PictureWindow({
 		const onKey = (e: KeyboardEvent) => {
 			if (e.key === "Escape") {
 				e.stopPropagation();
-				onClose();
+				onCloseRef.current();
 			}
 		};
 		window.addEventListener("keydown", onKey, true);
 		return () => window.removeEventListener("keydown", onKey, true);
-	}, [onClose]);
+	}, []);
 
 	return (
 		<div

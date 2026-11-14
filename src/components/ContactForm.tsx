@@ -42,7 +42,6 @@ const loadTurnstile = () =>
 		const script = document.createElement("script");
 		script.src = TURNSTILE_SCRIPT;
 		script.async = true;
-		script.defer = true;
 		script.onload = () => resolve();
 		script.onerror = () => {
 			turnstileScript = null; // blocked or offline: allow a retry on the next render
@@ -97,7 +96,7 @@ export function ContactForm({ ui, lang }: { ui: UIText; lang: Lang }) {
 
 	// Turnstile: the widget gives a token once the visitor passes; the API checks it with Cloudflare.
 	const widgetRef = useRef<HTMLDivElement>(null);
-	const widgetId = useRef<string>();
+	const widgetId = useRef<string | undefined>(undefined);
 	const [token, setToken] = useState("");
 	const [widgetBlocked, setWidgetBlocked] = useState(false);
 
@@ -193,7 +192,7 @@ export function ContactForm({ ui, lang }: { ui: UIText; lang: Lang }) {
 	};
 
 	return (
-		<form className="contact_form" onSubmit={onSubmit} noValidate={false}>
+		<form className="contact_form" onSubmit={onSubmit}>
 			{/* Honeypot: hidden from sighted and keyboard users, left empty by them, often filled by bots. */}
 			<label className="contact_honeypot" aria-hidden="true">
 				Leave this field empty

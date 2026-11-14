@@ -1,5 +1,4 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import "../index.css";
 import type { Lang, Localized } from "./Glossary";
 import { Term, TermProvider, renderTerms } from "./Term";
 import { ProjectWindow } from "./ProjectWindow";
@@ -12,9 +11,6 @@ import { ContactForm } from "./ContactForm";
 // (e.g. picture: "../assets/logos/midona.svg") will 404, even if the file exists.
 import midonaPicture from "../assets/images/logo/midona.svg";
 import ctrl_tuiPreview from "../assets/images/preview/ctrl_tui.png";
-// TODO: as you add the other picture files under src/assets/logos/, import each
-// one the same way, e.g.:
-// import inceptionPicture from "../assets/logos/inception.svg";
 
 type Profile = { label: string; href: string };
 export type Project = {
@@ -55,9 +51,7 @@ const UI = {
 			"Low-level development in C and C++",
 			"Software reverse engineering with Ghidra, Radare2 and JADX",
 			"Penetration testing",
-			"Cryptography",
 			"System administration on Linux",
-			"Networking",
 		],
 		searching: "I'm currently looking for an internship or apprenticeship in system administration, cybersecurity or DevOps/DevSecOps, between Paris and Le Havre.",
 		ssh: "A terminal version of this portfolio is available. To access it, log in using: ssh portfolio@nathan.clavel.sh",
@@ -89,9 +83,7 @@ const UI = {
 			"Du développement bas niveau en C et C++",
 			"De la rétro-ingénierie logicielle avec Ghidra, Radare2 et JADX",
 			"Du pentest",
-			"De la cryptographie",
 			"De l'administration système sous Linux",
-			"Du réseau",
 		],
 		ssh: "Une version « terminal » de ce portfolio est disponible. Pour y accéder, connectez-vous à l'aide de : ssh portfolio@nathan.clavel.sh",
 		searching: "Je suis actuellement à la recherche d'un stage ou d'une alternance en administration système, cybersécurité ou DevOps/DevSecOps, entre Paris et Le Havre.", // TO CREATE REDIRECTION
@@ -332,7 +324,7 @@ const PROJECTS: Project[] = [
 	},
 ];
 
-// TODO: replace this example with your real hackathons. An empty list hides the section.
+// An empty list hides the hackathons section.
 const HACKATHONS: Hackathon[] = [
 	{
 		name: "42 x DINUM",

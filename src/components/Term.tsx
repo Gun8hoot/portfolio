@@ -33,7 +33,13 @@ const TipContext = createContext<TipApi>({
 	leave() {},
 });
 
-const hostOf = (url: string) => new URL(url).hostname.replace(/^www\./, "");
+const hostOf = (url: string) => {
+	try {
+		return new URL(url).hostname.replace(/^www\./, "");
+	} catch {
+		return url; // malformed link in the glossary: show it as written instead of crashing the page
+	}
+};
 
 /* ---------- the floating card (a link to the project page) ---------- */
 function TermCard({ tip, lang }: { tip: Tip; lang: Lang }) {

@@ -1,4 +1,3 @@
-import "../index.css";
 import type { Lang } from "./Glossary";
 
 const TEXT: Record<Lang, string> = {

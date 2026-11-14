@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import "../index.css";
 import type { Lang, Localized } from "./Glossary";
 import { Term, TermProvider, renderTerms } from "./Term";
@@ -385,8 +385,29 @@ const SKILLS: SkillGroup[] = [
 const shortUrl = (href: string) =>
 	href.replace(/^https?:\/\/(www\.)?/, "").replace(/^mailto:/, "").replace(/\/$/, "");
 
-export function Portfolio({ lang }: { lang: Lang })
+// The lines that fall in one after another when the page appears after the boot, in page order.
+const FALL_LINES = [
+	".name",
+	".section_title",
+	".description > p",
+	".description li",
+	".social > li",
+	".skill_row",
+	".project > li",
+	".hackathons > li",
+	".contact_form > .contact_field",
+	".contact_form > .contact_note",
+	".contact_form > .contact_submit",
+].join(", ");
+
+// animated: the intro animations are on (the name first, then every line falls in);
+// off: the page just slides in from the right.
+export function Portfolio({ lang, animated = false }: { lang: Lang; animated?: boolean })
 {
+	// Read once, when the page appears: switching the toggle later only counts for the next visit
+	// (changing it now would replay the entrance).
+	const [intro] = useState(animated);
+	const mainRef = useRef<HTMLElement>(null);
 	const t = UI[lang];
 	const [openProject, setOpenProject] = useState<ProjectWindowData | null>(null);
 	const [brokenPictures, setBrokenPictures] = useState<Set<string>>(new Set());
@@ -395,6 +416,21 @@ export function Portfolio({ lang }: { lang: Lang })
 	useLayoutEffect(() => {
 		window.scrollTo(0, 0);
 	}, []);
+
+	// Intro: number the lines in page order (before the first paint) so each one falls in
+	// a little after the previous one. The name comes first, alone.
+	useLayoutEffect(() => {
+		if (!intro || !mainRef.current) return;
+		let n = 0;
+		for (const el of mainRef.current.querySelectorAll<HTMLElement>(FALL_LINES)) {
+			el.classList.add("fall");
+			if (el.classList.contains("name")) {
+				el.classList.add("fall--name");
+			} else {
+				el.style.setProperty("--fall", String(n++));
+			}
+		}
+	}, [intro]);
 
 	// Preload every project's picture as soon as the page loads, so by the time
 	// someone actually opens a window we already know which pictures are broken
@@ -411,7 +447,7 @@ export function Portfolio({ lang }: { lang: Lang })
 
 	return (
 		<TermProvider lang={lang}>
-			<main className="portfolio">
+			<main ref={mainRef} className={`portfolio ${intro ? "portfolio--fall" : "portfolio--slide"}`}>
 				<h1 className="name">
 					Nathan "Gun8hoot" Clavel<span className="cursor" aria-hidden="true">█</span>
 				</h1>

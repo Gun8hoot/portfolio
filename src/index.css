@@ -112,22 +112,67 @@ a
 ====== BOOT COMPONENT ======
 ============================
 */
-@media (prefers-reduced-motion: reduce) {
-	.boot { transition: none; }
-}
-
 .boot {
 	position: fixed;
 	inset: 0;
 	overflow: hidden; /* lines that age past the top are simply clipped — no scrollbar, ever */
 	padding: 1rem 0;
-	opacity: 1;
-	transition: opacity 600ms ease-in, transform 600ms ease-in;
 }
 
+/* Leaving: the log flickers, tears (the .boot--tear slices below) and fades out.
+   The 700ms must match LEAVE_MS in Boot.tsx. */
 .boot--leaving {
-	opacity: 0;
-	transform: translateX(-12px); /* drifts up slightly as it fades */
+	animation: boot-out 700ms ease-in forwards;
+}
+
+/* One slice of the tear: a full copy of the log, cut to a band of the screen and
+   thrown sideways in jumps. It is opaque (same color as the page) so it hides the
+   original under it, and its red/blue fringes are the color split of a glitching screen. */
+.boot--tear {
+	--unit: max(2.5vw, 14px); /* how far a jump goes, times the band's own k */
+
+	z-index: 5;
+	pointer-events: none;
+	background: #1C1C1C;
+	clip-path: inset(var(--top) 0 var(--bottom) 0);
+	text-shadow: 2px 0 var(--terminal-red-bold), -2px 0 var(--terminal-blue-bold);
+	animation:
+		boot-tear 700ms steps(1, end) var(--delay) both,
+		boot-out 700ms ease-in forwards;
+}
+
+@keyframes boot-tear {
+	0%   { transform: translateX(0); }
+	10%  { transform: translateX(calc(var(--unit) * var(--k))); }
+	22%  { transform: translateX(calc(var(--unit) * var(--k) * -0.6)); }
+	34%  { transform: translateX(calc(var(--unit) * var(--k) * 1.5)); }
+	46%  { transform: translateX(0); }
+	58%  { transform: translateX(calc(var(--unit) * var(--k) * -1.2)); }
+	72%  { transform: translateX(calc(var(--unit) * var(--k) * 0.8)); }
+	86%  { transform: translateX(calc(var(--unit) * var(--k) * -0.4)); }
+	100% { transform: translateX(calc(var(--unit) * var(--k) * 0.2)); }
+}
+
+/* a few brightness flickers, then the fade-out */
+@keyframes boot-out {
+	0%   { opacity: 1; }
+	14%  { opacity: 0.8; }
+	20%  { opacity: 1; }
+	44%  { opacity: 0.88; }
+	50%  { opacity: 1; }
+	70%  { opacity: 1; }
+	100% { opacity: 0; }
+}
+
+@keyframes boot-fade {
+	from { opacity: 1; }
+	to   { opacity: 0; }
+}
+
+/* reduced motion: no tear, no flicker, just the fade */
+@media (prefers-reduced-motion: reduce) {
+	.boot--tear { display: none; }
+	.boot--leaving { animation: boot-fade 700ms ease-in forwards; }
 }
 
 .boot_messages
@@ -628,7 +673,7 @@ button.link
 .tutorial
 {
 	position: fixed;
-	top: 1rem;
+	top: 4rem; /* under the animations toggle (keep in sync with BOX_TOP_REM in Tutorial.tsx) */
 	left: 1rem;
 	z-index: 15; /* below .project_overlay (20): opening a project covers it */
 	box-sizing: border-box;
@@ -752,6 +797,87 @@ button.link
 }
 
 /* ---------- animation ---------- */
+/* ---------- intro: animations off, the page slides in from the right (like the old version) ---------- */
+.portfolio--slide
+{
+	--slide-from: 2.5rem;
+}
+
+/* ---------- intro: the name first, then every line falls in ---------- */
+.portfolio--fall
+{
+	animation: none; /* the page itself stays still: only its lines move */
+}
+
+.fall
+{
+	/* "backwards": invisible while waiting for its turn, and nothing left over once it has landed */
+	animation: fall-in 650ms cubic-bezier(0.22, 0.9, 0.3, 1) backwards;
+	/* --fall is the line's number (set in Portfolio.tsx); the wait is capped so long pages don't take forever */
+	animation-delay: calc(500ms + min(var(--fall, 0), 28) * 55ms);
+}
+
+.fall--name
+{
+	animation-duration: 800ms;
+	animation-delay: 0ms;
+}
+
+@keyframes fall-in
+{
+	from { opacity: 0; transform: translateY(-1.2rem); }
+	to   { opacity: 1; transform: none; }
+}
+
+/* ---------- intro-animations toggle (top left, on the same line as the language toggle) ---------- */
+.anim_toggle
+{
+	position: absolute;
+	top: 1rem;
+	left: 1rem;
+	padding: 0.2rem 0.5rem;
+	font-family: monaspaceArgon-Medium;
+	font-size: 0.8rem;
+	line-height: 1.5;
+	color: var(--muted);
+	background: none;
+	border: 0;
+	cursor: pointer;
+	opacity: 0.35; /* grey and discreet until it is hovered */
+	transition: opacity 150ms ease-out, color 150ms ease-out;
+	animation: fade-from-zero 600ms ease-out backwards;
+}
+
+.anim_toggle:focus-visible
+{
+	opacity: 1;
+	color: var(--accent);
+	outline: none;
+}
+
+/* the tutorial is pointing at it: not faded for once (its dashed outline comes from .tutorial_target) */
+.anim_toggle.tutorial_target
+{
+	opacity: 1;
+	color: var(--accent);
+}
+
+/* hover only on devices that really hover, so it doesn't stay stuck after a tap */
+@media (hover: hover)
+{
+	.anim_toggle:hover
+	{
+		opacity: 1;
+		color: var(--accent);
+	}
+}
+
+/* only a start: it fades in up to the opacity the element already has */
+@keyframes fade-from-zero
+{
+	from { opacity: 0; }
+}
+
 @keyframes portfolio-in
 {
 	from { opacity: 0; transform: translateX(var(--slide-from)); }
@@ -775,6 +901,8 @@ button.link
 {
 	.portfolio,
 	.lang_toggle,
+	.anim_toggle,
+	.fall,
 	.term_card,
 	.portfolio .cursor { animation: none; }
 }

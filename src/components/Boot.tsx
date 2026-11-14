@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 import '../index.css'
 import type { Lang } from "./Glossary";
 
@@ -280,7 +281,26 @@ const LINES = [
 
 const LINE_DELAY = 10;   // ms between lines
 const CLEAR_DELAY = 300; // ms to keep the full log visible
-const FADE_MS = 400;     // must match the CSS transition duration
+const LEAVE_MS = 700;    // screen tear + fade-out; must match the animations of .boot--leaving / .boot--tear in index.css
+const TEAR_KEEP = 200;   // the tear slices only redraw the last lines: all the rest is out of sight anyway
+
+// The slices of the screen tear: [from %, to %, k, delay ms].
+// from/to: the band of the screen it covers. k: how far it jumps sideways (signed: left or right).
+// The bands are uneven on purpose, with gaps of untouched screen between them.
+const TEAR_BANDS: [number, number, number, number][] = [
+  [3, 12, 1.2, 0],
+  [15, 22, -2, 40],
+  [28, 33, 3, 20],
+  [41, 55, -1, 70],
+  [60, 64, 2.4, 0],
+  [70, 82, -1.6, 50],
+  [88, 94, 1.4, 30],
+];
+
+// A tear slice is scrolled to the end like the real log, so it lines up with it exactly.
+const scrollToEnd = (el: HTMLDivElement | null) => {
+  if (el) el.scrollTop = el.scrollHeight;
+};
 
 type Phase = "typing" | "leaving" | "done";
 
@@ -310,13 +330,13 @@ export function Boot({ onDone, lang }: { onDone?: () => void; lang: Lang }) {
     return () => clearTimeout(id);
   }, [count, phase]);
 
-  // leaving phase: wait for the fade, then remove
+  // leaving phase: wait for the tear and the fade, then remove
   useEffect(() => {
     if (phase !== "leaving") return;
     const id = setTimeout(() => {
       setPhase("done");
       onDone?.();
-    }, FADE_MS);
+    }, LEAVE_MS);
     return () => clearTimeout(id);
   }, [phase]);
 
@@ -327,18 +347,41 @@ export function Boot({ onDone, lang }: { onDone?: () => void; lang: Lang }) {
 
   if (phase === "done") return null;
 
+  const firstTail = Math.max(0, count - TEAR_KEEP);
+
   return (
-    <div ref={viewportRef} className={`boot ${phase === "leaving" ? "boot--leaving" : ""}`}>
-      <div className="boot_messages">
-        {LINES.slice(0, count).map((line, i) => (
-          <p key={i}>{line}</p>
-        ))}
+    <>
+      <div ref={viewportRef} className={`boot ${phase === "leaving" ? "boot--leaving" : ""}`}>
+        <div className="boot_messages">
+          {LINES.slice(0, count).map((line, i) => (
+            <p key={i}>{line}</p>
+          ))}
+        </div>
+        {phase === "typing" && (
+          <button type="button" className="boot_skip" onClick={skip}>
+            {SKIP_TEXT[lang]}
+          </button>
+        )}
       </div>
-      {phase === "typing" && (
-        <button type="button" className="boot_skip" onClick={skip}>
-          {SKIP_TEXT[lang]}
-        </button>
-      )}
-    </div>
+
+      {/* Leaving: the same log is drawn again as horizontal slices that jump sideways,
+          each one covering its band of the real log: a screen tear. */}
+      {phase === "leaving" &&
+        TEAR_BANDS.map(([from, to, k, delay]) => (
+          <div
+            key={from}
+            ref={scrollToEnd}
+            className="boot boot--tear"
+            aria-hidden="true"
+            style={{ "--top": `${from}%`, "--bottom": `${100 - to}%`, "--k": k, "--delay": `${delay}ms` } as CSSProperties}
+          >
+            <div className="boot_messages">
+              {LINES.slice(firstTail, count).map((line, i) => (
+                <p key={firstTail + i}>{line}</p>
+              ))}
+            </div>
+          </div>
+        ))}
+    </>
   );
 }

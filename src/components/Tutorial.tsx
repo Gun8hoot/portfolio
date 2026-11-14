@@ -8,6 +8,8 @@ const STORAGE_KEY = "tutorial_seen";
 const SHOW_DELAY = 800;
 // Space kept between the bottom of the box and the highlighted element (px).
 const MARGIN = 24;
+// Distance of the box from the top of the screen, in rem (see .tutorial in index.css).
+const BOX_TOP_REM = 4;
 
 const alreadySeen = () => {
 	try {
@@ -33,6 +35,14 @@ const STEPS: Step[] = [
 		text: {
 			en: "Use the EN / FR button at the top right to switch between English and French. Your choice is remembered.",
 			fr: "Le bouton EN / FR en haut à droite permet de passer du français à l'anglais, et inversement. Votre choix est mémorisé.",
+		},
+	},
+	{
+		target: ".anim_toggle",
+		title: { en: "Animations", fr: "Animations" },
+		text: {
+			en: "Not a fan of the intro animations? Click the animations button at the top left to turn them off, or back on. Your choice is remembered.",
+			fr: "Les animations d'introduction ne vous plaisent pas ? Cliquez sur le bouton « animations » en haut à gauche pour les désactiver, ou les réactiver. Votre choix est mémorisé.",
 		},
 	},
 	{
@@ -102,9 +112,10 @@ const UI: Record<
 
 type Phase = "hidden" | "ask" | "tour";
 
-export function Tutorial({ lang }: { lang: Lang }) {
+export function Tutorial({ lang, delay = SHOW_DELAY }: { lang: Lang; delay?: number }) {
 	// Decided once, when the component first renders (it only mounts after the boot).
 	const [eligible] = useState(() => !alreadySeen());
+	const [showAfter] = useState(delay); // read once: the delay depends on how the page appeared
 	const [phase, setPhase] = useState<Phase>("hidden");
 	const [index, setIndex] = useState(0);
 	const boxRef = useRef<HTMLElement>(null);
@@ -121,9 +132,9 @@ export function Tutorial({ lang }: { lang: Lang }) {
 				localStorage.setItem(STORAGE_KEY, "1");
 			} catch {}
 			setPhase("ask");
-		}, SHOW_DELAY);
+		}, showAfter);
 		return () => window.clearTimeout(timer);
-	}, [eligible]);
+	}, [eligible, showAfter]);
 
 	// Highlight the element the current step talks about, and (only when the step changes)
 	// scroll the page so that this element sits just under the box, never hidden behind it.
@@ -145,7 +156,7 @@ export function Tutorial({ lang }: { lang: Lang }) {
 		if (scrolledFor.current !== index) {
 			scrolledFor.current = index;
 			const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
-			if (step.target === ".lang_toggle") {
+			if (step.target === ".lang_toggle" || step.target === ".anim_toggle") {
 				window.scrollTo({ top: 0, behavior });
 			} else {
 				const top = el.getBoundingClientRect().top + window.scrollY - (boxBottom + MARGIN);
@@ -176,7 +187,7 @@ export function Tutorial({ lang }: { lang: Lang }) {
 			const h = box.offsetHeight;
 			const hits = (top: number) =>
 				t.right > rem - pad && t.left < rem + w + pad && t.bottom > top - pad && t.top < top + h + pad;
-			if (!hits(rem)) setPlacement("top");
+			if (!hits(BOX_TOP_REM * rem)) setPlacement("top");
 			else if (!hits(window.innerHeight - rem - h)) setPlacement("bottom");
 		};
 		const schedule = () => {

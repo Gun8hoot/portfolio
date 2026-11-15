@@ -343,21 +343,7 @@ a
 
 .portfolio .description p
 {
-	margin: 0 0 0.75rem;
-}
-
-.portfolio .description ul
-{
-	margin: 0 0 0.75rem;
-	padding: 0;
-	list-style: none;
-}
-
-.portfolio .description li::before
-{
-	content: "- ";
-	content: "- " / "";
-	color: var(--muted);
+	margin: 0 0 1.5rem; /* clear space between the paragraphs */
 }
 
 /* ---------- skills (same column grid as the links below) ---------- */
@@ -867,6 +853,8 @@ button.link
 	color: var(--muted);
 	background: none;
 	border: 0;
+	display: flex;
+	gap: 0.4em;
 	cursor: pointer;
 	opacity: 0.35; /* grey and discreet until it is hovered */
 	transition: opacity 150ms ease-out, color 150ms ease-out;
@@ -876,7 +864,7 @@ button.link
 .anim_toggle:focus-visible
 {
 	opacity: 1;
-	color: var(--accent);
+	color: var(--terminal-white-bold);
 	outline: none;
 }
 
@@ -884,7 +872,7 @@ button.link
 .anim_toggle.tutorial_target
 {
 	opacity: 1;
-	color: var(--accent);
+	color: var(--terminal-white-bold);
 }
 
 /* hover only on devices that really hover, so it doesn't stay stuck after a tap */
@@ -893,8 +881,13 @@ button.link
 	.anim_toggle:hover
 	{
 		opacity: 1;
-		color: var(--accent);
+		color: var(--terminal-white-bold);
 	}
+}
+
+.anim_toggle .anim_on
+{
+	color: var(--accent); /* the current state, like .lang_on */
 }
 
 /* only a start: it fades in up to the opacity the element already has */

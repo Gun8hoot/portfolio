@@ -247,13 +247,13 @@ export const GLOSSARY: Record<string, Entry> = {
 		fr: "Un crypter runtime est un outil qui protège le code exécuté en le chiffrant afin d'empêcher l'analyse statique et l'accès non autorisé. Le déchiffrement et la décompression du runtime crypter se font pendant l'exécution du programme, en mémoire.",
 	},
 	"Low-level development": {
-		aliases: ["développement bas niveau"],
+		aliases: ["développement bas niveau", "low-level development"],
 		url: "https://en.wikipedia.org/wiki/Low-level_programming_language",
 		en: "Programming close to the hardware: managing memory manually, working with pointers and understanding how code maps to the CPU and memory, instead of relying on the abstractions of a high-level language.",
 		fr: "Programmation proche du matériel : gestion manuelle de la mémoire, manipulation de pointeurs et compréhension de la façon dont le code se traduit au niveau du processeur et de la mémoire, plutôt que de s'appuyer sur les abstractions d'un langage haut niveau.",
 	},
 	"reverse engineering": {
-		aliases: ["rétro-ingénierie"],
+		aliases: ["rétro-ingénierie", "Reverse engineering"],
 		url: "https://www.geeksforgeeks.org/software-engineering/software-engineering-reverse-engineering",
 		en: "Software reverse engineering is the process of analyzing compiled software to deduce its original design and functionality.",
 		fr: "La rétro-ingénierie est le processus d'analyse d'un logiciel compilé pour en déduire la conception et le fonctionnement d'origine.",
@@ -269,7 +269,7 @@ export const GLOSSARY: Record<string, Entry> = {
 		fr: "Un wiper est un logiciel malveillant conçu pour effacer ou détruire les données sur un système, les rendant inaccessibles ou irrécupérables.",
 	},
 	"Penetration testing": {
-		aliases: ["pentest"],
+		aliases: ["pentest", "pentesting", "Pentesting"],
 		url: "https://www.ibm.com/think/topics/penetration-testing",
 		en: "Penetration testing is a systematic process of identifying and exploiting vulnerabilities in a system to assess its security posture.",
 		fr: "Le pentest est un processus systématique d'identification et d'exploitation de faiblesses dans un système pour évaluer son état de sécurité.",
@@ -493,5 +493,77 @@ export const GLOSSARY: Record<string, Entry> = {
 		url: "https://en.wikipedia.org/wiki/ANSI_escape_code",
 		en: "A special sequence of characters sent to a terminal to control it, like moving the cursor or changing text color, instead of printing visible text.",
 		fr: "Une suite spéciale de caractères envoyée à un terminal pour le piloter, comme déplacer le curseur ou changer la couleur du texte, plutôt que d'afficher du texte visible.",
+	},
+
+	// platforms, people and jobs mentioned in the whoami text
+	"OSINT": {
+		url: "https://en.wikipedia.org/wiki/Open-source_intelligence",
+		en: "Open-source intelligence: finding and cross-checking information from public sources such as websites, social networks, satellite images and public records.",
+		fr: "Renseignement d'origine sources ouvertes : trouver et recouper des informations issues de sources publiques comme les sites web, les réseaux sociaux, les images satellites ou les registres publics.",
+	},
+	"Bellingcat": {
+		url: "https://www.bellingcat.com",
+		en: "Independent international collective of researchers and investigators that uses open-source information to verify and document events, from conflicts to poisonings.",
+		fr: "Collectif international indépendant de chercheurs et d'enquêteurs qui s'appuie sur des sources ouvertes pour vérifier et documenter des événements, des conflits aux empoisonnements.",
+	},
+	"HackTheBox": {
+		url: "https://www.hackthebox.com",
+		en: "Online platform with intentionally vulnerable machines and challenges to practise hacking legally.",
+		fr: "Plateforme en ligne proposant des machines et des challenges volontairement vulnérables pour s'entraîner légalement au hacking.",
+	},
+	"TryHackMe": {
+		url: "https://tryhackme.com",
+		en: "Learning platform with guided rooms and labs in the browser that teach cybersecurity step by step.",
+		fr: "Plateforme d'apprentissage avec des « rooms » guidées et des labs dans le navigateur pour apprendre la cybersécurité pas à pas.",
+	},
+	"Root-Me": {
+		url: "https://www.root-me.org",
+		en: "French non-profit platform with hundreds of hacking challenges and virtual environments, from web to reverse engineering.",
+		fr: "Plateforme française à but non lucratif proposant des centaines de challenges et d'environnements virtuels de hacking, du web à la rétro-ingénierie.",
+	},
+	"CryptoHack": {
+		url: "https://cryptohack.org",
+		en: "Free platform to learn modern cryptography by solving challenges.",
+		fr: "Plateforme gratuite pour apprendre la cryptographie moderne en résolvant des challenges.",
+	},
+	"SOC": {
+		url: "https://en.wikipedia.org/wiki/Security_operations_center",
+		en: "Security Operations Center: the team that monitors an organisation's systems around the clock, sorts security alerts and responds to incidents.",
+		fr: "Security Operations Center (centre des opérations de sécurité) : l'équipe qui surveille en continu les systèmes d'une organisation, trie les alertes de sécurité et réagit aux incidents.",
+	},
+	"system administration": {
+		aliases: ["network/system administration", "administration réseau/système", "administration système", "System administration"],
+		url: "https://en.wikipedia.org/wiki/System_administrator",
+		en: "Installing, configuring and maintaining servers and networks so that services stay available, secure and up to date.",
+		fr: "Installer, configurer et maintenir des serveurs et des réseaux pour que les services restent disponibles, sécurisés et à jour.",
+	},
+	"self-hosting": {
+		aliases: ["Self-hosting", "auto-héberger", "auto-hébergement"],
+		url: "https://en.wikipedia.org/wiki/Self-hosting_(web_services)",
+		en: "Running services like websites, storage or media servers on hardware you control instead of relying on a third-party provider.",
+		fr: "Faire tourner soi-même ses services (sites web, stockage, serveurs média…) sur du matériel que l'on contrôle plutôt que chez un fournisseur tiers.",
+	},
+	"cybersecurity": {
+		aliases: ["Cybersecurity", "cybersécurité", "Cybersécurité"],
+		url: "https://en.wikipedia.org/wiki/Computer_security",
+		en: "Protecting computers, networks and data from attacks, theft and damage, by finding weaknesses and fixing them before others exploit them.",
+		fr: "Protéger les ordinateurs, les réseaux et les données contre les attaques, le vol et les dégâts, en trouvant les failles et en les corrigeant avant que d'autres ne les exploitent.",
+	},
+	"investigative journalism": {
+		aliases: ["journalisme d'investigation"],
+		url: "https://en.wikipedia.org/wiki/Investigative_journalism",
+		en: "In-depth reporting that digs into hidden or disputed facts, often over months, by cross-checking documents, data and sources.",
+		fr: "Journalisme de fond qui creuse des faits cachés ou contestés, souvent pendant des mois, en recoupant documents, données et sources.",
+	},
+	"rabbit hole": {
+		url: "https://en.wikipedia.org/wiki/Down_the_rabbit_hole",
+		en: "An idiom from Alice in Wonderland: a subject so absorbing that you keep going deeper and deeper into it.",
+		fr: "Expression tirée d'Alice au pays des merveilles : un sujet si captivant qu'on s'y enfonce de plus en plus profondément.",
+	},
+	"manga": {
+		aliases: ["mangas"],
+		url: "https://en.wikipedia.org/wiki/Manga",
+		en: "Japanese comics, read from right to left, covering every genre from action to everyday life.",
+		fr: "Bandes dessinées japonaises, lues de droite à gauche, qui couvrent tous les genres, de l'action à la vie quotidienne.",
 	},
 };

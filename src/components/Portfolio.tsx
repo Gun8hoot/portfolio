@@ -11,6 +11,9 @@ import { ContactForm } from "./ContactForm";
 // (e.g. picture: "../assets/logos/midona.svg") will 404, even if the file exists.
 import midonaPicture from "../assets/images/logo/midona.svg";
 import ctrl_tuiPreview from "../assets/images/preview/ctrl_tui.png";
+import cube3dPreview from "../assets/images/preview/cube3d.gif";
+import transcendencePreview from "../assets/images/preview/transcendence.gif";
+import minishellPreview from "../assets/images/preview/minishell.gif";
 
 type Profile = { label: string; href: string };
 export type Project = {
@@ -45,15 +48,11 @@ const UI = {
 	en: {
 		titles: { description: "whoami", skills: "skills", projects: "projects", hackathons: "hackathons", links: "links", contact: "contact" },
 		intro: `Hi, I'm Nathan "Gun8hoot" Clavel, a student at 42 Le Havre (France), aspiring to build a career in cybersecurity.`,
-		description: "I enjoy coding, reverse engineering and penetration testing, and I'm just as drawn to closely related fields like cryptography, system administration and networking.",
-		like2work: "I like to do:",
-		likes: [
-			"Low-level development in C and C++",
-			"Software reverse engineering with Ghidra, Radare2 and JADX",
-			"Penetration testing",
-			"System administration on Linux",
+		story: [
+			"I have been using computers since I was very young, but cybersecurity only really caught my attention when I came across videos and articles about the work of Bellingcat, an investigative journalism collective. The way they use OSINT in their research impressed me so much that I started digging into OSINT myself.",
+			"From there I moved on to pentesting, then to low-level development and reverse engineering, and I have been falling deeper down the computer science rabbit hole ever since.",
 		],
-		searching: "I'm currently looking for an internship or apprenticeship in system administration, cybersecurity or DevOps/DevSecOps, between Paris and Le Havre.",
+		searching: "I'm currently looking for an internship or apprenticeship in network/system administration, SOC analysis or DevOps/DevSecOps, between Paris and Le Havre.",
 		ssh: "A terminal version of this portfolio is available. To access it, log in using: ssh portfolio@nathan.clavel.sh",
 		states: { finished: "Finished", wip: "In progress" },
 		statuses: { open: "Open source", closed: "Closed source" },
@@ -77,16 +76,12 @@ const UI = {
 	fr: {
 		titles: { description: "whoami", skills: "compétences", projects: "projets", hackathons: "hackathons", links: "liens", contact: "contact" },
 		intro: `Bonjour, je suis Nathan « Gun8hoot » Clavel, étudiant à 42 Le Havre (France), avec pour ambition de faire carrière dans la cybersécurité.`,
-		description: "J'aime coder, faire de la rétro-ingénierie et du pentest, et je m'intéresse tout autant à des domaines proches comme la cryptographie, l'administration système et les réseaux.",
-		like2work: "J'aime faire :",
-		likes: [
-			"Du développement bas niveau en C et C++",
-			"De la rétro-ingénierie logicielle avec Ghidra, Radare2 et JADX",
-			"Du pentest",
-			"De l'administration système sous Linux",
+		story: [
+			"J'utilise des ordinateurs depuis tout petit, mais la cybersécurité ne m'a vraiment marqué qu'en tombant sur des vidéos et des articles sur le travail de Bellingcat, un collectif de journalisme d'investigation. La façon dont ils utilisent l'OSINT dans leurs recherches m'a tellement impressionné que je me suis mis à faire moi-même de nombreuses recherches sur l'OSINT.",
+			"Je suis ensuite passé au pentest, puis au développement bas niveau et à la rétro-ingénierie, et je m'enfonce depuis toujours plus profondément dans l'informatique.",
 		],
+		searching: "Je suis actuellement à la recherche d'un stage ou d'une alternance en administration réseau/système, en analyse SOC ou en DevOps/DevSecOps, entre Paris et Le Havre.", // TO CREATE REDIRECTION
 		ssh: "Une version « terminal » de ce portfolio est disponible. Pour y accéder, connectez-vous à l'aide de : ssh portfolio@nathan.clavel.sh",
-		searching: "Je suis actuellement à la recherche d'un stage ou d'une alternance en administration système, cybersécurité ou DevOps/DevSecOps, entre Paris et Le Havre.", // TO CREATE REDIRECTION
 		states: { finished: "Terminé", wip: "En cours" },
 		statuses: { open: "Open source", closed: "Code fermé" },
 		hackathon: { organizer: "organisé par", date: "date", duration: "durée", location: "lieu" },
@@ -130,12 +125,12 @@ const PROJECTS: Project[] = [
 			fr: "Un crypter runtime pour binaires ELF, qui les compresse avec LZ4 et les chiffre en AES-256 avant leur exécution.",
 		},
 		description: {
-			en: "Midona protects ELF executables by compressing them with the LZ4 algorithm and encrypting the resulting payload with AES-256. At runtime, the loader decrypts and decompresses the binary directly in memory, never writing the decrypted executable to disk, which makes static analysis of the protected program far harder.",
-			fr: "Midona protège des exécutables ELF en les compressant avec l'algorithme LZ4 puis en chiffrant la charge utile résultante en AES-256. Au moment de l'exécution, le loader déchiffre et décompresse le binaire directement en mémoire, sans jamais écrire l'exécutable en clair sur le disque, ce qui complique nettement l'analyse statique du programme protégé.",
+			en: "Midona takes a Linux program and locks it up: it shrinks it, then encrypts it, like a password-protected zip file. When the program runs, it unlocks itself in memory only, without ever writing the unprotected version back to disk, which makes the program much harder to inspect or reverse-engineer.",
+			fr: "Midona prend un programme Linux et le verrouille : il le compresse, puis le chiffre, comme un fichier zip protégé par mot de passe. Quand le programme s'exécute, il se déverrouille uniquement en mémoire, sans jamais réécrire la version déchiffrée sur le disque, ce qui le rend bien plus difficile à inspecter ou à rétro-ingénierer.",
 		},
 		learned: {
-			en: "I got to see up close how an ELF binary is put together. Implementing LZ4 and AES-256 myself also made those algorithms finally click.",
-			fr: "J'ai pu voir de près comment un binaire ELF est construit. Implémenter moi-même LZ4 et AES-256 m'a aussi permis de vraiment comprendre ces algorithmes.",
+			en: "Working on Midona taught me how AES-256 encryption works, how the LZ4 compression algorithm works, and how an ELF executable is structured and what it's made of.",
+			fr: "Travailler sur Midona m'a appris comment fonctionne le chiffrement AES-256, comment fonctionne l'algorithme de compression LZ4, et comment un exécutable ELF est structuré et ce qui le compose.",
 		},
 		picture: midonaPicture,
 		href: "https://github.com/Gun8hoot/Midona",
@@ -150,12 +145,12 @@ const PROJECTS: Project[] = [
 			fr: "Un homelab à deux noeuds pour l'auto-hébergement et l'analyse de malwares : un Raspberry Pi avec des services Docker, et un serveur Proxmox pour l'analyse isolée.",
 		},
 		description: {
-			en: "My homelab runs on two nodes with very different jobs. A Raspberry Pi running Alpine Linux hosts a set of self-hosted services in Docker: NGINX, Pi-hole for network-wide ad blocking, Jellyfin for media, Uptime Kuma for monitoring, and Forgejo as a self-hosted Git server. Alongside it, a Proxmox server is dedicated to safely analyzing malware samples inside isolated REMnux and Debian virtual machines, kept fully separated from the rest of the network.",
-			fr: "Mon homelab tourne sur deux noeuds aux rôles bien distincts. Un Raspberry Pi sous Alpine Linux héberge un ensemble de services auto-hébergés via Docker : NGINX, Pi-hole pour le blocage de publicités à l'échelle du réseau, Jellyfin pour les médias, Uptime Kuma pour le monitoring, et Forgejo comme serveur Git auto-hébergé. À côté, un serveur Proxmox est dédié à l'analyse sécurisée d'échantillons de malwares, dans des machines virtuelles REMnux et Debian isolées, complètement séparées du reste du réseau.",
+			en: "My homelab is made of two small computers with very different jobs. The first, a Raspberry Pi, hosts services I use every day: ad blocking, a media server, a monitoring dashboard and my own Git server. The second, running Proxmox, is a sealed-off lab where I can safely open and study malware inside virtual machines, fully cut off from the rest of my network so nothing can escape.",
+			fr: "Mon homelab est composé de deux petits ordinateurs aux rôles bien distincts. Le premier, un Raspberry Pi, héberge des services que j'utilise au quotidien : blocage de publicités, serveur multimédia, tableau de bord de supervision et mon propre serveur Git. Le second, sous Proxmox, est un laboratoire isolé où je peux étudier des malwares en toute sécurité dans des machines virtuelles, complètement coupées du reste de mon réseau pour que rien ne puisse s'en échapper.",
 		},
 		learned: {
-			en: "I learned how to actually self-host and maintain a handful of real services with Docker on a small machine like a Raspberry Pi, and, more importantly, how to properly isolate a dedicated malware-analysis environment with Proxmox so it can't touch the rest of the network.",
-			fr: "J'ai appris à auto-héberger et maintenir pour de vrai plusieurs services avec Docker sur une petite machine comme un Raspberry Pi, et surtout à isoler correctement un environnement dédié à l'analyse de malwares avec Proxmox, pour qu'il ne puisse pas toucher au reste du réseau.",
+			en: "Building my homelab taught me how to configure a network, including changing DNS settings and setting up port forwarding, and how to build and maintain a self-hosted infrastructure. I learned to properly configure every service running on it, used Proxmox for the first time, and did a lot of optimization along the way.",
+			fr: "Monter mon homelab m'a appris à configurer un réseau, notamment en modifiant les paramètres DNS et en mettant en place du port forwarding, ainsi qu'à construire et maintenir une infrastructure auto-hébergée. J'ai appris à bien configurer chaque service qui y tourne, utilisé Proxmox pour la première fois, et beaucoup optimisé l'ensemble.",
 		},
 		picture: "./assets/logos/homelab.svg",
 		href: "https://github.com/gun8hoot/homelab",
@@ -168,12 +163,12 @@ const PROJECTS: Project[] = [
 			fr: "Une infrastructure Docker pour le tronc commun de 42 : NGINX, WordPress, MariaDB, un serveur FTP, Adminer, Redis et Uptime Kuma, le tout dans des conteneurs.",
 		},
 		description: {
-			en: "Inception is a solo 42 project where a whole infrastructure is built from scratch with Docker and Docker Compose: a custom NGINX image acting as a TLS-terminating reverse proxy, a WordPress site running on PHP-FPM and a MariaDB database, plus a few extra services. An FTP server manages the WordPress content files, Adminer is a simple static PHP file launched with PHP-FPM, Redis caches the WordPress content to speed up page loading, and Uptime Kuma checks that every subdomain works properly. The containers are built from hand-written Dockerfiles rather than pre-built images, connected through a dedicated Docker network and persisted with volumes.",
-			fr: "Inception est un projet solo de 42 où toute une infrastructure est construite de zéro avec Docker et Docker Compose : une image NGINX personnalisée faisant office de reverse proxy avec terminaison TLS, un site WordPress tournant sur PHP-FPM et une base de données MariaDB, auxquels s'ajoutent quelques services supplémentaires. Un serveur FTP permet de gérer les fichiers de contenu de WordPress, Adminer est un simple fichier PHP statique lancé avec PHP-FPM, Redis met en cache le contenu de WordPress pour accélérer le chargement des pages, et Uptime Kuma vérifie que chaque sous-domaine fonctionne correctement. Les conteneurs sont construits à partir de Dockerfiles écrits à la main plutôt que d'images préfabriquées, reliés par un réseau Docker dédié, avec des données persistées via des volumes.",
+			en: "Inception is a solo 42 project where I built a small website's entire infrastructure from scratch, piece by piece, instead of using ready-made building blocks. A secure gateway sits in front, a WordPress site in the middle, and a database behind it, with a few extra tools to manage files, speed up pages and check that everything stays online. Every one of these pieces runs in its own isolated box, built by hand rather than downloaded ready-made.",
+			fr: "Inception est un projet solo de 42 où j'ai construit de zéro, pièce par pièce, toute l'infrastructure d'un petit site web plutôt que d'utiliser des briques toutes prêtes. Une passerelle sécurisée se trouve devant, un site WordPress au milieu, et une base de données derrière, avec quelques outils en plus pour gérer les fichiers, accélérer les pages et vérifier que tout reste en ligne. Chacune de ces pièces tourne dans sa propre boîte isolée, construite à la main plutôt que téléchargée toute faite.",
 		},
 		learned: {
-			en: "My first real hands-on project with Docker: I built several containers from scratch. It was also my first time really using NGINX, MariaDB, WordPress, an FTP server, Adminer, Redis and Uptime Kuma.",
-			fr: "Mon premier vrai projet pratique avec Docker : j'ai construit plusieurs conteneurs de zéro. C'était aussi ma première vraie utilisation de NGINX, de MariaDB, de WordPress, d'un serveur FTP, d'Adminer, de Redis et d'Uptime Kuma.",
+			en: "Inception was my first time using Docker, and my first time configuring NGINX, MariaDB, PHP-FPM, an FTP server and Redis.",
+			fr: "Inception a été ma première utilisation de Docker, ainsi que ma première configuration de NGINX, MariaDB, PHP-FPM, d'un serveur FTP et de Redis.",
 		},
 		picture: "./assets/logos/inception.svg",
 		href: "https://github.com/Gun8hoot/42-Common-Core/tree/main/inception",
@@ -186,14 +181,14 @@ const PROJECTS: Project[] = [
 			fr: "Le projet final du tronc commun de 42 : un jeu de serpent multijoueur façon slither.io, à l'esthétique MS-DOS/Windows 98.",
 		},
 		description: {
-			en: "ft_transcendence is the final 42 Common Core group project: a web application with a frontend, a backend and a database, each containerized separately behind an NGINX reverse proxy. Our team built a multiplayer take on slither.io with an MS-DOS/Windows 98 theme: players steer a snake that grows by eating food and dies when it hits the map border or another snake, with no fixed end: you play until you die or close the window. It runs on a TailwindCSS frontend, an ExpressJS backend split into microservices (auth, API, internal JWT validation), MongoDB for storage, and WebSockets for real-time play and chat, with spectator mode, selectable skins and per-player match history.",
-			fr: "ft_transcendence est le projet de groupe final du tronc commun de 42 : une application web avec un frontend, un backend et une base de données, chacun conteneurisé séparément derrière un reverse proxy NGINX. Notre équipe a réalisé une version multijoueur de slither.io à l'esthétique MS-DOS/Windows 98 : les joueurs dirigent un serpent qui grandit en mangeant et meurt en touchant le bord de la carte ou un autre serpent, sans fin fixe : on joue jusqu'à sa mort ou jusqu'à la fermeture de la fenêtre. Le tout tourne sur un frontend TailwindCSS, un backend ExpressJS découpé en microservices (authentification, API, validation JWT interne), MongoDB pour le stockage, et des WebSockets pour le jeu et le chat en temps réel, avec un mode spectateur, des skins sélectionnables et un historique de match par joueur.",
+			en: "ft_transcendence is the final group project of the 42 Common Core: a full web application built by a team, with its own frontend, backend and database kept separate and secured. We built a multiplayer snake game in the style of slither.io, dressed up to look like old MS-DOS and Windows 98 software. Players steer a growing snake and lose when they hit a wall or another player, live, with other people watching, a chat, and a history of past matches.",
+			fr: "ft_transcendence est le projet de groupe final du tronc commun de 42 : une application web complète construite en équipe, avec son propre frontend, backend et base de données, séparés et sécurisés. Nous avons réalisé un jeu de serpent multijoueur façon slither.io, habillé pour ressembler à un vieux logiciel MS-DOS ou Windows 98. Les joueurs dirigent un serpent qui grandit et perdent en touchant un mur ou un autre joueur, en direct, avec d'autres personnes qui regardent, un chat, et un historique des parties jouées.",
 		},
 		learned: {
-			en: "I learned how to design and secure an API for real, and how to build a secure infrastructure around it, splitting the frontend, backend and database into separate containers behind a reverse proxy. It's also the project that felt closest to an actual production app, out of everything I've built so far.",
-			fr: "J'ai appris à concevoir et à sécuriser une API pour de vrai, ainsi qu'à construire une infrastructure sécurisée autour, en séparant le frontend, le backend et la base de données dans des conteneurs distincts derrière un reverse proxy. C'est aussi le projet qui s'est le plus rapproché d'une véritable application en production, de tout ce que j'ai réalisé jusqu'ici.",
+			en: "ft_transcendence was my first time doing web development. I designed and built the infrastructure and the backend, including the API and the gateway.",
+			fr: "ft_transcendence a été ma première expérience du développement web. J'ai conçu et construit l'infrastructure et le backend, dont l'API et la gateway.",
 		},
-		picture: "./assets/logos/ft_transcendence.svg",
+		picture: transcendencePreview,
 		href: "https://github.com/banne227/ft_transcendence/",
 	},
 	{
@@ -204,12 +199,12 @@ const PROJECTS: Project[] = [
 			fr: "Un programme C++ qui crée une fenêtre d'interface texte (TUI) de zéro, sans dépendance comme ncurses.",
 		},
 		description: {
-			en: "CTRL-TUI is a program written entirely in C++ that creates a text user interface (TUI) window without any dependency, not even a library such as ncurses. It handles raw terminal input, screen buffering and redraw, and layout itself, giving full control over how the window renders and reacts to input.",
-			fr: "CTRL-TUI est un programme écrit entièrement en C++ qui crée une fenêtre d'interface utilisateur en mode texte (TUI) sans aucune dépendance, pas même une bibliothèque comme ncurses. Il gère lui-même la lecture brute des entrées du terminal, la mise en mémoire tampon et le réaffichage de l'écran, ainsi que la disposition, offrant un contrôle total sur le rendu de la fenêtre et sa réaction aux entrées.",
+			en: "CTRL-TUI builds the kind of text-based window you'd see in an old-school terminal program, entirely from scratch, without using any existing library to do the heavy lifting. It reads your keystrokes, decides what to draw and redraws the screen itself, giving full control over how the window looks and reacts.",
+			fr: "CTRL-TUI construit, entièrement de zéro et sans utiliser aucune bibliothèque existante pour faire le gros du travail, le genre de fenêtre en mode texte qu'on verrait dans un vieux programme de terminal. Il lit lui-même les touches pressées, décide quoi afficher et réaffiche l'écran, offrant un contrôle total sur l'apparence de la fenêtre et sa réaction aux entrées.",
 		},
 		learned: {
-			en: "My first real project in C++, and a good excuse to dig into how a terminal actually works under the hood — input handling, rendering, escape sequences, that sort of thing.",
-			fr: "Mon premier vrai projet en C++, et une bonne occasion de creuser le fonctionnement d'un terminal en interne — gestion des entrées, rendu, séquences d'échappement, ce genre de choses.",
+			en: "CTRL-TUI was my first big project in C++, and it taught me how a terminal works through escape sequences.",
+			fr: "CTRL-TUI a été mon premier gros projet en C++, et il m'a appris le fonctionnement d'un terminal à travers les séquences d'échappement.",
 		},
 		picture: ctrl_tuiPreview,
 		href: "https://github.com/Gun8hoot/CTRL-TUI",
@@ -222,14 +217,14 @@ const PROJECTS: Project[] = [
 			fr: "Un jeu du tronc commun de 42, écrit en C, qui affiche un labyrinthe en pseudo-3D en temps réel grâce au raycasting.",
 		},
 		description: {
-			en: "Cube3D is a group project from the 42 core curriculum where we wrote, in C, a raycasting engine inspired by early first-person games like Wolfenstein 3D. It casts one ray per screen column to find the nearest wall, then projects textured wall slices to render a navigable pseudo-3D maze from parsed map files, with real-time movement and rotation.",
-			fr: "Cube3D est un projet de groupe du tronc commun de 42 où nous avons écrit, en C, un moteur de raycasting inspiré des premiers jeux en vue subjective comme Wolfenstein 3D. Il lance un rayon par colonne d'écran pour trouver le mur le plus proche, puis projette des tranches de mur texturées pour afficher un labyrinthe pseudo-3D navigable à partir de fichiers de carte, avec déplacement et rotation en temps réel.",
+			en: "Cube3D is a group project from the 42 core curriculum: a game engine that makes a flat maze, described in a simple map file, look like a navigable 3D world, the same trick used by very early first-person games like Wolfenstein 3D. It works by shooting an imaginary ray straight ahead for every column of the screen to figure out what wall to draw and how far away it is, which is enough to fake depth and let you walk and turn around the maze in real time.",
+			fr: "Cube3D est un projet de groupe du tronc commun de 42 : un moteur de jeu qui fait ressembler un labyrinthe plat, décrit dans un simple fichier de carte, à un monde 3D navigable, la même astuce utilisée par les tout premiers jeux en vue subjective comme Wolfenstein 3D. Il fonctionne en envoyant un rayon imaginaire tout droit pour chaque colonne de l'écran afin de déterminer quel mur dessiner et à quelle distance, ce qui suffit à simuler la profondeur et à se déplacer et tourner dans le labyrinthe en temps réel.",
 		},
 		learned: {
-			en: "I worked on pretty much every part of the engine, from map parsing to performance optimization. It gave me a much broader view of what a small game engine actually needs.",
-			fr: "J'ai touché à presque toutes les parties du moteur, du parsing de carte à l'optimisation des performances. Ça m'a donné une vision bien plus large de ce que demande un petit moteur de jeu.",
+			en: "On Cube3D, I wrote the complete map file parsing, handled the doors, built the minimap with a ray that follows the player's field of view, implemented the weapon, and optimized the game to make it run more smoothly.",
+			fr: "Sur Cube3D, j'ai réalisé l'intégralité du parsing du fichier de carte, géré les portes, construit la minimap avec un rayon qui suit le champ de vision du joueur, implémenté l'arme, et optimisé le jeu pour le rendre plus fluide.",
 		},
-		picture: "./assets/logos/cube3d.svg",
+		picture: cube3dPreview,
 		href: "https://github.com/Gun8hoot/Cube3D",
 	},
 	{
@@ -240,14 +235,14 @@ const PROJECTS: Project[] = [
 			fr: "Un projet de groupe recréant, en C, un shell interactif avec parsing, pipes et redirections comme Bash.",
 		},
 		description: {
-			en: "Minishell is a group project from the 42 core curriculum where we rebuilt, in C, an interactive command interpreter close to Bash's core behavior: a lexer and parser for the command line, execution of built-in and external commands, pipes between processes, input/output redirections, environment variable handling and signal management, all without relying on an existing shell implementation.",
-			fr: "Minishell est un projet de groupe du tronc commun de 42 où nous avons recréé, en C, un interpréteur de commandes interactif proche du comportement de base de Bash : un lexer et un parser pour la ligne de commande, l'exécution de commandes internes et externes, des pipes entre processus, la gestion des redirections d'entrée/sortie, des variables d'environnement et des signaux, le tout sans s'appuyer sur une implémentation de shell existante.",
+			en: "Minishell is a group project from the 42 core curriculum: we rebuilt, from nothing, a program close to Bash, the terminal you'd type commands into on a Linux computer. It reads what you type, understands commands, runs them, chains them together with pipes, and reacts to things like Ctrl+C, all without reusing any existing shell's code.",
+			fr: "Minishell est un projet de groupe du tronc commun de 42 : nous avons recréé, à partir de rien, un programme proche de Bash, le terminal dans lequel on tape des commandes sur un ordinateur Linux. Il lit ce qu'on tape, comprend les commandes, les exécute, les enchaîne avec des pipes, et réagit à des choses comme Ctrl+C, sans réutiliser le code d'aucun shell existant.",
 		},
 		learned: {
-			en: "I came to understand how a shell like Bash really works internally, and it pushed my C skills quite a bit further.",
-			fr: "J'ai compris comment un shell comme Bash fonctionne vraiment en interne, et cela a fait progresser mon niveau en C.",
+			en: "On Minishell, I worked on the lexer.",
+			fr: "Sur Minishell, j'ai travaillé sur le lexer.",
 		},
-		picture: "./assets/logos/minishell.svg",
+		picture: minishellPreview,
 		href: "https://github.com/thlibers/minishell",
 	},
 	{
@@ -258,12 +253,12 @@ const PROJECTS: Project[] = [
 			fr: "Un scanner Python qui vérifie si un serveur FTP autorise les connexions anonymes sans compte.",
 		},
 		description: {
-			en: "PyFTPAnon is a small scanner written in Python that connects to a given FTP server and attempts to log in with the anonymous account to check whether it is enabled. It reports whether anonymous access is possible and, if so, which files the account can access, which helps spot a common FTP misconfiguration quickly.",
-			fr: "PyFTPAnon est un petit scanner écrit en Python qui se connecte à un serveur FTP donné et tente de s'y connecter avec le compte anonymous pour vérifier s'il est activé. Il indique si l'accès anonyme est possible et, si c'est le cas, à quels fichiers ce compte donne accès, ce qui permet de repérer rapidement une mauvaise configuration courante des serveurs FTP.",
+			en: "PyFTPAnon is a small Python tool that checks a file server for a common mistake: leaving the door open for anyone, without a password. It tries to log in anonymously and, if it works, lists which files a stranger could reach, which helps catch this kind of oversight quickly.",
+			fr: "PyFTPAnon est un petit outil Python qui vérifie si un serveur de fichiers a une erreur courante : laisser la porte ouverte à n'importe qui, sans mot de passe. Il tente de s'y connecter sans identifiant et, si ça fonctionne, liste les fichiers qu'un inconnu pourrait atteindre, ce qui permet de repérer rapidement ce genre d'oubli.",
 		},
 		learned: {
-			en: "A simple project, but it taught me the basics of the FTP protocol, and it's also where I picked up the basics of Python.",
-			fr: "Un projet simple, mais qui m'a appris les bases du protocole FTP. C'est aussi là que j'ai découvert les bases de Python.",
+			en: "PyFTPAnon taught me the basics of how FTP works, and it's also where I picked up the basics of Python.",
+			fr: "PyFTPAnon m'a appris les bases du fonctionnement du FTP, et c'est aussi là que j'ai découvert les bases de Python.",
 		},
 		picture: "./assets/logos/pyftpanon.svg",
 		href: "https://github.com/Gun8hoot/PyFTPAnon",
@@ -276,12 +271,12 @@ const PROJECTS: Project[] = [
 			fr: "Un wiper Linux écrit en C qui parcourt un système de fichiers et efface chaque fichier de façon sécurisée (à des fins éducatives).",
 		},
 		description: {
-			en: "WWipp is a wiper for Linux written in C. It walks the filesystem from a given path, and for every file it finds, overwrites its content before deleting it, so the data cannot be trivially recovered afterwards. I built it after completing the 42 piscine, with the goal of getting better in C before starting the 42 common core. It was also a way to understand how this class of destructive tooling works and what makes file recovery hard or easy after deletion. It is for educational purposes only.",
-			fr: "WWipp est un wiper pour Linux écrit en C. Il parcourt le système de fichiers à partir d'un chemin donné et, pour chaque fichier trouvé, écrase son contenu avant de le supprimer, afin que les données ne puissent pas être récupérées trivialement. Je l'ai réalisé après la piscine de 42, dans le but de progresser en C avant de commencer le tronc commun de 42. C'était aussi un moyen de comprendre le fonctionnement de ce type d'outil destructeur et ce qui rend la récupération de fichiers plus ou moins facile après suppression. Il est destiné à des fins éducatives uniquement.",
+			en: "WWipp is a tool for Linux, built purely to learn, that permanently destroys files instead of just deleting them. Normally, deleting a file only hides it; the data is often still recoverable. WWipp goes through every file in a folder and overwrites its content first, so there is nothing left to recover. I built it after the 42 piscine to get better at C and to understand what really makes a deleted file recoverable, or not.",
+			fr: "WWipp est un outil pour Linux, réalisé uniquement pour apprendre, qui détruit définitivement des fichiers au lieu de simplement les supprimer. Normalement, supprimer un fichier ne fait que le cacher : les données restent souvent récupérables. WWipp parcourt tous les fichiers d'un dossier et écrase d'abord leur contenu, pour qu'il ne reste rien à récupérer. Je l'ai réalisé après la piscine de 42 pour progresser en C et comprendre ce qui rend un fichier supprimé récupérable, ou non.",
 		},
 		learned: {
-			en: "I learned how files are really managed on disk, and what it actually takes to erase them securely.",
-			fr: "J'ai appris comment les fichiers sont vraiment gérés sur le disque, et ce qu'implique un effacement réellement sécurisé.",
+			en: "WWipp taught me how Linux handles its files, and it helped me improve my C skills a little.",
+			fr: "WWipp m'a appris comment Linux gère ses fichiers, et il m'a permis de progresser un peu en C.",
 		},
 		picture: "./assets/logos/wwipp.svg",
 		href: "https://github.com/Gun8hoot/WWipp",
@@ -294,12 +289,12 @@ const PROJECTS: Project[] = [
 			fr: "Un projet de groupe qui construit un serveur IRC en C++, gérant salons, messages et opérateurs.",
 		},
 		description: {
-			en: "ft_irc is a group project from the 42 core curriculum where we implemented an IRC server in C++ following the core of the IRC protocol: client authentication, nicknames, joining and managing channels, private and channel messaging, and operator commands such as kicking, inviting or setting topics and modes, all handled over non-blocking sockets for multiple simultaneous clients. My part of the project covered an IRC message parser and a command dispatcher, the client registration commands and the welcome message, the messaging, keep-alive and disconnection commands, the invitation and topic commands, and the choice of the reference client along with a test script.",
-			fr: "ft_irc est un projet de groupe du tronc commun de 42 où nous avons implémenté un serveur IRC en C++ suivant le coeur du protocole IRC : authentification des clients, pseudonymes, création et gestion de salons, messages privés et de salon, ainsi que des commandes d'opérateur comme l'expulsion, l'invitation ou la modification du sujet et des modes, le tout géré via des sockets non bloquantes pour plusieurs clients simultanés. Ma part du projet comprend un parseur de messages IRC et un dispatcher de commandes, les commandes d'enregistrement des clients et le message de bienvenue, les commandes de messagerie, de maintien de connexion et de déconnexion, les commandes d'invitation et de sujet, ainsi que le choix du client de référence et un script de tests.",
+			en: "ft_irc is a group project from the 42 core curriculum: we built a server for IRC, one of the oldest group chat systems still in use, from scratch in C++. It lets several people connect at once, pick a nickname, join channels, send private or group messages, and gives channel operators controls like kicking someone out or changing the topic. My part covered reading and understanding incoming messages, logging clients in, keeping connections alive, and the invite and topic features.",
+			fr: "ft_irc est un projet de groupe du tronc commun de 42 : nous avons construit de zéro, en C++, un serveur pour IRC, l'un des plus anciens systèmes de discussion de groupe encore utilisés. Il permet à plusieurs personnes de se connecter en même temps, de choisir un pseudonyme, de rejoindre des salons, d'envoyer des messages privés ou de groupe, et donne aux opérateurs de salon des pouvoirs comme exclure quelqu'un ou changer le sujet. Ma part couvrait la lecture et la compréhension des messages reçus, la connexion des clients, le maintien des connexions, ainsi que les fonctionnalités d'invitation et de sujet.",
 		},
 		learned: {
-			en: "I learned how the IRC protocol works and deepened my understanding of Unix sockets.",
-			fr: "J'ai appris le fonctionnement du protocole IRC et approfondi ma compréhension des sockets Unix.",
+			en: "ft_irc taught me how the IRC protocol works and deepened my understanding of how Unix sockets work.",
+			fr: "ft_irc m'a appris le fonctionnement du protocole IRC et approfondi ma compréhension du fonctionnement des sockets Unix.",
 		},
 		picture: "./assets/logos/ft_irc.svg",
 		href: "https://github.com/thlibers/irc",
@@ -312,12 +307,12 @@ const PROJECTS: Project[] = [
 			fr: "Le site au thème terminal sur lequel vous êtes, construit avec React et servi avec Bun.",
 		},
 		description: {
-			en: "This portfolio is the website you are currently browsing. My initial idea was to imitate the look of a TUI, but I ended up mixing it with the Markdown format, which gives the site its look of a terminal and a document at once. It is a single-page application built with React and TypeScript, styled with plain CSS and served by a lightweight Bun server. It includes a fake boot sequence, a bilingual interface, glossary tooltips on technical terms, and this very project window.",
-			fr: "Ce portfolio est le site que vous parcourez en ce moment. Mon idée de départ était d'imiter l'aspect d'une TUI, mais je l'ai finalement mélangée avec le format Markdown, ce qui donne au site son allure à la fois de terminal et de document. C'est une application monopage construite avec React et TypeScript, mise en forme en CSS pur et servie par un serveur Bun léger. Elle comprend une fausse séquence de démarrage, une interface bilingue, des info-bulles de glossaire sur les termes techniques, et cette fenêtre de projet elle-même.",
+			en: "This portfolio is the website you are currently browsing. I wanted it to look like a terminal and a written document at the same time, down to the fake boot-up sequence when the page loads. It is built with React and TypeScript, available in French and English, and explains technical words like this one through small tooltips, including the window you're reading right now.",
+			fr: "Ce portfolio est le site que vous parcourez en ce moment. Je voulais qu'il ressemble à la fois à un terminal et à un document écrit, jusqu'à la fausse séquence de démarrage au chargement de la page. Il est construit avec React et TypeScript, disponible en français et en anglais, et explique les mots techniques comme celui-ci grâce à de petites info-bulles, y compris la fenêtre que vous êtes en train de lire.",
 		},
 		learned: {
-			en: "I'm not a web developer, so I leaned on AI for a good chunk of the frontend, React for example, to save time, and I'll say so plainly. What I genuinely learned is running a Linux server in real production conditions: this is the first machine I've set up to stay up 24/7, which meant locking it down properly, with Cloudflare in front of it and a hardened SSH setup.",
-			fr: "Je ne suis pas développeur web, donc je me suis appuyé sur l'IA pour une bonne partie du frontend, React par exemple, pour gagner du temps, et je le dis simplement. Ce que j'ai vraiment appris, en revanche, c'est à faire tourner un serveur Linux en conditions réelles de production : c'est la première machine que je configure pour qu'elle tourne 24h/24, ce qui impliquait de la sécuriser sérieusement, avec Cloudflare devant et une configuration SSH durcie.",
+			en: "This portfolio was my first time managing and securing a real, always-on server, which meant a full DNS configuration with Cloudflare and a real-world NGINX configuration. The frontend was built with the help of AI: since I'm not a web developer, I used it to save time, and I'll say so plainly.",
+			fr: "Ce portfolio a été ma première fois à gérer et sécuriser un vrai serveur tournant en continu, ce qui a demandé une configuration DNS complète avec Cloudflare et une configuration NGINX en conditions réelles. Le frontend a été réalisé avec l'aide de l'IA : je ne suis pas développeur web, donc je l'ai utilisée pour gagner du temps, et je le dis simplement.",
 		},
 		picture: "./assets/logos/portfolio.svg",
 		href: "https://github.com/Gun8hoot/portfolio",
@@ -340,8 +335,12 @@ const HACKATHONS: Hackathon[] = [
 		position: { en: "", fr: "" },
 		link: "https://github.com/liliane0128/PassOn_Dinum",
 		description: {
-			en: "This project was part of the hackathon organized by 42 and DINUM: our team built PassOn, a handover assistant that helps a colleague hand over their work. It reads a colleague's documents and files from Docs and Drive, two tools of La Suite numérique, and uses an LLM to turn them into a handover sheet with six structured sections. People log in with their existing Drive account, and the summary is kept in a shared Docs file: the employee validates it, and their manager can still correct it. The whole project runs as a Docker Compose stack, with NGINX in front of a frontend, a Django backend and a PostgreSQL database, all served from a single origin. I built the infrastructure and the backend.",
-			fr: "Ce projet faisait partie du hackathon organisé par 42 et la DINUM : notre équipe y a construit PassOn, un assistant de passation qui aide un collègue à transmettre son travail. Il lit les documents et fichiers d'un collègue dans Docs et Drive, deux outils de La Suite numérique, puis utilise un LLM pour les transformer en une fiche de passation à six sections structurées. On se connecte avec son compte Drive existant, et le résumé est conservé dans un fichier Docs partagé : l'agent le valide, et son manager peut encore le corriger. L'ensemble tourne sous forme de stack Docker Compose, avec NGINX devant un frontend, un backend Django et une base de données PostgreSQL, le tout servi depuis une seule origine. J'ai réalisé l'infrastructure et le backend.",
+			en: "This project was part of a hackathon organized by 42 and DINUM, the French government's digital agency: our team built PassOn, an assistant that helps a civil servant leaving a job hand their work over properly. It reads through someone's documents and files and uses AI to turn them into a clear, structured handover sheet, which the employee can check and their manager can still correct, all inside the government's own office tools, so nothing leaves their existing account. I built the infrastructure and the backend.",
+			fr: "Ce projet faisait partie d'un hackathon organisé par 42 et la DINUM, l'agence numérique de l'État : notre équipe y a construit PassOn, un assistant qui aide un agent qui quitte son poste à bien transmettre son travail. Il lit les documents et fichiers de la personne puis utilise l'IA pour les transformer en une fiche de passation claire et structurée, que l'agent peut vérifier et que son manager peut encore corriger, le tout dans les outils bureautiques de l'État, sans que rien ne sorte de son compte existant. J'ai réalisé l'infrastructure et le backend.",
+		},
+		learned: {
+			en: "This hackathon taught me how a Django API works.",
+			fr: "Ce hackathon m'a appris le fonctionnement d'une API Django.",
 		},
 	},
 ];
@@ -382,7 +381,6 @@ const FALL_LINES = [
 	".name",
 	".section_title",
 	".description > p",
-	".description li",
 	".social > li",
 	".skill_row",
 	".project > li",
@@ -447,13 +445,9 @@ export function Portfolio({ lang, animated = false }: { lang: Lang; animated?: b
 				<h2 className="section_title">{t.titles.description}</h2>
 				<div className="description">
 					<p>{renderTerms(t.intro)}</p>
-					<p>{renderTerms(t.description)}</p>
-					<p>{renderTerms(t.like2work)}</p>
-					<ul>
-						{t.likes.map((like) => (
-							<li key={like}>{renderTerms(like)}</li>
-						))}
-					</ul>
+					{t.story.map((paragraph) => (
+						<p key={paragraph}>{renderTerms(paragraph)}</p>
+					))}
 					<p>{renderTerms(t.searching)}</p>
 					{/*<p>{renderTerms(t.ssh)}</p>*/}
 				</div>

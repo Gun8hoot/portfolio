@@ -33,16 +33,16 @@ const STEPS: Step[] = [
 		target: ".lang_toggle",
 		title: { en: "Language", fr: "Langue" },
 		text: {
-			en: "Use the EN / FR button at the top right to switch between English and French. Your choice is remembered.",
-			fr: "Le bouton EN / FR en haut à droite permet de passer du français à l'anglais, et inversement. Votre choix est mémorisé.",
+			en: "Use the EN / FR button at the top right to switch between English and French.",
+			fr: "Le bouton EN / FR en haut à droite permet de passer du français à l'anglais, et inversement.",
 		},
 	},
 	{
 		target: ".anim_toggle",
-		title: { en: "Animations", fr: "Animations" },
+		title: { en: "Intro animation", fr: "Animation d'intro" },
 		text: {
-			en: "Not a fan of the intro animations? Click the animations button at the top left to turn them off, or back on. Your choice is remembered.",
-			fr: "Les animations d'introduction ne vous plaisent pas ? Cliquez sur le bouton « animations » en haut à gauche pour les désactiver, ou les réactiver. Votre choix est mémorisé.",
+			en: "Not a fan of the intro? Use the intro ON / OFF switch at the top left.",
+			fr: "L'intro ne vous plaît pas ? Utilisez l'interrupteur « intro » ON / OFF en haut à gauche.",
 		},
 	},
 	{

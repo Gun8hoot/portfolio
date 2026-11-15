@@ -26,12 +26,15 @@ export function useAnimations(): [boolean, (on: boolean) => void] {
 	return [on, set];
 }
 
-const TEXT: Record<Lang, { label: string; on: string; off: string; aria: string }> = {
-	en: { label: "animations:", on: "on", off: "off", aria: "Intro animations" },
-	fr: { label: "animations :", on: "oui", off: "non", aria: "Animations d'introduction" },
+// "intro" says what it is about: the power-on screen, the boot and the page entrance, not the
+// blinking cursor. The full explanation is in the tooltip and the accessible name.
+const TEXT: Record<Lang, { label: string; aria: string }> = {
+	en: { label: "intro", aria: "Intro animations: power-on screen, boot and page entrance" },
+	fr: { label: "intro", aria: "Animations d'intro : écran d'allumage, démarrage et entrée de la page" },
 };
 
 // Small, grey and almost transparent until hovered (see .anim_toggle in index.css).
+// Both states are shown, like the EN / FR button, and the current one is highlighted.
 export function AnimToggle({ lang, on, onChange }: { lang: Lang; on: boolean; onChange: (on: boolean) => void }) {
 	const t = TEXT[lang];
 	return (
@@ -40,10 +43,14 @@ export function AnimToggle({ lang, on, onChange }: { lang: Lang; on: boolean; on
 			role="switch"
 			aria-checked={on}
 			aria-label={t.aria}
+			title={t.aria}
 			className="anim_toggle"
 			onClick={() => onChange(!on)}
 		>
-			{t.label} {on ? t.on : t.off}
+			<span>{t.label}</span>
+			<span className={on ? "anim_on" : ""}>ON</span>
+			<span aria-hidden="true">/</span>
+			<span className={on ? "" : "anim_on"}>OFF</span>
 		</button>
 	);
 }

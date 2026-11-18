@@ -24,6 +24,8 @@ type Step = {
 	// Several elements match (e.g. every glossary word): take the first one that is low
 	// enough on the page to end up fully visible under the box once scrolled to.
 	lowEnough?: boolean;
+	// Overrides MARGIN for this step only (the projects list needs more room than the rest).
+	margin?: number;
 	title: Record<Lang, string>;
 	text: Record<Lang, string>;
 };
@@ -56,6 +58,7 @@ const STEPS: Step[] = [
 	},
 	{
 		target: "ul.project > li",
+		margin: 40,
 		title: { en: "Projects", fr: "Projets" },
 		text: {
 			en: "Click a project to open a window with a more detailed description and what I learned by doing it. Click its image to enlarge it.",
@@ -142,10 +145,11 @@ export function Tutorial({ lang, delay = SHOW_DELAY }: { lang: Lang; delay?: num
 	useEffect(() => {
 		if (phase !== "tour") return;
 		const step = STEPS[index];
+		const margin = step.margin ?? MARGIN;
 		const boxBottom = boxRef.current?.getBoundingClientRect().bottom ?? 0;
 		const found = [...document.querySelectorAll<HTMLElement>(step.target)];
 		const el = step.lowEnough
-			? (found.find((e) => e.getBoundingClientRect().top + window.scrollY >= boxBottom + MARGIN) ??
+			? (found.find((e) => e.getBoundingClientRect().top + window.scrollY >= boxBottom + margin) ??
 				found[found.length - 1])
 			: found[0];
 		if (!el) return;
@@ -159,7 +163,7 @@ export function Tutorial({ lang, delay = SHOW_DELAY }: { lang: Lang; delay?: num
 			if (step.target === ".lang_toggle" || step.target === ".anim_toggle") {
 				window.scrollTo({ top: 0, behavior });
 			} else {
-				const top = el.getBoundingClientRect().top + window.scrollY - (boxBottom + MARGIN);
+				const top = el.getBoundingClientRect().top + window.scrollY - (boxBottom + margin);
 				window.scrollTo({ top: Math.max(0, top), behavior });
 			}
 		}
@@ -181,7 +185,7 @@ export function Tutorial({ lang, delay = SHOW_DELAY }: { lang: Lang; delay?: num
 			const el = targetRef.current;
 			if (!box || !el) return;
 			const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-			const pad = MARGIN / 2;
+			const pad = (STEPS[index].margin ?? MARGIN) / 2;
 			const t = el.getBoundingClientRect();
 			const w = box.offsetWidth;
 			const h = box.offsetHeight;

@@ -51,8 +51,8 @@ const loadTurnstile = () =>
 	}));
 
 type UIText = {
+	nameLabel: string;
 	emailLabel: string;
-	subjectLabel: string;
 	messageLabel: string;
 	send: string;
 	sending: string;
@@ -88,8 +88,8 @@ const sanitize = (value: string, maxLength: number) =>
 	escapeHtml(neutralizeMentions(stripControlChars(value.trim()))).slice(0, maxLength);
 
 export function ContactForm({ ui, lang }: { ui: UIText; lang: Lang }) {
+	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
-	const [subject, setSubject] = useState("");
 	const [message, setMessage] = useState("");
 	const [honeypot, setHoneypot] = useState(""); // must stay empty; real visitors never see this field
 	const [status, setStatus] = useState<Status>("idle");
@@ -137,8 +137,8 @@ export function ContactForm({ ui, lang }: { ui: UIText; lang: Lang }) {
 	};
 
 	const resetForm = () => {
+		setName("");
 		setEmail("");
-		setSubject("");
 		setMessage("");
 	};
 
@@ -164,8 +164,8 @@ export function ContactForm({ ui, lang }: { ui: UIText; lang: Lang }) {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
+					name: sanitize(name, 150),
 					email: sanitize(email, 254),
-					subject: sanitize(subject, 150),
 					message: sanitize(message, 5000),
 					turnstileToken: token,
 				}),
@@ -207,20 +207,17 @@ export function ContactForm({ ui, lang }: { ui: UIText; lang: Lang }) {
 			</label>
 
 			<label className="contact_field">
+				<span>{ui.nameLabel}</span>
+				<input type="text" required value={name} onChange={(e) => setName(e.target.value)} />
+			</label>
+
+			<label className="contact_field">
 				<span>{ui.emailLabel}</span>
 				<input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
 			</label>
 
 			<label className="contact_field">
-				<span>{ui.subjectLabel}</span>
-				<input type="text" required value={subject} onChange={(e) => setSubject(e.target.value)} />
-			</label>
-
-			<label className="contact_field">
-				<span>
-					{ui.messageLabel}
-					<span className="contact_star" aria-hidden="true"> *</span>
-				</span>
+				<span>{ui.messageLabel}</span>
 				<textarea
 					required
 					rows={5}

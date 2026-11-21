@@ -1427,3 +1427,83 @@ button.link
 
 .contact_status--ok { color: var(--terminal-green-bold); }
 .contact_status--err { color: var(--terminal-red-bold); }
+
+/* ---------- copy-to-clipboard toast (Email link) ---------- */
+.copy_toast
+{
+	position: fixed;
+	right: 1.5rem;
+	bottom: 1.5rem;
+	z-index: 40; /* above every other overlay, including the picture window's close button (30) */
+	width: min(22rem, calc(100vw - 2rem));
+	padding: 0.7rem 0.8rem 0;
+	background: var(--terminal-bg, #1C1C1C);
+	border: 1px solid var(--accent);
+	border-radius: 2px;
+	box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+	overflow: hidden; /* keeps the progress bar's corners inside the toast */
+	animation: fade-in 200ms ease-out;
+}
+
+.copy_toast_row
+{
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 0.8rem;
+	padding-bottom: 0.7rem;
+}
+
+.copy_toast_text
+{
+	font-family: monaspaceArgon-Medium;
+	font-size: 0.95rem;
+	color: var(--terminal-white-bold);
+}
+
+.copy_toast_close
+{
+	margin: -0.3rem -0.2rem 0 0;
+	padding: 0.2rem 0.4rem;
+	font-family: monaspaceArgon-Medium;
+	font-size: 1rem;
+	line-height: 1;
+	color: var(--muted);
+	background: none;
+	border: 0;
+	cursor: pointer;
+}
+
+.copy_toast_close:hover,
+.copy_toast_close:focus-visible
+{
+	color: var(--accent);
+}
+
+.copy_toast_bar
+{
+	height: 3px;
+	margin: 0 -0.8rem; /* spans the toast's full width, past its own padding */
+	background: rgba(255, 255, 255, 0.08);
+}
+
+.copy_toast_bar_fill
+{
+	height: 100%;
+	width: 100%;
+	background: var(--accent);
+	transform-origin: left;
+	animation: copy-toast-drain linear forwards;
+}
+
+@keyframes copy-toast-drain
+{
+	from { transform: scaleX(1); }
+	to   { transform: scaleX(0); }
+}
+
+@media (prefers-reduced-motion: reduce)
+{
+	.copy_toast { animation: none; }
+	.copy_toast_bar_fill { animation: none; transform: scaleX(0.001); } /* still signals "about to close" without motion */
+}

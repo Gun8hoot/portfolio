@@ -1,9 +1,11 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import type { MouseEvent } from "react";
 import type { Lang, Localized } from "./Glossary";
 import { Term, TermProvider, renderTerms } from "./Term";
 import { ProjectWindow } from "./ProjectWindow";
 import type { ProjectWindowData } from "./ProjectWindow";
 import { ContactForm } from "./ContactForm";
+import { CopyToast, useCopyToast } from "./CopyToast";
 
 // Each picture must be imported, not just referenced by path: Bun's bundler only
 // discovers and serves an asset when it sees a real `import`, the same way it
@@ -59,8 +61,8 @@ const UI = {
 		hackathon: { organizer: "organized by", date: "date", duration: "duration", location: "location" },
 		project: { description: "description", learned: "what I learned", viewRepo: "Go to repository", close: "Close", enlarge: "Enlarge the picture" },
 		contact: {
+			nameLabel: "Name",
 			emailLabel: "Email",
-			subjectLabel: "Subject",
 			messageLabel: "Message",
 			send: "Send",
 			sending: "Sending…",
@@ -87,8 +89,8 @@ const UI = {
 		hackathon: { organizer: "organisé par", date: "date", duration: "durée", location: "lieu" },
 		project: { description: "description", learned: "ce que j'ai appris", viewRepo: "Voir le dépôt", close: "Fermer", enlarge: "Agrandir l'image" },
 		contact: {
+			nameLabel: "Nom",
 			emailLabel: "Email",
-			subjectLabel: "Sujet",
 			messageLabel: "Message",
 			send: "Envoyer",
 			sending: "Envoi…",
@@ -401,6 +403,32 @@ export function Portfolio({ lang, animated = false }: { lang: Lang; animated?: b
 	const t = UI[lang];
 	const [openProject, setOpenProject] = useState<ProjectWindowData | null>(null);
 	const [brokenPictures, setBrokenPictures] = useState<Set<string>>(new Set());
+	const copyToast = useCopyToast();
+
+	// Clicking the Email link copies the address instead of opening the visitor's mail client.
+	const copyEmail = async (e: MouseEvent, href: string) => {
+		e.preventDefault();
+		const email = href.replace(/^mailto:/, "");
+		try {
+			await navigator.clipboard.writeText(email);
+		} catch {
+			// Clipboard API unavailable (older Safari, non-HTTPS, permission denied): fall back
+			// to the old select-and-copy trick with a throwaway, invisible textarea.
+			try {
+				const area = document.createElement("textarea");
+				area.value = email;
+				area.style.position = "fixed";
+				area.style.opacity = "0";
+				document.body.appendChild(area);
+				area.select();
+				document.execCommand("copy");
+				document.body.removeChild(area);
+			} catch {
+				return; // copying truly isn't possible here: don't claim it worked
+			}
+		}
+		copyToast.show();
+	};
 
 	// The boothist screen leaves the page scrolled to the bottom: start at the top.
 	useLayoutEffect(() => {
@@ -454,14 +482,25 @@ export function Portfolio({ lang, animated = false }: { lang: Lang; animated?: b
 
 				<h2 className="section_title">{t.titles.links}</h2>
 				<ul className="social">
-					{PROFILES.map(({ label, href }) => (
-						<li key={label}>
-							<a className="link" href={href} target="_blank" rel="noopener noreferrer">
-								<span className="link_name">{label}</span>
-								<span className="link_url">{shortUrl(href)}</span>
-							</a>
-						</li>
-					))}
+					{PROFILES.map(({ label, href }) =>
+						label === "Email" ? (
+							<li key={label}>
+								{/* copies the address instead of opening a mail client; href kept so middle-click
+								   / "open in new tab" / screen readers still get a real mailto: link */}
+								<a className="link" href={href} onClick={(e) => copyEmail(e, href)}>
+									<span className="link_name">{label}</span>
+									<span className="link_url">{shortUrl(href)}</span>
+								</a>
+							</li>
+						) : (
+							<li key={label}>
+								<a className="link" href={href} target="_blank" rel="noopener noreferrer">
+									<span className="link_name">{label}</span>
+									<span className="link_url">{shortUrl(href)}</span>
+								</a>
+							</li>
+						),
+					)}
 				</ul>
 
 				<h2 className="section_title">{t.titles.skills}</h2>
@@ -546,6 +585,10 @@ export function Portfolio({ lang, animated = false }: { lang: Lang; animated?: b
 				<h2 className="section_title">{t.titles.contact}</h2>
 				<ContactForm ui={t.contact} lang={lang} />
 			</main>
+
+			{copyToast.toast !== null && (
+				<CopyToast lang={lang} toastKey={copyToast.toast} onClose={copyToast.hide} />
+			)}
 		</TermProvider>
 	);
 }

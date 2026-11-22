@@ -159,6 +159,21 @@ export const GLOSSARY: Record<string, Entry> = {
 		en: "System that translates domain names into IP addresses.",
 		fr: "Système qui traduit les noms de domaine en adresses IP.",
 	},
+	"IP": {
+		url: "https://www.rfc-editor.org/rfc/rfc791",
+		en: "The protocol that addresses and routes data between devices across networks; the foundation the internet is built on.",
+		fr: "Le protocole qui adresse et route les données entre appareils à travers les réseaux ; le socle sur lequel repose Internet.",
+	},
+	"HTTP": {
+		url: "https://www.rfc-editor.org/rfc/rfc9110",
+		en: "The protocol web browsers and servers use to request and send pages and data; HTTPS is its encrypted version.",
+		fr: "Le protocole utilisé par les navigateurs et les serveurs web pour demander et envoyer des pages et des données ; HTTPS en est la version chiffrée.",
+	},
+	"DHCP": {
+		url: "https://www.rfc-editor.org/rfc/rfc2131",
+		en: "Protocol that automatically assigns an IP address and network settings to a device when it joins a network.",
+		fr: "Protocole qui attribue automatiquement une adresse IP et des paramètres réseau à un appareil quand il rejoint un réseau.",
+	},
 	"ASM x86-x64": {
 		aliases: ["ASM"],
 		url: "https://en.wikipedia.org/wiki/X86_assembly_language",

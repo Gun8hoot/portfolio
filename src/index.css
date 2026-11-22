@@ -979,12 +979,16 @@ button.link
 	color: var(--terminal-white-bold);
 }
 
-/* organized by / date / duration / location, on one wrapping line */
+/* organized by / date / duration / location: a fixed 2-per-row grid, so the four groups
+   always land in the same two rows regardless of how long each language's text is.
+   (A plain flex-wrap here used to let the wrap point drift with label/value length, so
+   English and French — whose labels and dates are different lengths — ended up grouped
+   onto different lines from one another.) */
 .hack_meta
 {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 0.25rem 3rem; /* row gap, space between the groups */
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0.4rem 3rem;
 	margin: 0.3rem 0 0;
 }
 
@@ -1017,6 +1021,11 @@ button.link
 	.hack_position
 	{
 		min-width: 0;
+	}
+
+	.hack_meta
+	{
+		grid-template-columns: 1fr; /* one group per line: not enough room for two side by side */
 	}
 }
 
@@ -1353,6 +1362,13 @@ button.link
 {
 	font-family: monaspaceArgon-Medium;
 	color: var(--muted);
+}
+
+.contact_limit
+{
+	font-family: monaspaceArgon-Light;
+	font-size: 0.8rem;
+	font-weight: normal; /* the label's own span is already bold via monaspaceArgon-Medium */
 }
 
 .contact_field input,

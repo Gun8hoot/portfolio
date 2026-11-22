@@ -266,7 +266,7 @@ const PROJECTS: Project[] = [
 		href: "https://github.com/Gun8hoot/PyFTPAnon",
 	},
 	{
-		label: "WWipp", state: "wip", status: "open",
+		label: "WWipp", state: "finished", status: "open",
 		stack: ["C", "GNU Make"],
 		shortDescription: {
 			en: "A Linux wiper written in C that walks a filesystem and securely erases every file it finds (for educational purposes).",
@@ -371,6 +371,7 @@ const SKILLS: SkillGroup[] = [
 	{ label: { en: "services", fr: "services" }, items: ["NGINX"] },
 	{ label: { en: "security", fr: "sécurité" }, items: ["Hashcat", "Burp Suite"] },
 	{ label: { en: "network", fr: "réseaux"}, items: ["Wireshark", "nmap"]},
+	{ label: { en: "protocols", fr: "protocoles" }, items: ["IP", "SSH", "DHCP", "HTTP", "DNS", "FTP"] },
 ];
 
 // "https://www.github.com/Gun8hoot/" -> "github.com/Gun8hoot"

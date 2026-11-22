@@ -22,6 +22,16 @@ const TURNSTILE_SITE_KEY = (() => {
 if (!TURNSTILE_SITE_KEY) console.error("BUN_PUBLIC_TURNSTILE_SITE_KEY is not set: the contact form cannot be verified.");
 const TURNSTILE_SCRIPT = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
 
+// Field character limits, shown next to each label and enforced by the inputs' maxLength,
+// kept in one place so the two can never drift apart.
+const NAME_MAX = 150;
+const EMAIL_MAX = 254;
+const MESSAGE_MAX = 5000;
+const LIMIT_TEXT: Record<Lang, (n: number) => string> = {
+	en: (n) => `max ${n} characters`,
+	fr: (n) => `${n} caractères max`,
+};
+
 type TurnstileApi = {
 	render: (container: HTMLElement, options: Record<string, unknown>) => string;
 	reset: (widgetId?: string) => void;
@@ -207,21 +217,27 @@ export function ContactForm({ ui, lang }: { ui: UIText; lang: Lang }) {
 			</label>
 
 			<label className="contact_field">
-				<span>{ui.nameLabel}</span>
-				<input type="text" required value={name} onChange={(e) => setName(e.target.value)} />
+				<span>
+					{ui.nameLabel} <span className="contact_limit">({LIMIT_TEXT[lang](NAME_MAX)})</span>
+				</span>
+				<input type="text" required maxLength={NAME_MAX} value={name} onChange={(e) => setName(e.target.value)} />
 			</label>
 
 			<label className="contact_field">
-				<span>{ui.emailLabel}</span>
-				<input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+				<span>
+					{ui.emailLabel} <span className="contact_limit">({LIMIT_TEXT[lang](EMAIL_MAX)})</span>
+				</span>
+				<input type="email" required maxLength={EMAIL_MAX} value={email} onChange={(e) => setEmail(e.target.value)} />
 			</label>
 
 			<label className="contact_field">
-				<span>{ui.messageLabel}</span>
+				<span>
+					{ui.messageLabel} <span className="contact_limit">({LIMIT_TEXT[lang](MESSAGE_MAX)})</span>
+				</span>
 				<textarea
 					required
 					rows={5}
-					maxLength={5000}
+					maxLength={MESSAGE_MAX}
 					value={message}
 					onChange={(e) => setMessage(e.target.value)}
 				/>
